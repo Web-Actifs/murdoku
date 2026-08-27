@@ -1,0 +1,20 @@
+{
+  "adjacentToDecor": "était juste à côté {{decor}}.",
+  "inRoom": "se trouvait dans {{room}}.",
+  "inRowTop": "était au premier rang.",
+  "inRowBottom": "était au dernier rang.",
+  "inRowN": "était sur la rangée {{n}}.",
+  "inColumnLeft": "était tout à gauche du plan.",
+  "inColumnRight": "était tout à droite du plan.",
+  "inColumnN": "était sur la colonne {{n}}.",
+  "relativeTo": "était au {{direction}} de {{name}}.",
+  "adjacentToCharacter": "était juste à côté de {{name}}.",
+  "alone": "était seul·e dans la pièce.",
+  "notAlone": "n'était pas seul·e dans la pièce.",
+  "directions": {
+    "N": "nord",
+    "S": "sud",
+    "E": "est",
+    "W": "ouest"
+  }
+}

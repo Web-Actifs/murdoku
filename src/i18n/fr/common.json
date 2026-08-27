@@ -1,0 +1,25 @@
+{
+  "app": {
+    "title": "Murdoku"
+  },
+  "home": {
+    "heading": "Choisissez une affaire",
+    "subheading": "Des scènes de crime à élucider par pure déduction.",
+    "play": "Jouer"
+  },
+  "case": {
+    "suspectsHeading": "Suspects",
+    "victimBadge": "Victime",
+    "accusationHeading": "Qui est l'assassin ?",
+    "accusationPlaceholder": "Choisissez un suspect…",
+    "solveButton": "Élucider",
+    "resetButton": "Recommencer",
+    "backToHome": "Retour aux affaires",
+    "resultCorrectTitle": "Affaire résolue !",
+    "resultIncorrectTitle": "Ce n'est pas ça…",
+    "resultMurdererIs": "L'assassin était {{name}}.",
+    "resultPlacementsCorrect": "{{correct}} / {{total}} suspects bien placés.",
+    "selectHint": "Sélectionnez un suspect, puis cliquez sur une case du plan pour le placer.",
+    "closeResult": "Continuer l'enquête"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "L'affaire du garage",
+  "flavorText": "Le patron ne laissait jamais personne toucher à sa clé à molette.",
+  "rooms": {
+    "atelier": "l'atelier",
+    "bureau": "le bureau",
+    "stock": "le stock",
+    "zone-lavage": "la zone de lavage"
+  },
+  "characters": {
+    "marcel": "Marcel",
+    "nadia": "Nadia",
+    "julien": "Julien",
+    "sofia": "Sofia",
+    "elise": "Élise",
+    "camille": "Camille",
+    "hugo": "Hugo"
+  }
+}
