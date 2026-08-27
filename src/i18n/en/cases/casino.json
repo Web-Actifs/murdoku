@@ -1,0 +1,23 @@
+{
+  "title": "The Casino Case",
+  "flavorText": "The house always wins, the manager used to say. Tonight, she lost big.",
+  "rooms": {
+    "reception": "the reception",
+    "caisse": "the cashier's office",
+    "salle-jeu": "the game floor",
+    "bar": "the bar",
+    "vip": "the VIP lounge"
+  },
+  "characters": {
+    "solange": "Solange",
+    "igor": "Igor",
+    "robert": "Robert",
+    "marceline": "Marceline",
+    "tania": "Tania",
+    "malik": "Malik",
+    "priscilla": "Priscilla",
+    "youssef": "Youssef",
+    "sandrine": "Sandrine",
+    "kevin": "Kevin"
+  }
+}

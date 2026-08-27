@@ -1,0 +1,27 @@
+{
+  "title": "L'affaire du manoir",
+  "flavorText": "La maîtresse des lieux disait connaître chaque recoin de son manoir. La cave, personne n'y allait jamais... jusqu'à cette nuit.",
+  "rooms": {
+    "entree": "l'entrée",
+    "salon": "le salon",
+    "bibliotheque": "la bibliothèque",
+    "cave": "la cave",
+    "grenier": "le grenier",
+    "cuisine": "la cuisine"
+  },
+  "characters": {
+    "reine": "Reine",
+    "aristide": "Aristide",
+    "hortense": "Hortense",
+    "bertrand": "Bertrand",
+    "clemence": "Clémence",
+    "firmin": "Firmin",
+    "edmond": "Edmond",
+    "josephine": "Joséphine",
+    "raymond": "Raymond",
+    "ernestine": "Ernestine",
+    "prosper": "Prosper",
+    "adelaide": "Adélaïde",
+    "hippolyte": "Hippolyte"
+  }
+}

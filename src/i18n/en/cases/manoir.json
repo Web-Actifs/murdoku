@@ -1,0 +1,27 @@
+{
+  "title": "The Manor Case",
+  "flavorText": "The lady of the house said she knew every corner of her manor. Nobody ever went down to the cellar... until tonight.",
+  "rooms": {
+    "entree": "the entrance hall",
+    "salon": "the parlor",
+    "bibliotheque": "the library",
+    "cave": "the cellar",
+    "grenier": "the attic",
+    "cuisine": "the kitchen"
+  },
+  "characters": {
+    "reine": "Reine",
+    "aristide": "Aristide",
+    "hortense": "Hortense",
+    "bertrand": "Bertrand",
+    "clemence": "Clémence",
+    "firmin": "Firmin",
+    "edmond": "Edmond",
+    "josephine": "Joséphine",
+    "raymond": "Raymond",
+    "ernestine": "Ernestine",
+    "prosper": "Prosper",
+    "adelaide": "Adélaïde",
+    "hippolyte": "Hippolyte"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "title": "The Theater Case",
+  "flavorText": "The artistic director always said the show must go on. Not this time.",
+  "rooms": {
+    "guichet": "the box office",
+    "coulisses": "the backstage area",
+    "scene": "the stage",
+    "loges": "the dressing rooms",
+    "fosse": "the orchestra pit"
+  },
+  "characters": {
+    "philippe": "Philippe",
+    "corinne": "Corinne",
+    "armand": "Armand",
+    "delphine": "Delphine",
+    "thibault": "Thibault",
+    "aurelie": "Aurélie",
+    "damien": "Damien",
+    "severine": "Séverine",
+    "guillaume": "Guillaume",
+    "nathalie": "Nathalie",
+    "cedric": "Cédric"
+  }
+}

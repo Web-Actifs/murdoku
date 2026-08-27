@@ -1,0 +1,27 @@
+{
+  "title": "El caso de la mansión",
+  "flavorText": "La señora de la casa decía conocer cada rincón de su mansión. Nadie bajaba nunca a la bodega... hasta esta noche.",
+  "rooms": {
+    "entree": "el vestíbulo",
+    "salon": "el salón",
+    "bibliotheque": "la biblioteca",
+    "cave": "la bodega",
+    "grenier": "el desván",
+    "cuisine": "la cocina"
+  },
+  "characters": {
+    "reine": "Reine",
+    "aristide": "Aristide",
+    "hortense": "Hortense",
+    "bertrand": "Bertrand",
+    "clemence": "Clémence",
+    "firmin": "Firmin",
+    "edmond": "Edmond",
+    "josephine": "Joséphine",
+    "raymond": "Raymond",
+    "ernestine": "Ernestine",
+    "prosper": "Prosper",
+    "adelaide": "Adélaïde",
+    "hippolyte": "Hippolyte"
+  }
+}

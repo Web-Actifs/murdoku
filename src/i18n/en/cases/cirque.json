@@ -1,0 +1,23 @@
+{
+  "title": "The Circus Case",
+  "flavorText": "The stage manager said he watched everything from his booth. Apparently not his own end.",
+  "rooms": {
+    "entree": "the entrance",
+    "regie": "the control booth",
+    "piste": "the ring",
+    "loges": "the dressing rooms",
+    "menagerie": "the menagerie"
+  },
+  "characters": {
+    "maurice": "Maurice",
+    "sylviane": "Sylviane",
+    "ludo": "Ludo",
+    "fanny": "Fanny",
+    "gaston": "Gaston",
+    "odette": "Odette",
+    "regis": "Régis",
+    "coralie": "Coralie",
+    "bastien": "Bastien",
+    "michele": "Michèle"
+  }
+}

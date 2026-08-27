@@ -1,0 +1,23 @@
+{
+  "title": "El caso del circo",
+  "flavorText": "El regidor decía controlarlo todo desde su cabina. Salvo, al parecer, su propio final.",
+  "rooms": {
+    "entree": "la entrada",
+    "regie": "la cabina de control",
+    "piste": "la pista",
+    "loges": "los camerinos",
+    "menagerie": "la casa de fieras"
+  },
+  "characters": {
+    "maurice": "Maurice",
+    "sylviane": "Sylviane",
+    "ludo": "Ludo",
+    "fanny": "Fanny",
+    "gaston": "Gaston",
+    "odette": "Odette",
+    "regis": "Régis",
+    "coralie": "Coralie",
+    "bastien": "Bastien",
+    "michele": "Michèle"
+  }
+}

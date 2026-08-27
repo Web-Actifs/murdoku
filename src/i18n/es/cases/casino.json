@@ -1,0 +1,23 @@
+{
+  "title": "El caso del casino",
+  "flavorText": "La casa siempre gana, decía la gerente. Esta noche, perdió a lo grande.",
+  "rooms": {
+    "reception": "la recepción",
+    "caisse": "la caja",
+    "salle-jeu": "la sala de juego",
+    "bar": "el bar",
+    "vip": "el salón VIP"
+  },
+  "characters": {
+    "solange": "Solange",
+    "igor": "Igor",
+    "robert": "Robert",
+    "marceline": "Marceline",
+    "tania": "Tania",
+    "malik": "Malik",
+    "priscilla": "Priscilla",
+    "youssef": "Youssef",
+    "sandrine": "Sandrine",
+    "kevin": "Kevin"
+  }
+}

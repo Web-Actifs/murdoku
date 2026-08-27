@@ -1,0 +1,24 @@
+{
+  "title": "L'affaire du théâtre",
+  "flavorText": "Le directeur artistique disait que le spectacle devait toujours continuer. Pas cette fois.",
+  "rooms": {
+    "guichet": "le guichet",
+    "coulisses": "les coulisses",
+    "scene": "la scène",
+    "loges": "les loges",
+    "fosse": "la fosse d'orchestre"
+  },
+  "characters": {
+    "philippe": "Philippe",
+    "corinne": "Corinne",
+    "armand": "Armand",
+    "delphine": "Delphine",
+    "thibault": "Thibault",
+    "aurelie": "Aurélie",
+    "damien": "Damien",
+    "severine": "Séverine",
+    "guillaume": "Guillaume",
+    "nathalie": "Nathalie",
+    "cedric": "Cédric"
+  }
+}

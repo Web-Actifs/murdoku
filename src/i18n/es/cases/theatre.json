@@ -1,0 +1,24 @@
+{
+  "title": "El caso del teatro",
+  "flavorText": "El director artístico siempre decía que el espectáculo debía continuar. Esta vez no.",
+  "rooms": {
+    "guichet": "la taquilla",
+    "coulisses": "el backstage",
+    "scene": "el escenario",
+    "loges": "los camerinos",
+    "fosse": "el foso de la orquesta"
+  },
+  "characters": {
+    "philippe": "Philippe",
+    "corinne": "Corinne",
+    "armand": "Armand",
+    "delphine": "Delphine",
+    "thibault": "Thibault",
+    "aurelie": "Aurélie",
+    "damien": "Damien",
+    "severine": "Séverine",
+    "guillaume": "Guillaume",
+    "nathalie": "Nathalie",
+    "cedric": "Cédric"
+  }
+}

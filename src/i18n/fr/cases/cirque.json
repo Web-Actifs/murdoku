@@ -1,0 +1,23 @@
+{
+  "title": "L'affaire du cirque",
+  "flavorText": "Le régisseur disait tout contrôler depuis sa cabine. Sauf, visiblement, sa propre fin.",
+  "rooms": {
+    "entree": "l'entrée",
+    "regie": "la régie",
+    "piste": "la piste",
+    "loges": "les loges",
+    "menagerie": "la ménagerie"
+  },
+  "characters": {
+    "maurice": "Maurice",
+    "sylviane": "Sylviane",
+    "ludo": "Ludo",
+    "fanny": "Fanny",
+    "gaston": "Gaston",
+    "odette": "Odette",
+    "regis": "Régis",
+    "coralie": "Coralie",
+    "bastien": "Bastien",
+    "michele": "Michèle"
+  }
+}
