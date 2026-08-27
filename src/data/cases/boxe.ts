@@ -16,8 +16,8 @@ const grid: GridCell[] = [
   { id: '5-0', x: 5, y: 0, roomId: 'ring', decor: ['punching-bag'] },
   { id: '4-1', x: 4, y: 1, roomId: 'ring' },
   { id: '5-1', x: 5, y: 1, roomId: 'ring' },
-  { id: '4-2', x: 4, y: 2, roomId: 'ring', decor: ['speaker'] },
-  { id: '5-2', x: 5, y: 2, roomId: 'ring' },
+  { id: '4-2', x: 4, y: 2, roomId: 'ring' },
+  { id: '5-2', x: 5, y: 2, roomId: 'ring', decor: ['speaker'] },
   // Vestiaires
   { id: '0-2', x: 0, y: 2, roomId: 'vestiaires', decor: ['locker'] },
   { id: '1-2', x: 1, y: 2, roomId: 'vestiaires' },
@@ -74,7 +74,10 @@ export const boxeCase: CaseDef = {
       id: 'lea',
       nameKey: 'boxe.characters.lea',
       avatarColor: '#db2777',
-      clues: [{ type: 'adjacentToDecor', decor: 'trophy' }],
+      clues: [
+        { type: 'inRoom', roomId: 'accueil' },
+        { type: 'relativeTo', target: 'karim', direction: 'S' },
+      ],
     },
     {
       id: 'fatou',
@@ -91,7 +94,7 @@ export const boxeCase: CaseDef = {
       avatarColor: '#ca8a04',
       clues: [
         { type: 'adjacentToDecor', decor: 'punching-bag' },
-        { type: 'inRow', row: 'top' },
+        { type: 'relativeTo', target: 'rocco', direction: 'E' },
       ],
     },
     {
@@ -99,8 +102,8 @@ export const boxeCase: CaseDef = {
       nameKey: 'boxe.characters.noor',
       avatarColor: '#2563eb',
       clues: [
-        { type: 'adjacentToDecor', decor: 'speaker' },
-        { type: 'inColumn', column: 'right' },
+        { type: 'inRoom', roomId: 'ring' },
+        { type: 'relativeTo', target: 'mathis', direction: 'S' },
       ],
     },
     {
@@ -109,14 +112,18 @@ export const boxeCase: CaseDef = {
       avatarColor: '#ea580c',
       clues: [
         { type: 'adjacentToDecor', decor: 'dumbbell' },
-        { type: 'relativeTo', target: 'noor', direction: 'W' },
+        { type: 'relativeTo', target: 'rocco', direction: 'S' },
+        { type: 'alone' },
       ],
     },
     {
       id: 'chloe',
       nameKey: 'boxe.characters.chloe',
       avatarColor: '#0d9488',
-      clues: [{ type: 'adjacentToDecor', decor: 'window' }],
+      clues: [
+        { type: 'adjacentToDecor', decor: 'speaker' },
+        { type: 'relativeTo', target: 'noor', direction: 'S' },
+      ],
     },
   ],
   globalConstraints: [{ type: 'noRoomEmpty' }],
@@ -126,11 +133,11 @@ export const boxeCase: CaseDef = {
     rocco: '3-0',
     yasmine: '2-1',
     karim: '1-0',
-    lea: '0-1',
+    lea: '1-1',
     fatou: '1-2',
     mathis: '4-0',
-    noor: '5-2',
+    noor: '4-1',
     diego: '3-2',
-    chloe: '4-3',
+    chloe: '4-2',
   },
 }

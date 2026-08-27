@@ -21,7 +21,7 @@ export function renderClueSentence(t: Translate, clue: ClueDef, caseId: string):
       if (clue.column === 'right') return t('clues:inColumnRight')
       return t('clues:inColumnN', { n: clue.column + 1 })
     case 'relativeTo':
-      return t('clues:relativeTo', { direction: t(`clues:directions.${clue.direction}`), name: characterName(clue.target) })
+      return t(`clues:relativeTo${clue.direction}`, { name: characterName(clue.target) })
     case 'adjacentToCharacter':
       return t('clues:adjacentToCharacter', { name: characterName(clue.target) })
     case 'alone':

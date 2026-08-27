@@ -20,6 +20,7 @@
     "resultMurdererIs": "L'assassin était {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} suspects bien placés.",
     "selectHint": "Faites glisser un suspect sur le plan (ou sélectionnez-le puis cliquez sur une case) pour le placer.",
+    "rowColumnHint": "💡 \"Ligne\" et \"colonne\" se comptent sur le plan tout entier (comme des coordonnées), pas seulement dans la pièce du suspect. \"Nord/sud/est/ouest de X\" se lit pareil : par rapport à tout le plan.",
     "closeResult": "Continuer l'enquête"
   }
 }
