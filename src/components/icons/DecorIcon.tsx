@@ -118,5 +118,31 @@ function renderShape(type: DecorType): ReactNode {
           <circle cx="14" cy="11" r="0.8" fill="currentColor" />
         </>
       )
+    case 'punching-bag':
+      return (
+        <>
+          <path d="M12 2v3" />
+          <path d="M9 5h6l1 7a4 4 0 0 1-8 0Z" />
+          <path d="M10.5 12h3" />
+        </>
+      )
+    case 'dumbbell':
+      return (
+        <>
+          <path d="M7 9v6M17 9v6" />
+          <rect x="4" y="10" width="3" height="4" rx="1" />
+          <rect x="17" y="10" width="3" height="4" rx="1" />
+          <path d="M7 12h10" />
+        </>
+      )
+    case 'trophy':
+      return (
+        <>
+          <path d="M8 4h8v5a4 4 0 0 1-8 0Z" />
+          <path d="M8 5H5v1a3 3 0 0 0 3 3M16 5h3v1a3 3 0 0 1-3 3" />
+          <path d="M12 13v4" />
+          <path d="M9 20h6M9.5 20a2.5 2.5 0 0 1 5 0" />
+        </>
+      )
   }
 }

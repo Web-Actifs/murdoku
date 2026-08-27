@@ -13,6 +13,9 @@ export type DecorType =
   | 'window'
   | 'table'
   | 'locker'
+  | 'punching-bag'
+  | 'dumbbell'
+  | 'trophy'
 
 export interface GridCell {
   id: string
