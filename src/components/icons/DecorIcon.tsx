@@ -7,40 +7,53 @@ import type { DecorType } from '../../engine/types'
  * ---------------------------------------------------------------------------
  * Family: flat, multicolor "mobile puzzle game" illustrations. No line icons.
  *
- * 1. CANVAS. Always `viewBox="0 0 24 24"`. Keep the drawing inside x/y 1.5..22.5
- *    so nothing clips inside the round chip it is rendered in. The root <svg>
- *    already sets fill="none" + round caps/joins: every shape declares its own
- *    `fill`, strokes are the exception (ropes, chains, thin handles).
+ * 1. CANVAS. Always `viewBox="0 0 24 24"`. Keep the drawing inside x/y 2..22 so
+ *    the ink contour (rule 2) is never clipped. The root <svg> already sets
+ *    fill="none" + round caps/joins: every shape declares its own `fill`.
  *
- * 2. PALETTE. Pick 2-4 colors from `P` per icon, all from the same object's
+ * 2. INK CONTOUR (the sticker look). The root <svg> sets
+ *    `stroke={P.ink} strokeWidth="1.15" paintOrder="stroke"`, so EVERY shape
+ *    inherits a dark outline that is painted *behind* its own fill — you get a
+ *    chunky printed contour on the silhouette and on every part that overlaps
+ *    another, for free, without touching the paths. Consequences when adding an
+ *    icon:
+ *      - Do NOT set `stroke` on a filled shape unless you want a colored
+ *        contour instead of the ink one (ropes/chains/thin handles do this and
+ *        also set their own `strokeWidth`).
+ *      - Gloss / shading overlays (anything with `opacity=`) MUST carry
+ *        `stroke="none"`, otherwise the highlight gets its own outline and the
+ *        icon turns muddy. Every existing overlay already does.
+ *      - Shapes are outlined individually, so avoid stacking many small parts
+ *        in the same spot: each one adds a line.
+ *
+ * 3. PALETTE. Pick 2-4 colors from `P` per icon, all from the same object's
  *    real-world logic (a plant is green, a tire is charcoal). `P` holds a light
  *    / base / dark triplet for most hues — use them as: base = the main mass,
  *    light = the top/left face, dark = the bottom/right face. Never build an
- *    icon out of only pale colors: these render on a white/70 chip, so the
- *    dominant mass must be a saturated mid-tone or a dark neutral.
+ *    icon out of only pale colors: these sit directly on a mid-tone floor tile,
+ *    so the dominant mass must be a saturated mid-tone or a dark neutral.
  *
- * 3. LIGHTING. One rule everywhere: light comes from the top-left. That means
+ * 4. LIGHTING. One rule everywhere: light comes from the top-left. That means
  *    lids/tops/backrests use the lighter shade, bases/legs/fronts use the
- *    darker shade. Optional gloss = a white path at opacity 0.3-0.5, drawn as a
- *    diagonal band on glass/screens only.
+ *    darker shade. Optional gloss = a white path at opacity 0.3-0.5 with
+ *    `stroke="none"`, drawn as a diagonal band on glass/screens only.
  *
- * 4. SHAPE LANGUAGE. Chunky and rounded: rectangles use rx 0.6-2.2 (small parts
+ * 5. SHAPE LANGUAGE. Chunky and rounded: rectangles use rx 0.6-2.2 (small parts
  *    ~0.6, big bodies ~2), no feature thinner than ~1.2 units, no detail smaller
- *    than ~1 unit — anything finer disappears in the 16px legend. Strokes, when
- *    used, are 1.4-2.6 wide. Prefer contrast between adjacent shapes over
- *    outlines; there is no global outline in this set.
+ *    than ~1 unit — anything finer disappears in the 16px legend, and the ink
+ *    contour would swallow it. Explicit colored strokes are 1.4-2.6 wide.
  *
- * 5. LEGIBILITY TEST. Squint at 16px: the silhouette alone should name the
+ * 6. LEGIBILITY TEST. Squint at 16px: the silhouette alone should name the
  *    object. Max ~6 visible parts per icon. Drop ornament before you shrink it.
  *
- * 6. ADDING ONE. Add the value to `DecorType` in engine/types.ts, then a `case`
+ * 7. ADDING ONE. Add the value to `DecorType` in engine/types.ts, then a `case`
  *    here in the same order. The `default` branch is a `never` guard, so a
  *    missing case fails `tsc --noEmit -p tsconfig.app.json`.
  * ---------------------------------------------------------------------------
  */
 
 const P = {
-  ink: '#3b3330',
+  ink: '#241f1d',
   charcoal: '#38404a',
   slate: '#4a5560',
   steel: '#7c8894',
@@ -82,8 +95,11 @@ export function DecorIcon({ type, className }: { type: DecorType; className?: st
       viewBox="0 0 24 24"
       className={className}
       fill="none"
+      stroke={P.ink}
+      strokeWidth="1.15"
       strokeLinecap="round"
       strokeLinejoin="round"
+      paintOrder="stroke"
       aria-hidden="true"
     >
       {renderShape(type)}
@@ -109,7 +125,7 @@ function renderShape(type: DecorType): ReactNode {
       return (
         <>
           <rect x="6" y="2.6" width="12" height="8.8" rx="2.2" fill={P.woodLight} />
-          <rect x="8.2" y="4.8" width="7.6" height="1.6" rx="0.8" fill={P.white} opacity={0.4} />
+          <rect x="8.2" y="4.8" width="7.6" height="1.6" rx="0.8" fill={P.white} stroke="none" opacity={0.4} />
           <rect x="4.4" y="11.4" width="15.2" height="3.4" rx="1.6" fill={P.wood} />
           <rect x="6" y="14.6" width="2.4" height="6.6" rx="1" fill={P.woodDark} />
           <rect x="15.6" y="14.6" width="2.4" height="6.6" rx="1" fill={P.woodDark} />
@@ -119,7 +135,7 @@ function renderShape(type: DecorType): ReactNode {
       return (
         <>
           <rect x="3" y="6.4" width="18" height="7.4" rx="2.6" fill={P.blue} />
-          <rect x="11.2" y="7.4" width="1.6" height="5.4" rx="0.8" fill={P.blueDark} opacity={0.6} />
+          <rect x="11.2" y="7.4" width="1.6" height="5.4" rx="0.8" fill={P.blueDark} stroke="none" opacity={0.6} />
           <rect x="4.4" y="12" width="15.2" height="5.2" rx="2" fill={P.blueLight} />
           <rect x="1.8" y="9.6" width="4" height="7.6" rx="2" fill={P.blueDark} />
           <rect x="18.2" y="9.6" width="4" height="7.6" rx="2" fill={P.blueDark} />
@@ -132,7 +148,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <rect x="1.8" y="3.6" width="20.4" height="13.4" rx="2.2" fill={P.charcoal} />
           <rect x="3.4" y="5.2" width="17.2" height="10.2" rx="1.2" fill={P.sky} />
-          <path d="M5.2 15.4 11 5.2h2.6L7.8 15.4Z" fill={P.white} opacity={0.35} />
+          <path d="M5.2 15.4 11 5.2h2.6L7.8 15.4Z" fill={P.white} stroke="none" opacity={0.35} />
           <rect x="10.4" y="17" width="3.2" height="2.4" fill={P.slate} />
           <rect x="6.8" y="19.2" width="10.4" height="2.2" rx="1.1" fill={P.slate} />
         </>
@@ -157,7 +173,7 @@ function renderShape(type: DecorType): ReactNode {
           <path d="M9 9.2V7.4a3 3 0 0 1 6 0v1.8" stroke={P.slate} strokeWidth="2" />
           <rect x="2.4" y="8.6" width="19.2" height="4" rx="1.8" fill={P.coral} />
           <rect x="2.4" y="11.8" width="19.2" height="7.8" rx="1.8" fill={P.red} />
-          <rect x="2.4" y="16.6" width="19.2" height="3" fill={P.redDark} opacity={0.55} />
+          <rect x="2.4" y="16.6" width="19.2" height="3" fill={P.redDark} stroke="none" opacity={0.55} />
           <rect x="10.4" y="12.4" width="3.2" height="3" rx="0.8" fill={P.sun} />
         </>
       )
@@ -168,7 +184,7 @@ function renderShape(type: DecorType): ReactNode {
           <path d="M9.2 10.4 10.6 7.7h1.1v2.7Z" fill={P.glass} />
           <path d="M12.9 7.7h1.2l1.4 2.7h-2.6Z" fill={P.glass} />
           <rect x="1.8" y="10.6" width="20.4" height="5.6" rx="2.2" fill={P.red} />
-          <rect x="1.8" y="14" width="20.4" height="2.2" fill={P.redDark} opacity={0.5} />
+          <rect x="1.8" y="14" width="20.4" height="2.2" fill={P.redDark} stroke="none" opacity={0.5} />
           <rect x="19.9" y="11.8" width="2.3" height="1.8" rx="0.9" fill={P.sun} />
           <circle cx="6.8" cy="16.6" r="2.9" fill={P.charcoal} />
           <circle cx="6.8" cy="16.6" r="1.1" fill={P.chrome} />
@@ -203,7 +219,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <rect x="2.6" y="2.6" width="18.8" height="16.4" rx="2" fill={P.wood} />
           <rect x="4.4" y="4.4" width="15.2" height="12.8" rx="1" fill={P.sky} />
-          <path d="M6.4 10.2 8.9 4.4h1.8L8.2 10.2Z" fill={P.white} opacity={0.45} />
+          <path d="M6.4 10.2 8.9 4.4h1.8L8.2 10.2Z" fill={P.white} stroke="none" opacity={0.45} />
           <rect x="11.3" y="4.4" width="1.4" height="12.8" fill={P.woodLight} />
           <rect x="4.4" y="10.1" width="15.2" height="1.4" fill={P.woodLight} />
           <rect x="1.6" y="18.6" width="20.8" height="2.4" rx="1.2" fill={P.woodDark} />
@@ -213,7 +229,7 @@ function renderShape(type: DecorType): ReactNode {
       return (
         <>
           <rect x="1.6" y="7" width="20.8" height="3.4" rx="1.7" fill={P.woodLight} />
-          <rect x="4" y="7.8" width="9" height="1.2" rx="0.6" fill={P.white} opacity={0.4} />
+          <rect x="4" y="7.8" width="9" height="1.2" rx="0.6" fill={P.white} stroke="none" opacity={0.4} />
           <rect x="3.6" y="10.2" width="16.8" height="2.2" fill={P.wood} />
           <rect x="4.2" y="12.4" width="2.8" height="8.8" rx="1.2" fill={P.wood} />
           <rect x="17" y="12.4" width="2.8" height="8.8" rx="1.2" fill={P.wood} />
@@ -240,7 +256,7 @@ function renderShape(type: DecorType): ReactNode {
           <rect x="7.4" y="3.6" width="9.2" height="2.6" rx="1.3" fill={P.charcoal} />
           <path d="M8 6.2h8l-.8 10.5a3.2 3.2 0 0 1-6.4 0Z" fill={P.red} />
           <path d="M7.86 10.6h8.28l-.16 2.6H8.02Z" fill={P.cream} />
-          <rect x="9.4" y="7" width="1.6" height="3" rx="0.8" fill={P.white} opacity={0.35} />
+          <rect x="9.4" y="7" width="1.6" height="3" rx="0.8" fill={P.white} stroke="none" opacity={0.35} />
         </>
       )
     case 'dumbbell':
@@ -251,7 +267,7 @@ function renderShape(type: DecorType): ReactNode {
           <rect x="15.4" y="7.6" width="3.4" height="8.8" rx="1.4" fill={P.steel} />
           <rect x="1.6" y="5.6" width="4.4" height="12.8" rx="1.8" fill={P.charcoal} />
           <rect x="18" y="5.6" width="4.4" height="12.8" rx="1.8" fill={P.charcoal} />
-          <rect x="8.2" y="10.9" width="4.4" height="1.1" rx="0.55" fill={P.white} opacity={0.5} />
+          <rect x="8.2" y="10.9" width="4.4" height="1.1" rx="0.55" fill={P.white} stroke="none" opacity={0.5} />
         </>
       )
     case 'trophy':
@@ -259,7 +275,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <path d="M7.2 4.8H4.2v1.4a3.6 3.6 0 0 0 3.6 3.6M16.8 4.8h3v1.4a3.6 3.6 0 0 1-3.6 3.6" stroke={P.goldDark} strokeWidth="1.8" />
           <path d="M6.8 2.6h10.4v6.2a5.2 5.2 0 0 1-10.4 0Z" fill={P.gold} />
-          <path d="M9 4.2h1.7v4.6a2 2 0 0 0 .5 1.3H10a1.6 1.6 0 0 1-1-1.5Z" fill={P.white} opacity={0.35} />
+          <path d="M9 4.2h1.7v4.6a2 2 0 0 0 .5 1.3H10a1.6 1.6 0 0 1-1-1.5Z" fill={P.white} stroke="none" opacity={0.35} />
           <rect x="10.8" y="13.6" width="2.4" height="3.4" fill={P.goldDark} />
           <rect x="7.6" y="16.6" width="8.8" height="2" rx="1" fill={P.gold} />
           <rect x="5.8" y="18.4" width="12.4" height="2.8" rx="1.4" fill={P.goldDark} />
@@ -270,7 +286,7 @@ function renderShape(type: DecorType): ReactNode {
     case 'parasol':
       return (
         <>
-          <ellipse cx="12" cy="20.6" rx="5" ry="1.5" fill={P.sun} opacity={0.6} />
+          <ellipse cx="12" cy="20.6" rx="5" ry="1.5" fill={P.sun} stroke="none" opacity={0.6} />
           <rect x="11.3" y="10.4" width="1.4" height="10.4" rx="0.7" fill={P.woodLight} />
           <path d="M2.5 12a9.5 9.5 0 0 1 19 0Z" fill={P.red} />
           <path d="M12 2.6 5.9 12h3.7Z" fill={P.cream} />
@@ -298,7 +314,7 @@ function renderShape(type: DecorType): ReactNode {
           <path d="M12 12l7.79 4.5A9 9 0 0 1 12 21Z" fill={P.sun} />
           <path d="M12 12 4.21 16.5a9 9 0 0 1 0-9Z" fill={P.cream} />
           <circle cx="12" cy="12" r="1.6" fill={P.white} />
-          <circle cx="8.4" cy="7.4" r="1.5" fill={P.white} opacity={0.5} />
+          <circle cx="8.4" cy="7.4" r="1.5" fill={P.white} stroke="none" opacity={0.5} />
         </>
       )
     case 'cooler':
@@ -318,7 +334,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <path d="M12 1.6c3.9 3.9 5.4 8.2 5.4 11.8 0 4.8-2.7 8.2-5.4 9.1-2.7-.9-5.4-4.3-5.4-9.1 0-3.6 1.5-7.9 5.4-11.8Z" fill={P.sun} />
           <path d="M12 1.6c1.8 1.8 3 3.9 3.8 5.9H8.2c.8-2 2-4.1 3.8-5.9Z" fill={P.red} />
-          <path d="M12 4.4c2.4 3 3.4 6.2 3.4 9 0 3.5-1.7 6-3.4 6.9Z" fill={P.gold} opacity={0.5} />
+          <path d="M12 4.4c2.4 3 3.4 6.2 3.4 9 0 3.5-1.7 6-3.4 6.9Z" fill={P.gold} stroke="none" opacity={0.5} />
           <rect x="11.1" y="8" width="1.8" height="12.6" rx="0.9" fill={P.red} />
         </>
       )
@@ -330,8 +346,8 @@ function renderShape(type: DecorType): ReactNode {
           <path d="M9.6 7V5.4a2.4 2.4 0 0 1 4.8 0V7" stroke={P.charcoal} strokeWidth="1.8" />
           <rect x="2.6" y="6.8" width="18.8" height="13.4" rx="2.4" fill={P.blueDark} />
           <rect x="2.6" y="6.8" width="18.8" height="7.4" rx="2.4" fill={P.blue} />
-          <rect x="7" y="6.8" width="2.6" height="13.4" fill={P.charcoal} opacity={0.45} />
-          <rect x="14.4" y="6.8" width="2.6" height="13.4" fill={P.charcoal} opacity={0.45} />
+          <rect x="7" y="6.8" width="2.6" height="13.4" fill={P.charcoal} stroke="none" opacity={0.45} />
+          <rect x="14.4" y="6.8" width="2.6" height="13.4" fill={P.charcoal} stroke="none" opacity={0.45} />
           <rect x="10.6" y="12.2" width="2.8" height="2.8" rx="0.7" fill={P.sun} />
           <rect x="4.6" y="20" width="2.8" height="1.8" rx="0.9" fill={P.charcoal} />
           <rect x="16.6" y="20" width="2.8" height="1.8" rx="0.9" fill={P.charcoal} />
@@ -345,7 +361,7 @@ function renderShape(type: DecorType): ReactNode {
           <rect x="2.6" y="17.4" width="14.4" height="2.2" rx="1.1" fill={P.steel} />
           <rect x="6.2" y="8.6" width="10.2" height="8.8" rx="1.8" fill={P.red} />
           <rect x="10.2" y="8.6" width="2.2" height="8.8" fill={P.redDark} />
-          <rect x="7.6" y="10.2" width="3" height="1.4" rx="0.7" fill={P.white} opacity={0.5} />
+          <rect x="7.6" y="10.2" width="3" height="1.4" rx="0.7" fill={P.white} stroke="none" opacity={0.5} />
           <circle cx="5" cy="20.8" r="1.7" fill={P.charcoal} />
           <circle cx="14.8" cy="20.8" r="1.7" fill={P.charcoal} />
         </>
@@ -414,7 +430,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <rect x="3.6" y="2" width="16.8" height="19.2" rx="2.2" fill={P.charcoal} />
           <rect x="5.2" y="3.4" width="13.6" height="4.6" rx="1.2" fill={P.sky} />
-          <path d="M6.4 8 9.6 3.4h1.8L8.2 8Z" fill={P.white} opacity={0.35} />
+          <path d="M6.4 8 9.6 3.4h1.8L8.2 8Z" fill={P.white} stroke="none" opacity={0.35} />
           <rect x="10.4" y="9" width="3.2" height="2" rx="0.5" fill={P.steel} />
           <rect x="11.5" y="11" width="1.2" height="2.4" rx="0.6" fill={P.woodDark} />
           <path d="M8.4 13.6h7l-.8 4.2a1.6 1.6 0 0 1-1.6 1.3h-2.2a1.6 1.6 0 0 1-1.6-1.3Z" fill={P.cream} />
@@ -452,9 +468,9 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <rect x="1.8" y="3.2" width="20.4" height="13.8" rx="2.2" fill={P.charcoal} />
           <rect x="3.4" y="4.8" width="17.2" height="10.6" rx="1.2" fill={P.blue} />
-          <rect x="5" y="6.6" width="7.4" height="1.6" rx="0.8" fill={P.white} opacity={0.75} />
-          <rect x="5" y="9.4" width="11" height="1.6" rx="0.8" fill={P.white} opacity={0.5} />
-          <rect x="5" y="12.2" width="8.6" height="1.6" rx="0.8" fill={P.white} opacity={0.5} />
+          <rect x="5" y="6.6" width="7.4" height="1.6" rx="0.8" fill={P.white} stroke="none" opacity={0.75} />
+          <rect x="5" y="9.4" width="11" height="1.6" rx="0.8" fill={P.white} stroke="none" opacity={0.5} />
+          <rect x="5" y="12.2" width="8.6" height="1.6" rx="0.8" fill={P.white} stroke="none" opacity={0.5} />
           <rect x="10.4" y="17" width="3.2" height="2.4" fill={P.slate} />
           <rect x="6.8" y="19.2" width="10.4" height="2.2" rx="1.1" fill={P.slate} />
         </>
@@ -489,7 +505,7 @@ function renderShape(type: DecorType): ReactNode {
         <>
           <circle cx="12" cy="5.6" r="3.4" fill={P.silver} />
           <path d="M7.2 15.2c0-3.4 2.1-5.8 4.8-5.8s4.8 2.4 4.8 5.8Z" fill={P.silver} />
-          <path d="M10.4 3c-1.4.7-2.2 2-2.2 3.6 0 1.3.5 2.3 1.2 3-1.6-.5-2.6-1.9-2.6-3.6C6.8 4.2 8.3 2.8 10.4 3Z" fill={P.white} opacity={0.55} />
+          <path d="M10.4 3c-1.4.7-2.2 2-2.2 3.6 0 1.3.5 2.3 1.2 3-1.6-.5-2.6-1.9-2.6-3.6C6.8 4.2 8.3 2.8 10.4 3Z" fill={P.white} stroke="none" opacity={0.55} />
           <rect x="5.8" y="15.2" width="12.4" height="2.2" rx="0.8" fill={P.steel} />
           <rect x="8" y="17.4" width="8" height="2.6" fill={P.silver} />
           <rect x="5" y="19.8" width="14" height="2.4" rx="1" fill={P.steel} />
@@ -499,10 +515,10 @@ function renderShape(type: DecorType): ReactNode {
       return (
         <>
           <rect x="3.2" y="17.2" width="17.6" height="4" rx="1.4" fill={P.woodDark} />
-          <rect x="4.4" y="2.8" width="15.2" height="14.6" rx="1" fill={P.sky} opacity={0.8} />
+          <rect x="4.4" y="2.8" width="15.2" height="14.6" rx="1" fill={P.sky} stroke="none" opacity={0.8} />
           <rect x="10.4" y="7" width="3.2" height="2.2" fill={P.goldDark} />
           <path d="M9.8 9h4.4l.8 4.4a3 3 0 0 1-6 0Z" fill={P.gold} />
-          <path d="M6.6 17.4 11 4.2h1.8L8.4 17.4Z" fill={P.white} opacity={0.55} />
+          <path d="M6.6 17.4 11 4.2h1.8L8.4 17.4Z" fill={P.white} stroke="none" opacity={0.55} />
           <rect x="3.6" y="2" width="16.8" height="2.2" rx="1.1" fill={P.wood} />
           <rect x="3.8" y="2.8" width="1.6" height="14.6" fill={P.wood} />
           <rect x="18.6" y="2.8" width="1.6" height="14.6" fill={P.wood} />
@@ -604,7 +620,7 @@ function renderShape(type: DecorType): ReactNode {
           <rect x="3.6" y="1.8" width="16.8" height="2.2" rx="1.1" fill={P.charcoal} />
           <path d="M7.2 4v11.4M16.8 4v11.4" stroke={P.wood} strokeWidth="2" />
           <rect x="4.4" y="15" width="15.2" height="2.6" rx="1.3" fill={P.gold} />
-          <rect x="6.2" y="15.4" width="4" height="1" rx="0.5" fill={P.white} opacity={0.45} />
+          <rect x="6.2" y="15.4" width="4" height="1" rx="0.5" fill={P.white} stroke="none" opacity={0.45} />
           <circle cx="7.2" cy="15.2" r="1.3" fill={P.goldDark} />
           <circle cx="16.8" cy="15.2" r="1.3" fill={P.goldDark} />
         </>
@@ -629,17 +645,17 @@ function renderShape(type: DecorType): ReactNode {
           <path d="M5 16.4 19 8.2" stroke={P.wood} strokeWidth="2.8" strokeLinecap="butt" />
           <rect x="2.4" y="5.2" width="19.2" height="3.2" rx="1.6" fill={P.woodLight} />
           <rect x="2.4" y="16" width="19.2" height="3.2" rx="1.6" fill={P.wood} />
-          <rect x="7.4" y="8.4" width="1.4" height="7.6" fill={P.wood} opacity={0.55} />
-          <rect x="15.2" y="8.4" width="1.4" height="7.6" fill={P.wood} opacity={0.55} />
+          <rect x="7.4" y="8.4" width="1.4" height="7.6" fill={P.wood} stroke="none" opacity={0.55} />
+          <rect x="15.2" y="8.4" width="1.4" height="7.6" fill={P.wood} stroke="none" opacity={0.55} />
         </>
       )
     case 'spotlight':
       return (
         <>
-          <path d="M13.6 6.4 22.4 2.4v11.6Z" fill={P.sun} opacity={0.65} />
+          <path d="M13.6 6.4 22.4 2.4v11.6Z" fill={P.sun} stroke="none" opacity={0.65} />
           <circle cx="13" cy="9.8" r="3.6" fill={P.sun} />
           <rect x="5.4" y="6" width="8" height="7.6" rx="1.8" fill={P.charcoal} />
-          <rect x="6.6" y="7.2" width="2.4" height="1.4" rx="0.7" fill={P.white} opacity={0.35} />
+          <rect x="6.6" y="7.2" width="2.4" height="1.4" rx="0.7" fill={P.white} stroke="none" opacity={0.35} />
           <rect x="8.4" y="13.2" width="2" height="5.6" fill={P.steel} />
           <rect x="4.8" y="18.4" width="9.2" height="2.4" rx="1.2" fill={P.slate} />
         </>
@@ -694,7 +710,7 @@ function renderShape(type: DecorType): ReactNode {
           <rect x="6.6" y="20" width="10.8" height="2.2" rx="1.1" fill={P.goldDark} />
           <ellipse cx="12" cy="10.2" rx="7.4" ry="8.4" fill={P.gold} />
           <ellipse cx="12" cy="10.2" rx="5.6" ry="6.6" fill={P.glass} />
-          <path d="M8.8 14.6 12.4 4.6h1.8l-3.6 10Z" fill={P.white} opacity={0.7} />
+          <path d="M8.8 14.6 12.4 4.6h1.8l-3.6 10Z" fill={P.white} stroke="none" opacity={0.7} />
         </>
       )
 

@@ -29,10 +29,19 @@ export function ResultPanel() {
           const wasCorrect = state.placements[character.id] === caseDef.solution[character.id]
           const name = t(`cases:${caseDef.id}.characters.${character.id}`)
           return (
-            <li key={character.id} className="flex items-start gap-2 rounded-[var(--radius-sm)] bg-[var(--color-surface-alt)] p-2 text-sm">
-              <PersonAvatar name={name} color={character.avatarColor} isVictim={character.isVictim} size="sm" />
+            <li
+              key={character.id}
+              className="flex items-start gap-2 rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface-alt)] p-2 text-sm"
+            >
+              <PersonAvatar
+                name={name}
+                color={character.avatarColor}
+                isVictim={character.isVictim}
+                variantKey={`${caseDef.id}:${character.id}`}
+                size="sm"
+              />
               <span>
-                <span className="font-bold">{name}</span>{' '}
+                <span className="font-serif font-bold italic">{name}</span>{' '}
                 {!state.gaveUp && (
                   <span className={wasCorrect ? 'text-[var(--color-success)]' : 'text-[var(--color-danger)]'}>
                     ({t(wasCorrect ? 'case.explanationCorrect' : 'case.explanationCorrected')})

@@ -37,34 +37,39 @@ export function SuspectRoster() {
                     ? 'border-[var(--color-accent)] bg-[var(--color-surface)]'
                     : isPlaced
                       ? 'border-[var(--color-success)] bg-[var(--color-surface-alt)]'
-                      : 'border-transparent bg-[var(--color-surface)]'
+                      : 'border-[#241f1d] bg-[var(--color-surface)]'
                 }`}
               >
                 <span className="relative shrink-0">
-                  <PersonAvatar name={name} color={character.avatarColor} isVictim={character.isVictim} />
+                  <PersonAvatar
+                    name={name}
+                    color={character.avatarColor}
+                    isVictim={character.isVictim}
+                    variantKey={`${caseDef.id}:${character.id}`}
+                  />
                   {isPlaced && (
                     <span
                       aria-hidden
-                      className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-success)] text-xs font-bold text-white ring-2 ring-[var(--color-surface)]"
+                      className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-success)] text-xs font-bold text-white ring-[1.5px] ring-[#241f1d]"
                     >
                       ✓
                     </span>
                   )}
                 </span>
-                <span>
-                  <span className="flex items-center gap-2 font-bold">
-                    {name}
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="font-serif text-[1.05rem] font-bold italic tracking-tight">{name}</span>
                     {character.isVictim && (
-                      <span className="rounded-full bg-[var(--color-danger)] px-2 py-0.5 text-[0.65rem] font-bold uppercase text-white">
+                      <span className="rounded-full border border-[#241f1d] bg-[var(--color-danger)] px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide text-white">
                         {t('case.victimBadge')}
                       </span>
                     )}
                   </span>
-                  <span className="mt-0.5 block text-sm text-[var(--color-text-muted)]">
+                  <span className="mt-1 block rounded-[0.9rem] border border-[var(--color-border)] bg-[var(--color-surface-alt)] px-2.5 py-1 text-sm text-[var(--color-text-muted)]">
                     {renderClues(t, character.clues, caseDef.id)}
                   </span>
                   {placedRoomName && (
-                    <span className="mt-1 inline-block text-xs font-bold uppercase tracking-wide text-[var(--color-success)]">
+                    <span className="mt-1.5 inline-block rounded-full border border-[var(--color-success)] px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-[var(--color-success)]">
                       ✓ {placedRoomName}
                     </span>
                   )}
