@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { renderClues } from '../../i18n/renderClue'
 import { useCaseSession } from '../../store/caseSession'
+import { CHARACTER_DRAG_TYPE } from './FloorPlanGrid'
 import { PersonAvatar } from './PersonAvatar'
 
 export function SuspectRoster() {
@@ -22,7 +23,12 @@ export function SuspectRoster() {
                 type="button"
                 disabled={state.revealed}
                 onClick={() => selectSuspect(character.id)}
-                className={`flex w-full items-start gap-3 rounded-[var(--radius-md)] border-2 bg-[var(--color-surface)] p-3 text-left shadow-[var(--shadow-card)] transition-opacity disabled:cursor-default ${
+                draggable={!state.revealed}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData(CHARACTER_DRAG_TYPE, character.id)
+                  e.dataTransfer.effectAllowed = 'move'
+                }}
+                className={`flex w-full cursor-grab items-start gap-3 rounded-[var(--radius-md)] border-2 bg-[var(--color-surface)] p-3 text-left shadow-[var(--shadow-card)] transition-opacity active:cursor-grabbing disabled:cursor-default ${
                   isSelected ? 'border-[var(--color-accent)]' : 'border-transparent'
                 } ${isPlaced && !isSelected ? 'opacity-60' : ''}`}
               >

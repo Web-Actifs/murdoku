@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import { AnswerBar } from '../components/game/AnswerBar'
+import { DecorLegend } from '../components/game/DecorLegend'
 import { FloorPlanGrid } from '../components/game/FloorPlanGrid'
 import { ResultPanel } from '../components/game/ResultPanel'
 import { SuspectRoster } from '../components/game/SuspectRoster'
@@ -35,7 +36,10 @@ export function CasePage() {
       </div>
 
       <div className="mt-6 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
-        <FloorPlanGrid />
+        <div className="flex flex-col gap-3">
+          <FloorPlanGrid />
+          <DecorLegend />
+        </div>
         <div className="flex flex-col gap-6">
           <AnswerBar />
           <SuspectRoster />

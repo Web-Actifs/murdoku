@@ -1,3 +1,4 @@
+import { useState, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gridBounds } from '../../engine/grid'
 import { useCaseSession } from '../../store/caseSession'
@@ -13,11 +14,14 @@ const roomPalette = [
   { bg: '#e9f6fb', border: '#bfe6f5' },
 ]
 
+export const CHARACTER_DRAG_TYPE = 'application/x-murdoku-character'
+
 export function FloorPlanGrid() {
   const { t } = useTranslation(['cases'])
-  const { caseDef, state, clickCell } = useCaseSession()
+  const { caseDef, state, clickCell, placeAtCell } = useCaseSession()
   const { grid, rooms, characters } = caseDef
   const bounds = gridBounds(grid)
+  const [dragOverCellId, setDragOverCellId] = useState<string | null>(null)
 
   const roomColor = new Map(rooms.map((room, i) => [room.id, roomPalette[i % roomPalette.length]]))
   const characterAt = (cellId: string) => characters.find((c) => state.placements[c.id] === cellId)
@@ -27,6 +31,20 @@ export function FloorPlanGrid() {
     const cells = grid.filter((c) => c.roomId === room.id)
     const anchor = cells.reduce((best, c) => (c.y < best.y || (c.y === best.y && c.x < best.x) ? c : best))
     roomLabelCellId.set(anchor.id, room.id)
+  }
+
+  function handleDragOver(e: DragEvent<HTMLButtonElement>, cellId: string) {
+    if (state.revealed) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setDragOverCellId(cellId)
+  }
+
+  function handleDrop(e: DragEvent<HTMLButtonElement>, cellId: string) {
+    e.preventDefault()
+    setDragOverCellId(null)
+    const characterId = e.dataTransfer.getData(CHARACTER_DRAG_TYPE)
+    if (characterId) placeAtCell(characterId, cellId)
   }
 
   return (
@@ -43,12 +61,16 @@ export function FloorPlanGrid() {
         const roomIdForLabel = roomLabelCellId.get(cell.id)
         const canPlaceHere = Boolean(state.selectedCharacterId) && !occupant
         const isPickedUp = state.selectedCharacterId === occupant?.id
+        const isDragTarget = dragOverCellId === cell.id
 
         return (
           <button
             key={cell.id}
             type="button"
             onClick={() => clickCell(cell.id)}
+            onDragOver={(e) => handleDragOver(e, cell.id)}
+            onDragLeave={() => setDragOverCellId((id) => (id === cell.id ? null : id))}
+            onDrop={(e) => handleDrop(e, cell.id)}
             disabled={state.revealed}
             style={{
               gridColumn: cell.x - bounds.minX + 1,
@@ -57,8 +79,8 @@ export function FloorPlanGrid() {
               borderColor: color?.border,
             }}
             className={`relative flex aspect-square min-h-14 flex-col items-center justify-center gap-0.5 rounded-md border-2 p-1 transition-transform enabled:hover:z-10 enabled:hover:scale-105 disabled:cursor-default ${
-              canPlaceHere ? 'ring-2 ring-[var(--color-accent)] ring-offset-1' : ''
-            }`}
+              canPlaceHere || isDragTarget ? 'ring-2 ring-[var(--color-accent)] ring-offset-1' : ''
+            } ${isDragTarget ? 'scale-105' : ''}`}
           >
             {roomIdForLabel && (
               <span className="absolute left-1 top-1 max-w-[90%] truncate text-[0.6rem] font-bold uppercase tracking-wide text-[var(--color-text-muted)]">
@@ -67,12 +89,21 @@ export function FloorPlanGrid() {
             )}
 
             {occupant ? (
-              <PersonAvatar
-                name={t(`cases:${caseDef.id}.characters.${occupant.id}`)}
-                color={occupant.avatarColor}
-                isVictim={occupant.isVictim}
-                size="md"
-              />
+              <span
+                draggable={!state.revealed}
+                onDragStart={(e) => {
+                  e.dataTransfer.setData(CHARACTER_DRAG_TYPE, occupant.id)
+                  e.dataTransfer.effectAllowed = 'move'
+                }}
+                className="cursor-grab active:cursor-grabbing"
+              >
+                <PersonAvatar
+                  name={t(`cases:${caseDef.id}.characters.${occupant.id}`)}
+                  color={occupant.avatarColor}
+                  isVictim={occupant.isVictim}
+                  size="md"
+                />
+              </span>
             ) : (
               cell.decor?.map((d) => (
                 <span key={d} className="flex h-[65%] w-[65%] items-center justify-center rounded-full bg-white/70 shadow-sm">

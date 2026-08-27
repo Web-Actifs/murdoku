@@ -19,7 +19,7 @@
     "resultIncorrectTitle": "Ce n'est pas ça…",
     "resultMurdererIs": "L'assassin était {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} suspects bien placés.",
-    "selectHint": "Sélectionnez un suspect, puis cliquez sur une case du plan pour le placer.",
+    "selectHint": "Faites glisser un suspect sur le plan (ou sélectionnez-le puis cliquez sur une case) pour le placer.",
     "closeResult": "Continuer l'enquête"
   }
 }

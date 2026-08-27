@@ -12,6 +12,7 @@ interface SessionState {
 type Action =
   | { type: 'SELECT_SUSPECT'; characterId: string }
   | { type: 'CLICK_CELL'; cellId: string }
+  | { type: 'PLACE_AT_CELL'; characterId: string; cellId: string }
   | { type: 'ACCUSE'; characterId: string }
   | { type: 'REVEAL' }
   | { type: 'RESET' }
@@ -22,6 +23,15 @@ function occupantOf(placements: Record<string, string>, cellId: string): string 
   return Object.entries(placements).find(([, c]) => c === cellId)?.[0]
 }
 
+function placeAtCell(state: SessionState, characterId: string, cellId: string): SessionState {
+  const placements = { ...state.placements }
+  delete placements[characterId]
+  const evicted = occupantOf(placements, cellId)
+  if (evicted) delete placements[evicted]
+  placements[characterId] = cellId
+  return { ...state, placements, selectedCharacterId: null }
+}
+
 function reducer(state: SessionState, action: Action): SessionState {
   if (state.revealed && action.type !== 'RESET') return state
 
@@ -29,14 +39,12 @@ function reducer(state: SessionState, action: Action): SessionState {
     case 'SELECT_SUSPECT':
       return { ...state, selectedCharacterId: state.selectedCharacterId === action.characterId ? null : action.characterId }
 
+    case 'PLACE_AT_CELL':
+      return placeAtCell(state, action.characterId, action.cellId)
+
     case 'CLICK_CELL': {
       if (state.selectedCharacterId) {
-        const placements = { ...state.placements }
-        delete placements[state.selectedCharacterId]
-        const evicted = occupantOf(placements, action.cellId)
-        if (evicted) delete placements[evicted]
-        placements[state.selectedCharacterId] = action.cellId
-        return { ...state, placements, selectedCharacterId: null }
+        return placeAtCell(state, state.selectedCharacterId, action.cellId)
       }
 
       const occupant = occupantOf(state.placements, action.cellId)
@@ -64,6 +72,7 @@ interface SessionContextValue {
   state: SessionState
   selectSuspect: (characterId: string) => void
   clickCell: (cellId: string) => void
+  placeAtCell: (characterId: string, cellId: string) => void
   accuse: (characterId: string) => void
   reveal: () => void
   reset: () => void
@@ -80,6 +89,7 @@ export function CaseSessionProvider({ caseDef, children }: { caseDef: CaseDef; c
       state,
       selectSuspect: (characterId) => dispatch({ type: 'SELECT_SUSPECT', characterId }),
       clickCell: (cellId) => dispatch({ type: 'CLICK_CELL', cellId }),
+      placeAtCell: (characterId, cellId) => dispatch({ type: 'PLACE_AT_CELL', characterId, cellId }),
       accuse: (characterId) => dispatch({ type: 'ACCUSE', characterId }),
       reveal: () => dispatch({ type: 'REVEAL' }),
       reset: () => dispatch({ type: 'RESET' }),
