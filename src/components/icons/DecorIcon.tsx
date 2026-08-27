@@ -4,7 +4,7 @@ import type { DecorType } from '../../engine/types'
 const common = {
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.6,
+  strokeWidth: 2,
   strokeLinecap: 'round' as const,
   strokeLinejoin: 'round' as const,
 }
@@ -31,9 +31,10 @@ function renderShape(type: DecorType): ReactNode {
     case 'chair':
       return (
         <>
-          <path d="M6 12V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7" />
-          <path d="M6 12h12v4a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-4Z" />
-          <path d="M7 17v3M17 17v3" />
+          <path d="M7 3v18" />
+          <path d="M7 7h4" />
+          <path d="M7 13h11" />
+          <path d="M18 13v8" />
         </>
       )
     case 'sofa':
@@ -54,9 +55,10 @@ function renderShape(type: DecorType): ReactNode {
     case 'tool-bench':
       return (
         <>
-          <rect x="3" y="6" width="18" height="4" rx="1" />
-          <path d="M6 10v8M18 10v8" />
-          <path d="M4 18h16" />
+          <rect x="2" y="9" width="20" height="3" rx="1" />
+          <path d="M5 12v7M19 12v7" />
+          <rect x="15" y="4" width="4" height="4" rx="0.5" />
+          <path d="M17 8v1" />
         </>
       )
     case 'toolbox':
@@ -103,8 +105,8 @@ function renderShape(type: DecorType): ReactNode {
     case 'table':
       return (
         <>
-          <path d="M3 8h18" />
-          <path d="M6 8v11M18 8v11" />
+          <rect x="3" y="6" width="18" height="3" rx="1" />
+          <path d="M6 9v10M18 9v10" />
         </>
       )
     case 'locker':

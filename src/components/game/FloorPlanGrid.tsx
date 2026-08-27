@@ -71,10 +71,14 @@ export function FloorPlanGrid() {
                 name={t(`cases:${caseDef.id}.characters.${occupant.id}`)}
                 color={occupant.avatarColor}
                 isVictim={occupant.isVictim}
-                size="sm"
+                size="md"
               />
             ) : (
-              cell.decor?.map((d) => <DecorIcon key={d} type={d} className="h-5 w-5 text-[var(--color-text-muted)] opacity-70" />)
+              cell.decor?.map((d) => (
+                <span key={d} className="flex h-[65%] w-[65%] items-center justify-center rounded-full bg-white/70 shadow-sm">
+                  <DecorIcon type={d} className="h-2/3 w-2/3 text-[var(--color-text)]" />
+                </span>
+              ))
             )}
 
             {isPickedUp && <span className="absolute inset-0 rounded-md border-2 border-dashed border-[var(--color-accent)]" />}
