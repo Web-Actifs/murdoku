@@ -31,6 +31,8 @@ export const garageCase: CaseDef = {
   id: 'garage',
   titleKey: 'garage.title',
   flavorTextKey: 'garage.flavorText',
+  difficulty: 1,
+  hintsAllowed: 1,
   grid,
   rooms: [
     { id: 'atelier', nameKey: 'garage.rooms.atelier' },

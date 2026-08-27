@@ -1,0 +1,17 @@
+{
+  "adjacentToDecor": "estaba justo al lado {{decor}}.",
+  "inRoom": "estaba en {{room}}.",
+  "inRowTop": "estaba en la fila superior del plano.",
+  "inRowBottom": "estaba en la fila inferior del plano.",
+  "inRowN": "estaba en la fila {{n}} del plano, contando desde arriba.",
+  "inColumnLeft": "estaba en la columna más a la izquierda del plano.",
+  "inColumnRight": "estaba en la columna más a la derecha del plano.",
+  "inColumnN": "estaba en la columna {{n}} del plano, contando desde la izquierda.",
+  "relativeToN": "estaba al norte de {{name}}.",
+  "relativeToS": "estaba al sur de {{name}}.",
+  "relativeToE": "estaba al este de {{name}}.",
+  "relativeToW": "estaba al oeste de {{name}}.",
+  "adjacentToCharacter": "estaba justo al lado de {{name}}.",
+  "alone": "estaba solo/a en la sala.",
+  "notAlone": "no estaba solo/a en la sala."
+}

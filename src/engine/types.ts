@@ -1,6 +1,7 @@
 export type Direction = 'N' | 'S' | 'E' | 'W'
 
 export type DecorType =
+  // Garage / salle de boxe (existants)
   | 'plant'
   | 'chair'
   | 'sofa'
@@ -16,6 +17,50 @@ export type DecorType =
   | 'punching-bag'
   | 'dumbbell'
   | 'trophy'
+  // Plage
+  | 'parasol'
+  | 'deckchair'
+  | 'beach-ball'
+  | 'cooler'
+  | 'surfboard'
+  // Aéroport
+  | 'suitcase'
+  | 'luggage-cart'
+  | 'departure-board'
+  | 'vending-machine'
+  | 'bench'
+  // Commissariat
+  | 'filing-cabinet'
+  | 'coffee-machine'
+  | 'handcuffs'
+  | 'radio'
+  | 'computer'
+  | 'clock'
+  // Musée
+  | 'painting'
+  | 'statue'
+  | 'display-case'
+  | 'skeleton'
+  // Casino
+  | 'card-table'
+  | 'slot-machine'
+  | 'chip-stack'
+  | 'chandelier'
+  | 'bar-counter'
+  // Cirque
+  | 'trapeze'
+  | 'cage'
+  | 'crate'
+  | 'spotlight'
+  // Théâtre
+  | 'curtain'
+  | 'piano'
+  | 'clothes-rack'
+  | 'mirror'
+  // Manoir victorien
+  | 'fireplace'
+  | 'bookshelf'
+  | 'armor'
 
 export interface GridCell {
   id: string
@@ -52,10 +97,16 @@ export interface CharacterDef {
   isVictim?: boolean
 }
 
+/** 1 = Découverte ... 6 = Diabolique. See common.json `difficulty.<n>` for the label/description shown to players. */
+export type Difficulty = 1 | 2 | 3 | 4 | 5 | 6
+
 export interface CaseDef {
   id: string
   titleKey: string
   flavorTextKey?: string
+  difficulty: Difficulty
+  /** How many hints (auto-placing one wrong/unplaced character) the player may use. */
+  hintsAllowed: number
   grid: GridCell[]
   rooms: RoomDef[]
   characters: CharacterDef[]

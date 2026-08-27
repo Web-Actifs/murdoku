@@ -3,11 +3,12 @@ import { useCaseSession } from '../../store/caseSession'
 
 export function AnswerBar() {
   const { t } = useTranslation(['common', 'cases'])
-  const { caseDef, state, accuse, reveal, reset } = useCaseSession()
+  const { caseDef, state, accuse, reveal, reset, useHint, giveUp } = useCaseSession()
 
   const suspects = caseDef.characters.filter((c) => !c.isVictim)
   const allPlaced = caseDef.characters.every((c) => state.placements[c.id])
   const canSolve = allPlaced && Boolean(state.accusationId) && !state.revealed
+  const hintsRemaining = caseDef.hintsAllowed - state.hintsUsed
 
   return (
     <div className="rounded-[var(--radius-lg)] bg-[var(--color-surface-alt)] p-4">
@@ -53,6 +54,26 @@ export function AnswerBar() {
           </button>
         )}
       </div>
+
+      {!state.revealed && (
+        <div className="mt-2 flex gap-2">
+          <button
+            type="button"
+            disabled={hintsRemaining <= 0}
+            onClick={useHint}
+            className="flex-1 rounded-[var(--radius-sm)] border-2 border-[var(--color-accent)] px-3 py-2 text-sm font-bold text-[var(--color-accent)] transition-opacity disabled:opacity-40"
+          >
+            {hintsRemaining > 0 ? t('case.hintButton', { remaining: hintsRemaining }) : t('case.hintButtonNone')}
+          </button>
+          <button
+            type="button"
+            onClick={giveUp}
+            className="flex-1 rounded-[var(--radius-sm)] px-3 py-2 text-sm font-semibold text-[var(--color-text-muted)] underline decoration-dotted hover:text-[var(--color-danger)]"
+          >
+            {t('case.giveUpButton')}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

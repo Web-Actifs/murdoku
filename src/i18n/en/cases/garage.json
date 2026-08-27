@@ -1,0 +1,19 @@
+{
+  "title": "The Garage Case",
+  "flavorText": "The owner never let anyone touch his wrench.",
+  "rooms": {
+    "atelier": "the workshop",
+    "bureau": "the office",
+    "stock": "the storage room",
+    "zone-lavage": "the wash bay"
+  },
+  "characters": {
+    "marcel": "Marcel",
+    "nadia": "Nadia",
+    "julien": "Julien",
+    "sofia": "Sofia",
+    "elise": "Élise",
+    "camille": "Camille",
+    "hugo": "Hugo"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "Murdoku"
+  },
+  "home": {
+    "heading": "Choose a case",
+    "subheading": "Crime scenes to solve through pure deduction.",
+    "play": "Play"
+  },
+  "case": {
+    "suspectsHeading": "Suspects",
+    "victimBadge": "Victim",
+    "accusationHeading": "Who is the murderer?",
+    "accusationPlaceholder": "Choose a suspect…",
+    "solveButton": "Solve",
+    "resetButton": "Restart",
+    "backToHome": "Back to cases",
+    "resultCorrectTitle": "Case solved!",
+    "resultIncorrectTitle": "Not quite…",
+    "resultGaveUpTitle": "Here's the solution",
+    "resultMurdererIs": "The murderer was {{name}}.",
+    "resultPlacementsCorrect": "{{correct}} / {{total}} suspects correctly placed.",
+    "selectHint": "Drag a suspect onto the floor plan (or select them, then click a cell) to place them.",
+    "rowColumnHint": "💡 \"Row\" and \"column\" are counted across the whole floor plan (like coordinates), not just the suspect's room. \"North/south/east/west of X\" works the same way: relative to the whole plan.",
+    "closeResult": "Keep investigating",
+    "hintButton": "💡 Hint ({{remaining}})",
+    "hintButtonNone": "💡 No hints left",
+    "giveUpButton": "Give up and see the solution",
+    "explanationsHeading": "Explanations",
+    "explanationCorrect": "Nailed it",
+    "explanationCorrected": "Corrected",
+    "difficultyLabel": "Difficulty"
+  },
+  "difficulty": {
+    "1": { "label": "Beginner", "description": "Every suspect can be worked out alone, one direct clue is enough." },
+    "2": { "label": "Easy", "description": "A few suspects need two clues combined." },
+    "3": { "label": "Medium", "description": "You need to place some suspects before you can deduce others." },
+    "4": { "label": "Advanced", "description": "Several deduction chains, plus at least two suspects who only resolve relative to each other." },
+    "5": { "label": "Hard", "description": "Few direct clues: you'll need to reason by elimination across nearly the whole grid." },
+    "6": { "label": "Fiendish", "description": "The biggest cast, the longest chains, and even the fact that no room is empty becomes something you must use." }
+  }
+}

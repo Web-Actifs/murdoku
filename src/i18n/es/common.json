@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "Murdoku"
+  },
+  "home": {
+    "heading": "Elige un caso",
+    "subheading": "Escenas del crimen que resolver por pura deducción.",
+    "play": "Jugar"
+  },
+  "case": {
+    "suspectsHeading": "Sospechosos",
+    "victimBadge": "Víctima",
+    "accusationHeading": "¿Quién es el asesino?",
+    "accusationPlaceholder": "Elige un sospechoso…",
+    "solveButton": "Resolver",
+    "resetButton": "Reiniciar",
+    "backToHome": "Volver a los casos",
+    "resultCorrectTitle": "¡Caso resuelto!",
+    "resultIncorrectTitle": "No es correcto…",
+    "resultGaveUpTitle": "Aquí tienes la solución",
+    "resultMurdererIs": "El asesino era {{name}}.",
+    "resultPlacementsCorrect": "{{correct}} / {{total}} sospechosos bien colocados.",
+    "selectHint": "Arrastra a un sospechoso sobre el plano (o selecciónalo y haz clic en una casilla) para colocarlo.",
+    "rowColumnHint": "💡 \"Fila\" y \"columna\" se cuentan en todo el plano (como coordenadas), no solo en la sala del sospechoso. \"Norte/sur/este/oeste de X\" funciona igual: respecto a todo el plano.",
+    "closeResult": "Seguir investigando",
+    "hintButton": "💡 Pista ({{remaining}})",
+    "hintButtonNone": "💡 Sin pistas",
+    "giveUpButton": "Rendirse y ver la solución",
+    "explanationsHeading": "Explicaciones",
+    "explanationCorrect": "Acertado",
+    "explanationCorrected": "Corregido",
+    "difficultyLabel": "Dificultad"
+  },
+  "difficulty": {
+    "1": { "label": "Iniciación", "description": "Cada sospechoso se deduce solo, basta una pista directa." },
+    "2": { "label": "Fácil", "description": "Algunos sospechosos requieren combinar dos pistas." },
+    "3": { "label": "Medio", "description": "Hay que colocar a algunos sospechosos antes de poder deducir a otros." },
+    "4": { "label": "Avanzado", "description": "Varias cadenas de deducción, y al menos dos sospechosos que solo se resuelven el uno respecto al otro." },
+    "5": { "label": "Difícil", "description": "Pocas pistas directas: hay que razonar por eliminación en casi todo el tablero." },
+    "6": { "label": "Diabólico", "description": "El reparto más grande, las cadenas más largas, e incluso el hecho de que ninguna sala esté vacía hay que aprovecharlo." }
+  }
+}

@@ -24,7 +24,14 @@ export function FloorPlanGrid() {
   const [dragOverCellId, setDragOverCellId] = useState<string | null>(null)
 
   const roomColor = new Map(rooms.map((room, i) => [room.id, roomPalette[i % roomPalette.length]]))
-  const characterAt = (cellId: string) => characters.find((c) => state.placements[c.id] === cellId)
+  const displayPlacements = state.revealed ? caseDef.solution : state.placements
+  const characterAt = (cellId: string) => characters.find((c) => displayPlacements[c.id] === cellId)
+  const playerHadWrongGuessAt = (cellId: string) => {
+    if (!state.revealed || state.gaveUp) return false
+    const correct = characters.find((c) => caseDef.solution[c.id] === cellId)
+    const guessed = characters.find((c) => state.placements[c.id] === cellId)
+    return correct?.id !== guessed?.id
+  }
 
   const roomLabelCellId = new Map<string, string>()
   for (const room of rooms) {
@@ -62,6 +69,7 @@ export function FloorPlanGrid() {
         const canPlaceHere = Boolean(state.selectedCharacterId) && !occupant
         const isPickedUp = state.selectedCharacterId === occupant?.id
         const isDragTarget = dragOverCellId === cell.id
+        const isWrongGuess = playerHadWrongGuessAt(cell.id)
 
         return (
           <button
@@ -103,6 +111,16 @@ export function FloorPlanGrid() {
                   isVictim={occupant.isVictim}
                   size="md"
                 />
+                {state.revealed && !state.gaveUp && (
+                  <span
+                    aria-hidden
+                    className={`absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white ring-2 ring-[var(--color-surface)] ${
+                      isWrongGuess ? 'bg-[var(--color-danger)]' : 'bg-[var(--color-success)]'
+                    }`}
+                  >
+                    {isWrongGuess ? '✗' : '✓'}
+                  </span>
+                )}
               </span>
             ) : (
               cell.decor?.map((d) => (

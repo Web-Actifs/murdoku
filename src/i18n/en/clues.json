@@ -1,0 +1,17 @@
+{
+  "adjacentToDecor": "was right next to {{decor}}.",
+  "inRoom": "was in {{room}}.",
+  "inRowTop": "was on the top row of the floor plan.",
+  "inRowBottom": "was on the bottom row of the floor plan.",
+  "inRowN": "was on row {{n}} of the floor plan, counting from the top.",
+  "inColumnLeft": "was on the leftmost column of the floor plan.",
+  "inColumnRight": "was on the rightmost column of the floor plan.",
+  "inColumnN": "was on column {{n}} of the floor plan, counting from the left.",
+  "relativeToN": "was north of {{name}}.",
+  "relativeToS": "was south of {{name}}.",
+  "relativeToE": "was east of {{name}}.",
+  "relativeToW": "was west of {{name}}.",
+  "adjacentToCharacter": "was right next to {{name}}.",
+  "alone": "was alone in the room.",
+  "notAlone": "was not alone in the room."
+}

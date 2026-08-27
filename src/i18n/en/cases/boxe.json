@@ -1,0 +1,22 @@
+{
+  "title": "The Boxing Gym Case",
+  "flavorText": "The coach always said the only knockout that counts is the first one.",
+  "rooms": {
+    "accueil": "the reception",
+    "bureau-coach": "the coach's office",
+    "ring": "the ring",
+    "vestiaires": "the locker room",
+    "muscu": "the weight room"
+  },
+  "characters": {
+    "rocco": "Rocco",
+    "yasmine": "Yasmine",
+    "karim": "Karim",
+    "lea": "Léa",
+    "fatou": "Fatou",
+    "mathis": "Mathis",
+    "noor": "Noor",
+    "diego": "Diego",
+    "chloe": "Chloé"
+  }
+}

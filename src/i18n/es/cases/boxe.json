@@ -1,0 +1,22 @@
+{
+  "title": "El caso del gimnasio de boxeo",
+  "flavorText": "El entrenador siempre decía que el único KO que cuenta es el primero.",
+  "rooms": {
+    "accueil": "la recepción",
+    "bureau-coach": "el despacho del entrenador",
+    "ring": "el ring",
+    "vestiaires": "los vestuarios",
+    "muscu": "la sala de pesas"
+  },
+  "characters": {
+    "rocco": "Rocco",
+    "yasmine": "Yasmine",
+    "karim": "Karim",
+    "lea": "Léa",
+    "fatou": "Fatou",
+    "mathis": "Mathis",
+    "noor": "Noor",
+    "diego": "Diego",
+    "chloe": "Chloé"
+  }
+}

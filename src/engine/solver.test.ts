@@ -17,6 +17,8 @@ function baseCase(): CaseDef {
   return {
     id: 'test-case',
     titleKey: 'test',
+    difficulty: 1,
+    hintsAllowed: 1,
     grid,
     rooms: [
       { id: 'roomA', nameKey: 'roomA' },

@@ -1,0 +1,19 @@
+{
+  "title": "El caso del taller",
+  "flavorText": "El dueño nunca dejaba que nadie tocara su llave inglesa.",
+  "rooms": {
+    "atelier": "el taller",
+    "bureau": "la oficina",
+    "stock": "el almacén",
+    "zone-lavage": "la zona de lavado"
+  },
+  "characters": {
+    "marcel": "Marcel",
+    "nadia": "Nadia",
+    "julien": "Julien",
+    "sofia": "Sofia",
+    "elise": "Élise",
+    "camille": "Camille",
+    "hugo": "Hugo"
+  }
+}

@@ -17,10 +17,26 @@
     "backToHome": "Retour aux affaires",
     "resultCorrectTitle": "Affaire résolue !",
     "resultIncorrectTitle": "Ce n'est pas ça…",
+    "resultGaveUpTitle": "Voici la solution",
     "resultMurdererIs": "L'assassin était {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} suspects bien placés.",
     "selectHint": "Faites glisser un suspect sur le plan (ou sélectionnez-le puis cliquez sur une case) pour le placer.",
     "rowColumnHint": "💡 \"Ligne\" et \"colonne\" se comptent sur le plan tout entier (comme des coordonnées), pas seulement dans la pièce du suspect. \"Nord/sud/est/ouest de X\" se lit pareil : par rapport à tout le plan.",
-    "closeResult": "Continuer l'enquête"
+    "closeResult": "Continuer l'enquête",
+    "hintButton": "💡 Indice ({{remaining}})",
+    "hintButtonNone": "💡 Plus d'indice",
+    "giveUpButton": "Abandonner et voir la solution",
+    "explanationsHeading": "Explications",
+    "explanationCorrect": "Bien deviné",
+    "explanationCorrected": "Corrigé",
+    "difficultyLabel": "Difficulté"
+  },
+  "difficulty": {
+    "1": { "label": "Découverte", "description": "Chaque suspect se déduit seul, un indice direct suffit." },
+    "2": { "label": "Facile", "description": "Quelques suspects demandent de combiner deux indices." },
+    "3": { "label": "Moyen", "description": "Il faut placer certains suspects avant de pouvoir en déduire d'autres." },
+    "4": { "label": "Confirmé", "description": "Plusieurs chaînes de déduction, et au moins deux suspects qui ne se déduisent que l'un par rapport à l'autre." },
+    "5": { "label": "Difficile", "description": "Peu d'indices directs : il faut raisonner par élimination sur presque toute la grille." },
+    "6": { "label": "Diabolique", "description": "Le plus gros casting, les chaînes les plus longues, et jusqu'au fait qu'aucune pièce n'est vide qu'il faut exploiter." }
   }
 }

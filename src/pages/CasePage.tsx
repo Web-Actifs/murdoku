@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useParams } from 'react-router-dom'
 import { AnswerBar } from '../components/game/AnswerBar'
 import { DecorLegend } from '../components/game/DecorLegend'
+import { DifficultyBadge } from '../components/game/DifficultyBadge'
 import { FloorPlanGrid } from '../components/game/FloorPlanGrid'
 import { ResultPanel } from '../components/game/ResultPanel'
 import { SuspectRoster } from '../components/game/SuspectRoster'
@@ -28,6 +29,9 @@ export function CasePage() {
         ← {t('case.backToHome')}
       </Link>
 
+      <div className="mt-2">
+        <DifficultyBadge difficulty={caseDef.difficulty} showDescription />
+      </div>
       <h1 className="mt-2 text-3xl font-extrabold tracking-tight">{t(`cases:${caseDef.titleKey}`)}</h1>
       {caseDef.flavorTextKey && <p className="mt-1 italic text-[var(--color-text-muted)]">{t(`cases:${caseDef.flavorTextKey}`)}</p>}
 

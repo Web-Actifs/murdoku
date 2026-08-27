@@ -36,6 +36,8 @@ export const boxeCase: CaseDef = {
   id: 'boxe',
   titleKey: 'boxe.title',
   flavorTextKey: 'boxe.flavorText',
+  difficulty: 3,
+  hintsAllowed: 3,
   grid,
   rooms: [
     { id: 'accueil', nameKey: 'boxe.rooms.accueil' },
