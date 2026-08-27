@@ -1,0 +1,20 @@
+{
+  "title": "El caso del aeropuerto",
+  "flavorText": "El jefe de seguridad presumía de que nada se le escapaba. Hasta hoy.",
+  "rooms": {
+    "hall": "la sala de embarque",
+    "securite": "el control de seguridad",
+    "bagages": "la cinta de equipajes",
+    "vip": "la sala VIP"
+  },
+  "characters": {
+    "adam": "Adam",
+    "zoe": "Zoé",
+    "amir": "Amir",
+    "julie": "Julie",
+    "farid": "Farid",
+    "lucie": "Lucie",
+    "bilal": "Bilal",
+    "emma": "Emma"
+  }
+}

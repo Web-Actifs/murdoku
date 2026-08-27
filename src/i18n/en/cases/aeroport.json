@@ -1,0 +1,20 @@
+{
+  "title": "The Airport Case",
+  "flavorText": "The security chief bragged that nothing got past him. Until today.",
+  "rooms": {
+    "hall": "the departure hall",
+    "securite": "the security checkpoint",
+    "bagages": "the baggage claim",
+    "vip": "the VIP lounge"
+  },
+  "characters": {
+    "adam": "Adam",
+    "zoe": "Zoé",
+    "amir": "Amir",
+    "julie": "Julie",
+    "farid": "Farid",
+    "lucie": "Lucie",
+    "bilal": "Bilal",
+    "emma": "Emma"
+  }
+}

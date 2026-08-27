@@ -1,0 +1,23 @@
+{
+  "title": "The Museum Case",
+  "flavorText": "The curator said he knew every piece in his collection by heart. Not this one.",
+  "rooms": {
+    "bureau-conservateur": "the curator's office",
+    "galerie": "the painting gallery",
+    "salle-vases": "the vase room",
+    "hall": "the entrance hall",
+    "squelettes": "the skeleton room"
+  },
+  "characters": {
+    "bernard": "Bernard",
+    "isabelle": "Isabelle",
+    "thierry": "Thierry",
+    "nadege": "Nadège",
+    "fabrice": "Fabrice",
+    "juliette": "Juliette",
+    "romain": "Romain",
+    "valentine": "Valentine",
+    "odile": "Odile",
+    "simone": "Simone"
+  }
+}

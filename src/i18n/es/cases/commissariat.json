@@ -1,0 +1,23 @@
+{
+  "title": "El caso de la comisaría",
+  "flavorText": "El comisario siempre decía que a él no había quien lo engañara. Esta vez, alguien lo hizo.",
+  "rooms": {
+    "accueil": "la recepción",
+    "bureau-chef": "el despacho del comisario",
+    "salle-interrogatoire": "la sala de interrogatorios",
+    "vestiaire": "el vestuario",
+    "archives": "el archivo"
+  },
+  "characters": {
+    "gerard": "Gérard",
+    "sabine": "Sabine",
+    "farouk": "Farouk",
+    "alice": "Alice",
+    "marion": "Marion",
+    "renaud": "Renaud",
+    "chantal": "Chantal",
+    "brigitte": "Brigitte",
+    "vincent": "Vincent",
+    "denis": "Denis"
+  }
+}

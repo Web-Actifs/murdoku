@@ -1,0 +1,23 @@
+{
+  "title": "The Police Station Case",
+  "flavorText": "The chief always said no one could fool him. This time, someone did.",
+  "rooms": {
+    "accueil": "the reception",
+    "bureau-chef": "the chief's office",
+    "salle-interrogatoire": "the interrogation room",
+    "vestiaire": "the locker room",
+    "archives": "the archive room"
+  },
+  "characters": {
+    "gerard": "Gérard",
+    "sabine": "Sabine",
+    "farouk": "Farouk",
+    "alice": "Alice",
+    "marion": "Marion",
+    "renaud": "Renaud",
+    "chantal": "Chantal",
+    "brigitte": "Brigitte",
+    "vincent": "Vincent",
+    "denis": "Denis"
+  }
+}

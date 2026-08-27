@@ -1,0 +1,20 @@
+{
+  "title": "L'affaire de la plage",
+  "flavorText": "Le maître-nageur ne quittait jamais son poste… jusqu'à aujourd'hui.",
+  "rooms": {
+    "plage": "la plage",
+    "buvette": "la buvette",
+    "poste-secours": "le poste de secours",
+    "location": "le local de location"
+  },
+  "characters": {
+    "theo": "Théo",
+    "manon": "Manon",
+    "yanis": "Yanis",
+    "ines": "Inès",
+    "paul": "Paul",
+    "clara": "Clara",
+    "sami": "Sami",
+    "nina": "Nina"
+  }
+}

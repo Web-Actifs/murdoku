@@ -1,0 +1,23 @@
+{
+  "title": "L'affaire du musée",
+  "flavorText": "Le conservateur disait connaître chaque pièce de sa collection par cœur. Pas celle-là.",
+  "rooms": {
+    "bureau-conservateur": "le bureau du conservateur",
+    "galerie": "la galerie des tableaux",
+    "salle-vases": "la salle des vases",
+    "hall": "le hall d'entrée",
+    "squelettes": "la salle des squelettes"
+  },
+  "characters": {
+    "bernard": "Bernard",
+    "isabelle": "Isabelle",
+    "thierry": "Thierry",
+    "nadege": "Nadège",
+    "fabrice": "Fabrice",
+    "juliette": "Juliette",
+    "romain": "Romain",
+    "valentine": "Valentine",
+    "odile": "Odile",
+    "simone": "Simone"
+  }
+}

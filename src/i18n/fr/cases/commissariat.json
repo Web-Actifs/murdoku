@@ -1,0 +1,23 @@
+{
+  "title": "L'affaire du commissariat",
+  "flavorText": "Le commissaire répétait qu'on ne la lui faisait pas. Cette fois, si.",
+  "rooms": {
+    "accueil": "l'accueil",
+    "bureau-chef": "le bureau du commissaire",
+    "salle-interrogatoire": "la salle d'interrogatoire",
+    "vestiaire": "le vestiaire",
+    "archives": "les archives"
+  },
+  "characters": {
+    "gerard": "Gérard",
+    "sabine": "Sabine",
+    "farouk": "Farouk",
+    "alice": "Alice",
+    "marion": "Marion",
+    "renaud": "Renaud",
+    "chantal": "Chantal",
+    "brigitte": "Brigitte",
+    "vincent": "Vincent",
+    "denis": "Denis"
+  }
+}

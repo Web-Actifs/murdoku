@@ -1,0 +1,20 @@
+{
+  "title": "El caso de la playa",
+  "flavorText": "El socorrista nunca dejaba su puesto… hasta hoy.",
+  "rooms": {
+    "plage": "la playa",
+    "buvette": "el chiringuito",
+    "poste-secours": "el puesto de socorro",
+    "location": "la tienda de alquiler"
+  },
+  "characters": {
+    "theo": "Théo",
+    "manon": "Manon",
+    "yanis": "Yanis",
+    "ines": "Inès",
+    "paul": "Paul",
+    "clara": "Clara",
+    "sami": "Sami",
+    "nina": "Nina"
+  }
+}

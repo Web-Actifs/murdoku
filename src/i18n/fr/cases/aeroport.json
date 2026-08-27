@@ -1,0 +1,20 @@
+{
+  "title": "L'affaire de l'aéroport",
+  "flavorText": "Le chef de la sécurité disait qu'aucun vol ne lui échappait. Sauf celui-là.",
+  "rooms": {
+    "hall": "le hall d'embarquement",
+    "securite": "le contrôle de sécurité",
+    "bagages": "le tapis à bagages",
+    "vip": "le salon VIP"
+  },
+  "characters": {
+    "adam": "Adam",
+    "zoe": "Zoé",
+    "amir": "Amir",
+    "julie": "Julie",
+    "farid": "Farid",
+    "lucie": "Lucie",
+    "bilal": "Bilal",
+    "emma": "Emma"
+  }
+}

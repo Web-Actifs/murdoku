@@ -1,0 +1,23 @@
+{
+  "title": "El caso del museo",
+  "flavorText": "El conservador decía conocer cada pieza de su colección de memoria. Esta no.",
+  "rooms": {
+    "bureau-conservateur": "el despacho del conservador",
+    "galerie": "la galería de cuadros",
+    "salle-vases": "la sala de los jarrones",
+    "hall": "el vestíbulo",
+    "squelettes": "la sala de los esqueletos"
+  },
+  "characters": {
+    "bernard": "Bernard",
+    "isabelle": "Isabelle",
+    "thierry": "Thierry",
+    "nadege": "Nadège",
+    "fabrice": "Fabrice",
+    "juliette": "Juliette",
+    "romain": "Romain",
+    "valentine": "Valentine",
+    "odile": "Odile",
+    "simone": "Simone"
+  }
+}
