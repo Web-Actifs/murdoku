@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Constraint } from '../../core/constraints/types'
-import { isPeripheral } from '../../core/model/geometry'
+import { isPeripheral, unoccupiableCells } from '../../core/model/geometry'
 import { loadPuzzle } from '../../core/model/loadPuzzle'
 import type { Assignment } from '../../core/model/types'
 import { propagate } from '../../core/possibility/propagate'
@@ -10,11 +10,11 @@ import { transalpinDef } from './la-nuit-du-transalpin'
 
 /** The one and only placement — asserted cell by cell, never inferred from the code under test. */
 const SOLUTION: Assignment = {
-  bertrand: '3:3',
-  irina: '4:4',
-  hugo: '1:5',
-  margot: '0:2',
-  stefan: '2:1',
+  bertrand: '0:2',
+  irina: '5:5',
+  hugo: '2:4',
+  margot: '3:3',
+  stefan: '4:0',
 }
 
 const puzzle = loadPuzzle(transalpinDef)
@@ -50,9 +50,18 @@ describe('Le Transalpin — the board itself loads and validates', () => {
     const windows = puzzle.board.objects.filter((o) => o.type === 'window')
     expect(windows.map((o) => o.id).sort()).toEqual(['fenetreOnze', 'fenetreTreize'])
     for (const window of windows) {
-      expect(window.occupiable).toBe(false)
+      // §10/§42: the pane is in the carriage wall; the cell is the floor in front
+      // of it, and a passenger may perfectly well stand there.
+      expect(window.occupiable).toBe(true)
       for (const cell of window.cells) expect(isPeripheral(puzzle.board, cell)).toBe(true)
     }
+  })
+
+  it('keeps the window cells standable while the trunks and the samovar stay blocked', () => {
+    const blocked = unoccupiableCells(puzzle.board)
+    expect([...blocked].sort()).toEqual(['0:3', '3:5', '4:1', '4:3', '5:0'])
+    expect(blocked.has('0:0')).toBe(false)
+    expect(blocked.has('0:5')).toBe(false)
   })
 
   it('refuses to load if a window is moved off the hull', () => {
@@ -99,48 +108,52 @@ describe('Le Transalpin — the proof is a chain, not a flat pile of clues (§4)
     expect(report.maxChainDepth).toBeGreaterThan(1)
   })
 
-  it('places nobody until it has already made half a dozen deductions', () => {
+  it('places nobody until it has already made ten deductions', () => {
     const journal = propagate(puzzle).journal
-    expect(journal.findIndex((s) => s.placed)).toBeGreaterThanOrEqual(6)
+    expect(journal.findIndex((s) => s.placed)).toBe(10)
   })
 
-  it('pins the victim through the journalist, while she herself is still floating (§33)', () => {
+  it('hangs almost the whole proof on Hugo’s row, before anyone is placed', () => {
     const journal = propagate(puzzle).journal
-    // Margot is squeezed twice — once by Hugo's row, once by Stefan's — before
-    // what is left of her fits in a single column.
-    const margotConfinements = journal
-      .filter((s) => s.personId === 'margot' && s.technique === 'lockedCandidates')
-      .map((s) => s.id)
-    const bertrandCut = journal.find((s) => s.personId === 'bertrand' && s.reason.type === 'confinedToCol')!
-    const bertrandPlaced = journal.find((s) => s.personId === 'bertrand' && s.placed)!
-    const margotPlaced = journal.find((s) => s.personId === 'margot' && s.placed)!
+    const opening = journal[0]
+    expect(opening.reason).toEqual({ type: 'confinedToRow', confinedPerson: 'hugo', row: 2 })
+    expect(opening.premises).toEqual([])
 
-    expect(margotConfinements.length).toBeGreaterThanOrEqual(2)
-    expect(bertrandCut.reason).toEqual({ type: 'confinedToCol', confinedPerson: 'margot', col: 2 })
-    expect(margotConfinements.some((id) => bertrandCut.premises.includes(id))).toBe(true)
-    expect(bertrandPlaced.premises).toContain(bertrandCut.id)
-    // The victim resolves off a suspect who is only placed afterwards.
-    expect(journal.indexOf(bertrandPlaced)).toBeLessThan(journal.indexOf(margotPlaced))
+    const keystone = report.keystones.find((k) => k.stepId === opening.id)!
+    expect(keystone.unprovenPeople.sort()).toEqual(['bertrand', 'hugo', 'irina', 'margot', 'stefan'])
+    expect(keystone.cascade.length).toBeGreaterThan(journal.length * 0.8)
   })
 
-  it('runs Irina -> Hugo: "with Hugo" locks a column before Hugo is known', () => {
+  it('lets two witnesses locate themselves off the body without locating the body (§14)', () => {
+    // Irina and Stefan both measure themselves against Bertrand. Arc-consistency
+    // only ever trims the *speaker*, so those clues never cut the victim's own
+    // domain — his cells fall to row/column elimination alone.
     const journal = propagate(puzzle).journal
-    const irinaWith = journal.find(
-      (s) => s.personId === 'irina' && s.reason.type === 'relational' && s.reason.constraintType === 'withPerson',
-    )!
-    const hugoCut = journal.find((s) => s.personId === 'hugo' && s.technique === 'lockedCandidates')!
-    expect(hugoCut.premises).toContain(irinaWith.id)
-
-    const hugoPlaced = journal.find((s) => s.personId === 'hugo' && s.placed)!
-    const hugoKeystone = report.keystones.find((k) => k.stepId === hugoPlaced.id)
-    expect(hugoKeystone).toBeDefined()
+    const bertrandSteps = journal.filter((s) => s.personId === 'bertrand')
+    for (const step of bertrandSteps) {
+      expect(['lockedCandidates', 'rowColElimination', 'nakedSingle']).toContain(step.technique)
+    }
+    expect(journal.some((s) => s.personId === 'irina' && s.reason.type === 'relational' && s.reason.other === 'bertrand')).toBe(true)
+    expect(journal.some((s) => s.personId === 'stefan' && s.reason.type === 'relational' && s.reason.other === 'bertrand')).toBe(true)
   })
 
-  it('places people in the order the chain forces, not the order they are written', () => {
+  it('narrows the body from eight cells to one, closing on the last living placement (§14)', () => {
+    const journal = propagate(puzzle).journal
+    const bertrandSteps = journal.filter((s) => s.personId === 'bertrand')
+    expect(bertrandSteps[0].before).toHaveLength(8)
+    expect(bertrandSteps.map((s) => s.after.length)).toEqual([6, 5, 3, 2, 1, 1])
+
+    const stefanPlaced = journal.find((s) => s.personId === 'stefan' && s.placed)!
+    const closing = bertrandSteps[bertrandSteps.length - 2]
+    expect(closing.reason).toEqual({ type: 'colTaken', by: 'stefan', col: 0 })
+    expect(closing.premises).toContain(stefanPlaced.id)
+  })
+
+  it('places people in the order the chain forces, the body dead last (§14)', () => {
     const placed = propagate(puzzle)
       .journal.filter((s) => s.placed)
       .map((s) => s.personId)
-    expect(placed).toEqual(['hugo', 'bertrand', 'margot', 'stefan', 'irina'])
+    expect(placed).toEqual(['margot', 'irina', 'hugo', 'stefan', 'bertrand'])
   })
 
   it('needs more than one technique, including an intermediate one', () => {
@@ -184,7 +197,7 @@ describe('Le Transalpin — the murderer is derived, never stored (§5)', () => 
     const zoneOf = (personId: string) => puzzle.board.cellsByKey.get(SOLUTION[personId])!.zoneId
     expect(zoneOf('bertrand')).toBe('douze')
     expect(zoneOf('margot')).toBe('douze')
-    expect(zoneOf('irina')).toBe('treize')
+    expect(zoneOf('irina')).toBe('couloir')
     expect(zoneOf('hugo')).toBe('treize')
     expect(zoneOf('stefan')).toBe('onze')
   })
@@ -202,11 +215,11 @@ describe('Le Transalpin — the clue vocabulary is varied (§7)', () => {
     expect([...seen].sort()).toEqual([
       'adjacentToObjectType',
       'direction',
+      'distance',
+      'inColumn',
       'inRow',
       'inZone',
       'not',
-      'onObjectType',
-      'withPerson',
     ])
   })
 

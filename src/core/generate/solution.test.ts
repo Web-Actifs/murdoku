@@ -49,12 +49,18 @@ describe('generateSolution', () => {
     expect(seen.size).toBeGreaterThan(15)
   })
 
-  it('never seats anyone on the stove or a porthole', () => {
-    const forbidden = new Set(['3:1', '1:5', '4:0'])
+  it('never seats anyone on the stove, but the portholes stay open (§10)', () => {
+    // A window costs no standing room — the cell it names is the floor in front
+    // of the opening — so only the stove is genuinely off limits on this board.
+    const seatedOnPorthole = new Set<string>()
     for (let seed = 1; seed <= 25; seed++) {
       const solution = generateSolution(puzzle.board, peopleIds, makeRandom(seed))!
-      for (const key of Object.values(solution)) expect(forbidden.has(key)).toBe(false)
+      for (const key of Object.values(solution)) {
+        expect(key).not.toBe('3:1')
+        if (key === '1:5' || key === '4:0') seatedOnPorthole.add(key)
+      }
     }
+    expect(seatedOnPorthole.size).toBeGreaterThan(0)
   })
 
   it('returns null instead of throwing when the cast cannot fit', () => {

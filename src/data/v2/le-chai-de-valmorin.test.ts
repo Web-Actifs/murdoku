@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Constraint } from '../../core/constraints/types'
-import { isPeripheral } from '../../core/model/geometry'
+import { isPeripheral, unoccupiableCells } from '../../core/model/geometry'
 import { loadPuzzle } from '../../core/model/loadPuzzle'
 import type { Assignment } from '../../core/model/types'
 import { propagate } from '../../core/possibility/propagate'
@@ -11,9 +11,9 @@ import { valmorinDef } from './le-chai-de-valmorin'
 /** The one and only placement — asserted cell by cell, never inferred from the code under test. */
 const SOLUTION: Assignment = {
   edmond: '2:0',
-  blanche: '0:1',
-  raymond: '1:4',
-  lucie: '4:3',
+  blanche: '3:3',
+  raymond: '1:2',
+  lucie: '4:4',
 }
 
 const puzzle = loadPuzzle(valmorinDef)
@@ -36,9 +36,18 @@ describe('Le chai de Valmorin — the board itself loads and validates', () => {
     const windows = puzzle.board.objects.filter((o) => o.type === 'window')
     expect(windows.map((o) => o.id).sort()).toEqual(['fenetreBureau', 'lucarneDuChai'])
     for (const window of windows) {
-      expect(window.occupiable).toBe(false)
+      // §10/§42: an opening in the wall, not a piece of furniture — the cells it
+      // names are the ordinary floor a person stands on to face it.
+      expect(window.occupiable).toBe(true)
       for (const cell of window.cells) expect(isPeripheral(puzzle.board, cell)).toBe(true)
     }
+  })
+
+  it('blocks only the vats, barrels, desk and planter — never the windows', () => {
+    const blocked = unoccupiableCells(puzzle.board)
+    expect([...blocked].sort()).toEqual(['0:0', '0:3', '1:0', '1:3', '3:0', '3:4'])
+    expect(blocked.has('0:4')).toBe(false)
+    expect(blocked.has('4:0')).toBe(false)
   })
 
   it('refuses to load if a window is moved off the hull', () => {
@@ -85,33 +94,51 @@ describe('Le chai de Valmorin — the proof is a chain, not a flat pile of clues
     expect(report.maxChainDepth).toBeGreaterThan(1)
   })
 
-  it('opens on two locked candidate sets, before anyone at all is placed', () => {
+  it('opens on locked candidate sets, before anyone at all is placed', () => {
     const journal = propagate(puzzle).journal
     const firstPlacement = journal.findIndex((s) => s.placed)
-    const opening = journal.slice(0, firstPlacement)
-    expect(opening.length).toBeGreaterThan(0)
-    for (const step of opening) expect(step.technique).toBe('lockedCandidates')
+    expect(firstPlacement).toBe(5)
+    expect(journal.slice(0, 2).map((s) => s.technique)).toEqual(['lockedCandidates', 'lockedCandidates'])
   })
 
-  it('settles the victim from a suspect who is not placed yet (§33)', () => {
-    // Blanche is confined to column 1 long before anyone knows *which* cell of it
-    // she occupies — and that alone picks Edmond's plank of the catwalk.
+  it('reserves the west wall for the body before the body is located (§33)', () => {
+    // "Along the west wall" pins nothing on its own — but it does confine Edmond
+    // to column 0, and that alone starts eating Blanche's options.
     const journal = propagate(puzzle).journal
-    const blancheConfined = journal.find((s) => s.personId === 'blanche' && s.technique === 'lockedCandidates')!
-    const edmondCut = journal.find((s) => s.personId === 'edmond' && s.technique === 'lockedCandidates')!
-    const edmondPlaced = journal.find((s) => s.personId === 'edmond' && s.placed)!
+    const opening = journal[0]
+    expect(opening.personId).toBe('blanche')
+    expect(opening.reason).toEqual({ type: 'confinedToCol', confinedPerson: 'edmond', col: 0 })
+    expect(opening.premises).toEqual([])
+  })
+
+  it('places Lucie off a Blanche who is still floating (§33)', () => {
+    const journal = propagate(puzzle).journal
+    const blancheWith = journal.find(
+      (s) => s.personId === 'blanche' && s.reason.type === 'relational' && s.reason.constraintType === 'withPerson',
+    )!
+    const lucieCut = journal.find((s) => s.personId === 'lucie' && s.technique === 'lockedCandidates')!
+    const luciePlaced = journal.find((s) => s.personId === 'lucie' && s.placed)!
     const blanchePlaced = journal.find((s) => s.personId === 'blanche' && s.placed)!
 
-    expect(edmondCut.reason).toEqual({ type: 'confinedToCol', confinedPerson: 'blanche', col: 1 })
-    expect(edmondCut.premises).toContain(blancheConfined.id)
-    expect(journal.indexOf(edmondPlaced)).toBeLessThan(journal.indexOf(blanchePlaced))
+    expect(lucieCut.reason).toEqual({ type: 'confinedToRow', confinedPerson: 'blanche', row: 3 })
+    expect(lucieCut.premises).toContain(blancheWith.id)
+    expect(journal.indexOf(luciePlaced)).toBeLessThan(journal.indexOf(blanchePlaced))
   })
 
-  it('places people in the order the chain forces, not the order they are written', () => {
+  it('places people in the order the chain forces, the body dead last (§14)', () => {
     const placed = propagate(puzzle)
       .journal.filter((s) => s.placed)
       .map((s) => s.personId)
-    expect(placed).toEqual(['raymond', 'edmond', 'blanche', 'lucie'])
+    expect(placed).toEqual(['raymond', 'lucie', 'blanche', 'edmond'])
+  })
+
+  it('closes the body’s two remaining planks with the last living placement (§14)', () => {
+    const journal = propagate(puzzle).journal
+    const luciePlaced = journal.find((s) => s.personId === 'lucie' && s.placed)!
+    const edmondCut = journal.find((s) => s.personId === 'edmond' && s.technique === 'rowColElimination')!
+    expect(edmondCut.before).toHaveLength(2)
+    expect(edmondCut.reason).toEqual({ type: 'rowTaken', by: 'lucie', row: 4 })
+    expect(edmondCut.premises).toContain(luciePlaced.id)
   })
 
   it('needs more than one technique, including an intermediate one', () => {
@@ -141,9 +168,9 @@ describe('Le chai de Valmorin — exactly one solution (§6)', () => {
 })
 
 describe('Le chai de Valmorin — the murderer is derived, never stored (§5)', () => {
-  it('names Blanche: she is the only other person left in the vat room', () => {
+  it('names Raymond: he is the only other person left in the vat room', () => {
     const solution = solvePuzzle(puzzle, { limit: 2 })[0]
-    expect(deriveMurderer(puzzle, solution)).toBe('blanche')
+    expect(deriveMurderer(puzzle, solution)).toBe('raymond')
   })
 
   it('is not stored anywhere in the authored case', () => {
@@ -154,14 +181,14 @@ describe('Le chai de Valmorin — the murderer is derived, never stored (§5)', 
   it('puts exactly one other person in the victim zone, and the rest elsewhere', () => {
     const zoneOf = (personId: string) => puzzle.board.cellsByKey.get(SOLUTION[personId])!.zoneId
     expect(zoneOf('edmond')).toBe('cuverie')
-    expect(zoneOf('blanche')).toBe('cuverie')
-    expect(zoneOf('raymond')).toBe('chai')
+    expect(zoneOf('raymond')).toBe('cuverie')
+    expect(zoneOf('blanche')).toBe('serre')
     expect(zoneOf('lucie')).toBe('serre')
   })
 })
 
 describe('Le chai de Valmorin — the clue vocabulary (§7)', () => {
-  it('leans on the furniture rather than on coordinates', () => {
+  it('mixes company, direction, a metric gap and the furniture', () => {
     const seen = new Set<string>()
     const walk = (c: Constraint) => {
       seen.add(c.type)
@@ -169,7 +196,7 @@ describe('Le chai de Valmorin — the clue vocabulary (§7)', () => {
     }
     for (const person of valmorinDef.people) for (const c of person.constraints) walk(c)
 
-    expect([...seen].sort()).toEqual(['adjacentToObjectType', 'distance', 'inRow', 'onObjectType'])
+    expect([...seen].sort()).toEqual(['adjacentToObjectType', 'direction', 'distance', 'inColumn', 'inRow', 'withPerson'])
   })
 
   it('gives the victim the lightest dossier of anyone', () => {

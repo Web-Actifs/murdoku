@@ -30,6 +30,7 @@ export type GenerationFailureReason =
   | 'not-unique'
   | 'not-solvable-by-propagation'
   | 'wrong-solution'
+  | 'victim-not-last'
 
 export interface GenerationSuccess {
   ok: true

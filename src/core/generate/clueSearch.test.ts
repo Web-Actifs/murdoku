@@ -29,18 +29,40 @@ function run(seed: number) {
   return { solution, found }
 }
 
-const runs = Array.from({ length: 16 }, (_, i) => ({ seed: i + 1, ...run(i + 1) }))
+/**
+ * Sampled over 320 seeds rather than a handful. Since the §14 gate joined
+ * verifyGenerated a single search succeeds about 8% of the time on this shell
+ * (measured 38/500): victim-last holds for roughly a third of the puzzles that
+ * are otherwise sound, so the rejection sampler simply has to run more often.
+ * generatePuzzle absorbs that in ~8 attempts per case; this file needs the wider
+ * sweep to observe enough successes to assert anything about them.
+ */
+const runs = Array.from({ length: 320 }, (_, i) => ({ seed: i + 1, ...run(i + 1) }))
 const solved = runs.filter((r) => r.found.ok)
 
 describe('searchClues — grow until solved, then prune to a minimal set', () => {
   it('succeeds often enough for the retry loop above it to be cheap, and names its rejections', () => {
-    // A single search is *allowed* to fail: the quality gates (self-pin, flatness)
-    // are rejection samplers, and retrying is generatePuzzle's job, not this
-    // function's. What matters here is that failures are named, never silent.
-    expect(solved.length).toBeGreaterThanOrEqual(runs.length / 4)
+    // A single search is *allowed* to fail: the quality gates (self-pin, flatness,
+    // victim-last) are rejection samplers, and retrying is generatePuzzle's job,
+    // not this function's. What matters here is that failures are named, never silent.
+    expect(solved.length).toBeGreaterThanOrEqual(runs.length / 20)
     for (const { found } of runs) {
       if (found.ok) continue
-      expect(['clue-budget-exhausted', 'too-many-self-pinned', 'flat', 'not-unique']).toContain(found.reason)
+      expect(['clue-budget-exhausted', 'too-many-self-pinned', 'flat', 'not-unique', 'victim-not-last']).toContain(found.reason)
+    }
+  })
+
+  it('rejects a puzzle whose body falls out mid-proof, and says so (§14)', () => {
+    const rejected = runs.filter((r) => !r.found.ok && r.found.reason === 'victim-not-last')
+    expect(rejected.length).toBeGreaterThan(0)
+  })
+
+  it('never accepts one: every surviving clue set closes on the victim (§14)', () => {
+    for (const { found } of solved) {
+      if (!found.ok) continue
+      const journal = propagate(puzzleWithClues(base, found.clues)).journal
+      const placed = journal.filter((s) => s.placed)
+      expect(placed[placed.length - 1].personId).toBe(base.victimId)
     }
   })
 

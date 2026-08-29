@@ -22,15 +22,18 @@ import type { PuzzleDef } from '../../core/model/types'
  *   row 5  [ cuis. ][ pont ..................]
  *
  * L'enchaînement voulu (aucun personnage ne se déduit seul, sauf comme amorce) :
- *   1. Armand est confiné à la rangée 0 (la couchette y tient tout entière) et
+ *   1. Armand est confiné à la rangée 0 (sa cabine, contre la cloison avant) et
  *      Victoire à la rangée 2 (la table basse) : à elles deux, ces rangées
  *      réservées chassent Hélène de deux de ses trois hublots.
- *   2. Hélène posée, sa colonne verrouille Armand sur sa couchette.
- *   3. Pascal est confiné à la rangée du bas ; la distance qu'Oscar déclare par
+ *   2. Pascal est confiné à la rangée du bas ; la distance qu'Oscar déclare par
  *      rapport à lui ("une rangée plus haut") le cloue dans la cuisine.
- *   4. Oscar posé, sa colonne tranche entre les deux bouts de la table basse
+ *   3. Oscar posé, sa colonne tranche entre les deux bouts de la table basse
  *      pour Victoire ; la colonne de Victoire tranche à son tour entre les deux
  *      postes de barre pour Pascal.
+ *   4. Armand reste jusqu'au bout sur trois cases : la colonne d'Hélène lui en
+ *      retire une, celle de Pascal la dernière. L'armateur tombe le dernier de
+ *      tous (§14) — et c'est seulement là qu'on découvre qu'Hélène était seule
+ *      avec lui dans la cabine.
  */
 export const cormoranDef: PuzzleDef = {
   id: 'cormoran',
@@ -81,18 +84,19 @@ export const cormoranDef: PuzzleDef = {
         { row: 0, col: 5 },
       ],
     },
-    // Cabine — le hublot tribord, en périphérie de coque, on ne se tient pas dessus.
+    // Cabine — le hublot tribord, percé dans la coque : la case, elle, est un
+    // plancher ordinaire, celui où l'on se tient pour regarder dehors (§10).
     {
       id: 'hublotTribord',
       type: 'window',
-      occupiable: false,
+      occupiable: true,
       cells: [{ row: 1, col: 5 }],
     },
     // Cuisine — le hublot bâbord, lui aussi en périphérie de coque.
     {
       id: 'hublotBabord',
       type: 'window',
-      occupiable: false,
+      occupiable: true,
       cells: [{ row: 4, col: 0 }],
     },
     // Cuisine — le fourneau, brûlant, infranchissable.
@@ -116,13 +120,16 @@ export const cormoranDef: PuzzleDef = {
   ],
   people: [
     {
-      // Armand Delcourt, l'armateur. La victime : on sait où on l'a trouvé, rien de plus.
+      // Armand Delcourt, l'armateur. La victime : sa cabine, contre la cloison
+      // avant — trois cases, dont les deux de la couchette. Dire « sur la
+      // couchette » le clouerait dès qu'Hélène est posée ; la case de trop est
+      // exactement ce qui le fait tomber en dernier (§14).
       id: 'armand',
       nameKey: 'armand',
       isVictim: true,
       constraints: [
         { type: 'inZone', zoneId: 'cabine' },
-        { type: 'onObjectType', objectType: 'couchette' },
+        { type: 'inRow', row: 'top' },
       ],
     },
     {

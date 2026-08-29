@@ -24,24 +24,28 @@ import type { PuzzleDef } from '../../core/model/types'
  *
  * Ambiguïtés volontaires (Claude/claude.md §50) : il y a *deux* couchettes,
  * *deux* fenêtres et *deux* malles dans la voiture, dans des compartiments
- * différents. « À côté d'une couchette » ne désigne donc jamais un
+ * différents. Un indice qui nomme un type d'objet ne désigne donc jamais un
  * compartiment à lui seul — le domaine est l'union des deux, à l'échelle du
  * plateau, et c'est le reste de la déduction qui tranche.
  *
- * L'enchaînement voulu :
- *   1. Hugo tient tout entier dans la rangée 1 (la banquette du n°13) et
- *      Stefan dans la rangée 2 : deux rangées réservées avant le moindre
- *      placement, et Margot n'a déjà plus que deux cases.
- *   2. « Le contrôleur était dans le compartiment de Margot » ne dit rien
- *      d'absolu — mais comme Margot est confinée à la colonne 2, Bertrand l'est
- *      aussi, et il se pose. La victime est ainsi déduite depuis les vivants,
- *      jamais l'inverse.
- *   3. Irina, dans le même compartiment que Hugo et plus près de la
- *      locomotive que lui, verrouille la colonne 4 : Hugo se pose.
- *   4. Le contrôleur posé, sa rangée et sa colonne font tomber Margot, puis
- *      Stefan, puis Irina.
+ * Le seul indice qui porte sur le contrôleur est justement le plus ambigu du
+ * plateau : « contre une couchette » couvre le n°11 *et* le n°12, soit huit
+ * cases. Deux témoins se situent par rapport à lui sans jamais dire où il est,
+ * et sa case est la dernière que le plateau laisse ouverte (§14).
  *
- * Indices produits par le générateur (graine 95), puis remis en scène ici.
+ * L'enchaînement voulu :
+ *   1. Hugo tient tout entier dans la rangée 2 (le n°13). Ce seul verrou, posé
+ *      avant le moindre placement, porte vingt des vingt-trois déductions.
+ *   2. Irina et Stefan se situent l'un par rapport au corps, l'autre par rapport
+ *      à Irina : leurs domaines se rabotent mutuellement jusqu'à confiner Stefan
+ *      à la rangée 4 — toujours sans que personne soit posé.
+ *   3. Cela suffit à poser Margot contre le lavabo, la première de tous.
+ *   4. Puis la chaîne se déroule : la colonne de Margot pose Irina, celle
+ *      d'Irina pose Hugo, celle de Hugo pose Stefan, et la colonne de Stefan
+ *      ferme la dernière des huit cases du contrôleur. Bertrand tombe le dernier
+ *      de tous, dans le n°12, où la journaliste était déjà.
+ *
+ * Indices produits par le générateur (graine 26), puis remis en scène ici.
  */
 export const transalpinDef: PuzzleDef = {
   id: 'transalpin',
@@ -62,7 +66,7 @@ export const transalpinDef: PuzzleDef = {
   ],
   objects: [
     // Compartiment 11 — la fenêtre, baissée de trois crans malgré le froid.
-    { id: 'fenetreOnze', type: 'window', occupiable: false, cells: [{ row: 0, col: 0 }] },
+    { id: 'fenetreOnze', type: 'window', occupiable: true, cells: [{ row: 0, col: 0 }] },
     // Compartiment 11 — la couchette dépliée, deux places dans le sens de la marche.
     {
       id: 'couchetteOnze',
@@ -90,7 +94,7 @@ export const transalpinDef: PuzzleDef = {
     // Compartiment 12 — le lavabo rabattable, ouvert, la serviette encore humide.
     { id: 'lavabo', type: 'lavabo', occupiable: false, cells: [{ row: 4, col: 3 }] },
     // Compartiment 13 — la fenêtre côté vallée.
-    { id: 'fenetreTreize', type: 'window', occupiable: false, cells: [{ row: 0, col: 5 }] },
+    { id: 'fenetreTreize', type: 'window', occupiable: true, cells: [{ row: 0, col: 5 }] },
     // Compartiment 13 — la banquette non dépliée, deux places.
     {
       id: 'banquetteTreize',
@@ -110,45 +114,48 @@ export const transalpinDef: PuzzleDef = {
   ],
   people: [
     {
-      // Bertrand Aubier, contrôleur des wagons-lits. La victime.
-      // « On l'a vu entrer chez la journaliste, on ne l'a pas vu ressortir. »
+      // Bertrand Aubier, contrôleur des wagons-lits. La victime : le seul élément
+      // du dossier est « on l'a trouvé contre une couchette » — et il y en a deux,
+      // dans deux compartiments différents (§50). Rien là-dedans ne désigne une
+      // case : il faudra les quatre autres pour trancher (§14).
       id: 'bertrand',
       nameKey: 'bertrand',
       isVictim: true,
-      constraints: [{ type: 'withPerson', other: 'margot' }],
+      constraints: [{ type: 'adjacentToObjectType', objectType: 'couchette' }],
     },
     {
       // Irina Voskoff, cantatrice, dix-sept malles et un contrat à Milan.
-      // « J'étais avec Hugo, du côté de la locomotive. »
+      // « Sortie au couloir, derrière l'horloger, trois travées après le contrôleur. »
       id: 'irina',
       nameKey: 'irina',
       constraints: [
-        { type: 'direction', other: 'hugo', dir: 'W' },
-        { type: 'withPerson', other: 'hugo' },
+        { type: 'direction', other: 'stefan', dir: 'S' },
+        { type: 'distance', other: 'bertrand', axis: 'col', exact: -3 },
       ],
     },
     {
-      // Hugo Delatour, négociant en soieries, qui n'a pas déplié sa couchette.
+      // Hugo Delatour, négociant en soieries, au 13, troisième rangée.
       id: 'hugo',
       nameKey: 'hugo',
-      constraints: [{ type: 'onObjectType', objectType: 'banquette' }],
-    },
-    {
-      // Margot Sylvain, journaliste. « Pas au 11, en tout cas. Près d'une couchette. »
-      id: 'margot',
-      nameKey: 'margot',
       constraints: [
-        { type: 'not', of: { type: 'inZone', zoneId: 'onze' } },
-        { type: 'adjacentToObjectType', objectType: 'couchette' },
+        { type: 'inRow', row: 2 },
+        { type: 'inZone', zoneId: 'treize' },
       ],
     },
     {
-      // Stefan Kruger, horloger de Bienne, debout près de la couchette du 11.
+      // Margot Sylvain, journaliste. « Contre le lavabo, la serviette était encore humide. »
+      id: 'margot',
+      nameKey: 'margot',
+      constraints: [{ type: 'adjacentToObjectType', objectType: 'lavabo' }],
+    },
+    {
+      // Stefan Kruger, horloger de Bienne.
+      // « Pas dans la travée 2, et quatre rangées derrière le contrôleur. »
       id: 'stefan',
       nameKey: 'stefan',
       constraints: [
-        { type: 'adjacentToObjectType', objectType: 'couchette' },
-        { type: 'inRow', row: 2 },
+        { type: 'not', of: { type: 'inColumn', column: 2 } },
+        { type: 'distance', other: 'bertrand', axis: 'row', exact: -4 },
       ],
     },
   ],

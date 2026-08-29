@@ -9,7 +9,7 @@ import type { PuzzleDef } from '../../core/model/types'
  * au-dessus d'une cuve encore tiède. Trois personnes avaient les clés du bâtiment.
  *
  * Palier « Intermédiaire » : plan 5x5, 4 personnes (capacité min(5,5) = 5,
- * marge 1), 5 indices seulement, résolu entièrement par propagation.
+ * marge 1), 6 indices seulement, résolu entièrement par propagation.
  *
  * Le plan :
  *
@@ -23,18 +23,20 @@ import type { PuzzleDef } from '../../core/model/types'
  * L'enchaînement voulu — c'est un cas où *personne* ne se déduit seul en
  * premier : les deux amorces sont des « candidats verrouillés », pas des
  * placements.
- *   1. Edmond ne peut être que sur les deux planches de la passerelle, toutes
- *      deux en rangée 2 : la rangée 2 est donc réservée, ce qui chasse Blanche
- *      et Raymond de cette rangée.
- *   2. Raymond n'a plus qu'une case le long du tabouret : il se pose.
- *   3. Blanche, elle, tombe entièrement dans la colonne 1 — sans qu'on sache
- *      encore laquelle de ses deux cases — et cela suffit à trancher entre les
- *      deux planches de la passerelle : Edmond est posé par la colonne d'une
- *      personne encore flottante (Claude/claude.md §33).
- *   4. La rangée de Raymond finit de poser Blanche ; sa colonne, plus l'écart
- *      d'une travée qu'annonce Lucie, finit de poser Lucie.
+ *   1. Le relevé ne situe Edmond que « le long du mur ouest » : il tient donc
+ *      tout entier dans la colonne 0, qui se trouve réservée avant que
+ *      quiconque soit posé. Raymond, lui, tient dans la rangée 1. Blanche perd
+ *      cinq cases à ces deux verrous seuls (Claude/claude.md §33).
+ *   2. Blanche se dit avec Lucie et un peu en avant d'elle : à elles deux, elles
+ *      ne tiennent plus que dans la serre.
+ *   3. L'écart de deux travées que Raymond annonce par rapport au corps le pose
+ *      le premier — sans que la position du corps soit connue pour autant.
+ *   4. La rangée de Blanche pose Lucie, la colonne de Raymond pose Blanche, et
+ *      la rangée de Lucie ferme la dernière des deux planches possibles : Edmond
+ *      tombe le dernier de tous (§14), et c'est là seulement qu'on voit que le
+ *      maître de chai était seul avec lui dans la cuverie.
  *
- * Indices produits par le générateur (graine 110), puis remis en scène ici.
+ * Indices produits par le générateur (graine 264), puis remis en scène ici.
  */
 export const valmorinDef: PuzzleDef = {
   id: 'valmorin',
@@ -84,13 +86,13 @@ export const valmorinDef: PuzzleDef = {
       ],
     },
     // Chai — la lucarne du pignon, sur le mur extérieur.
-    { id: 'lucarneDuChai', type: 'window', occupiable: false, cells: [{ row: 0, col: 4 }] },
+    { id: 'lucarneDuChai', type: 'window', occupiable: true, cells: [{ row: 0, col: 4 }] },
     // Chai — le tabouret de dégustation du maître de chai.
     { id: 'tabouret', type: 'tabouret', occupiable: true, cells: [{ row: 2, col: 4 }] },
     // Bureau — le bureau de chêne d'Edmond, couvert de bons de commande.
     { id: 'bureauDeChene', type: 'table', occupiable: false, cells: [{ row: 3, col: 0 }] },
     // Bureau — la fenêtre sur la cour, elle aussi en façade.
-    { id: 'fenetreBureau', type: 'window', occupiable: false, cells: [{ row: 4, col: 0 }] },
+    { id: 'fenetreBureau', type: 'window', occupiable: true, cells: [{ row: 4, col: 0 }] },
     // Serre — la jardinière d'agrumes que Blanche soigne depuis dix ans.
     { id: 'jardiniere', type: 'plante', occupiable: false, cells: [{ row: 3, col: 4 }] },
     // Serre — le banc de pierre, deux places, contre le mur du chai.
@@ -106,35 +108,41 @@ export const valmorinDef: PuzzleDef = {
   ],
   people: [
     {
-      // Edmond Valmorin, le propriétaire. La victime : on ne sait que l'endroit.
+      // Edmond Valmorin, le propriétaire. La victime : le seul élément du dossier
+      // est le relevé de gendarmerie, « le long du mur ouest ». Deux cases
+      // seulement répondent à cela, et rien dans son propre dossier ne tranche :
+      // il faudra que les trois autres soient posés (§14).
       id: 'edmond',
       nameKey: 'edmond',
       isVictim: true,
-      constraints: [{ type: 'onObjectType', objectType: 'passerelle' }],
+      constraints: [{ type: 'inColumn', column: 'left' }],
     },
     {
       // Blanche Valmorin, sa belle-fille, qui tient les comptes du domaine.
-      // « J'étais adossée à une cuve, je surveillais la température. »
+      // « J'étais avec Lucie, un peu en avant d'elle. »
       id: 'blanche',
       nameKey: 'blanche',
-      constraints: [{ type: 'adjacentToObjectType', objectType: 'cuve' }],
+      constraints: [
+        { type: 'direction', other: 'lucie', dir: 'N' },
+        { type: 'withPerson', other: 'lucie' },
+      ],
     },
     {
       // Raymond Chassagne, maître de chai depuis trente ans.
-      // « À côté du tabouret, comme tous les soirs de vendange. »
+      // « Deuxième rangée de la cuverie, deux travées à l'est du corps. »
       id: 'raymond',
       nameKey: 'raymond',
-      constraints: [{ type: 'adjacentToObjectType', objectType: 'tabouret' }],
+      constraints: [
+        { type: 'inRow', row: 1 },
+        { type: 'distance', other: 'edmond', axis: 'col', exact: -2 },
+      ],
     },
     {
       // Lucie Ferrand, l'œnologue venue de Bordeaux pour les assemblages.
-      // « Tout au fond, une travée à l'ouest de Raymond. »
+      // « À la serre, contre la jardinière d'agrumes. »
       id: 'lucie',
       nameKey: 'lucie',
-      constraints: [
-        { type: 'distance', other: 'raymond', axis: 'col', exact: 1 },
-        { type: 'inRow', row: 'bottom' },
-      ],
+      constraints: [{ type: 'adjacentToObjectType', objectType: 'plante' }],
     },
   ],
   victimId: 'edmond',

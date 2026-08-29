@@ -11,7 +11,7 @@ import type { PuzzleDef } from '../../core/model/types'
  * quart.
  *
  * Palier « Avancé » : plan 6x6 évidé, 5 personnes (capacité min(6,6) = 6,
- * marge 1), 9 indices, résolu entièrement par propagation.
+ * marge 1), 8 indices, résolu entièrement par propagation.
  *
  * Le plan — le niveau de service, la cage de l'escalier hélicoïdal au centre
  * (les deux cases vides : ce n'est pas une pièce, on ne s'y tient pas) :
@@ -26,23 +26,29 @@ import type { PuzzleDef } from '../../core/model/types'
  *
  * Ambiguïté volontaire (Claude/claude.md §50) : deux objets de type « table »
  * — la table des cartes de la salle de veille et l'établi de la réserve — et
- * deux fenêtres, dans deux zones différentes. « À côté d'une table » couvre
- * donc les deux pièces à la fois, et c'est le fait que Soizic revendique la
- * réserve pour elle seule qui finit par en écarter Armel.
+ * deux fenêtres, dans deux zones différentes. Un indice qui nomme l'un de ces
+ * types couvre donc les deux pièces à la fois.
  *
- * L'enchaînement voulu — dix-huit des vingt et une déductions dépendent d'un
- * seul et même pas, le deuxième :
- *   1. Tout part de l'écart de trois rangées entre Noémie et Tanguy : il coupe
- *      les possibilités de Noémie de moitié, ce qui confine Tanguy à la rangée
- *      du bas, ce qui à son tour rogne Gaspard et Soizic.
- *   2. Soizic revendique la réserve pour elle seule : cette zone se ferme aux
- *      autres (technique `zoneExclusivity`) avant même qu'on sache où elle est.
- *   3. Soizic posée, sa colonne pose Armel ; la rangée d'Armel pose enfin
- *      Gaspard — la victime, avant-dernière, exactement comme le veut §14.
- *   4. Gaspard posé, sa colonne pose Tanguy, et la colonne de Tanguy pose
- *      Noémie : celle qui restait avec lui dans le logement, donc la coupable.
+ * Le plus dur des quatre cas, et celui où §14 se voit le mieux : le gardien-chef
+ * n'a aucun indice à lui. Son champ se referme uniquement par élimination —
+ * 26 cases, puis 21, 17, 12, 8, 7, 5, 3, et enfin une seule, la vingt-sixième
+ * déduction sur vingt-sept.
  *
- * Indices produits par le générateur (graine 100), puis remis en scène ici.
+ * L'enchaînement voulu :
+ *   1. Trois verrous avant le moindre placement : Armel tient dans la rangée du
+ *      bas (le caillebotis), Noémie dans la travée 4, Tanguy dans la travée 1.
+ *      À eux trois ils font tomber Gaspard de 26 cases à 12.
+ *   2. L'écart de deux travées qu'Armel annonce par rapport au corps le pose le
+ *      premier — sans rien livrer de la position du corps lui-même.
+ *   3. Soizic se dit seule dans sa pièce : le logement (Noémie), la réserve
+ *      (Tanguy) puis la machinerie (Armel) lui sont fermés l'un après l'autre
+ *      (technique `zoneExclusivity`), et il ne lui reste que le banc de quart.
+ *   4. Soizic posée, sa salle de veille se ferme à son tour ; sa rangée pose
+ *      Noémie, la rangée de Noémie pose Tanguy, et la rangée de Tanguy ferme
+ *      enfin la dernière case de Gaspard — devant la lucarne nord, dans le
+ *      logement, seul avec l'inspectrice.
+ *
+ * Indices produits par le générateur (graine 309), puis remis en scène ici.
  */
 export const phareDef: PuzzleDef = {
   id: 'phare',
@@ -62,11 +68,12 @@ export const phareDef: PuzzleDef = {
     { id: 'machinerie', nameKey: 'machinerie' },
   ],
   objects: [
-    // Veille — la baie du levant, deux vantaux, plein est sur la mer.
+    // Veille — la baie du levant, deux vantaux, plein est sur la mer. La baie est
+    // dans le mur : les deux cases devant elle restent du plancher ordinaire (§10).
     {
       id: 'baieDuLevant',
       type: 'window',
-      occupiable: false,
+      occupiable: true,
       cells: [
         { row: 0, col: 0 },
         { row: 0, col: 1 },
@@ -96,7 +103,7 @@ export const phareDef: PuzzleDef = {
     {
       id: 'lucarneNord',
       type: 'window',
-      occupiable: false,
+      occupiable: true,
       cells: [
         { row: 0, col: 4 },
         { row: 0, col: 5 },
@@ -161,47 +168,53 @@ export const phareDef: PuzzleDef = {
   ],
   people: [
     {
-      // Gaspard Quéré, gardien-chef. La victime : on n'a qu'un relevé de position.
-      // « Le corps était exactement une travée à l'ouest du poste de Tanguy. »
+      // Gaspard Quéré, gardien-chef. La victime : aucun indice ne porte sur lui.
+      // Les quatre autres parlent de leur propre position — deux d'entre eux se
+      // situent par rapport au corps sans jamais dire où il est — et sa case est
+      // la dernière que le plateau laisse ouverte (§14).
       id: 'gaspard',
       nameKey: 'gaspard',
       isVictim: true,
-      constraints: [{ type: 'distance', other: 'tanguy', axis: 'col', exact: 1 }],
+      constraints: [],
     },
     {
-      // Soizic Le Bihan, gardienne adjointe, descendue jauger le mazout.
-      // « Seule à la réserve, contre la cuve, une rangée au sud de l'inspectrice. »
+      // Soizic Le Bihan, gardienne adjointe, restée au banc de quart.
+      // « Seule dans ma pièce, deux rangées au nord du chef. »
       id: 'soizic',
       nameKey: 'soizic',
       constraints: [
-        { type: 'distance', other: 'noemie', axis: 'row', exact: -1 },
         { type: 'alone' },
-        { type: 'adjacentToObjectType', objectType: 'cuve' },
+        { type: 'distance', other: 'gaspard', axis: 'row', exact: -2 },
       ],
     },
     {
-      // Armel Kerrien, le mécanicien. « À côté d'une table » — reste à savoir laquelle.
+      // Armel Kerrien, le mécanicien, sur le caillebotis de la machinerie.
+      // « Deux travées à l'est du chef, sur la passerelle. »
       id: 'armel',
       nameKey: 'armel',
-      constraints: [{ type: 'adjacentToObjectType', objectType: 'table' }],
+      constraints: [
+        { type: 'distance', other: 'gaspard', axis: 'col', exact: 2 },
+        { type: 'onObjectType', objectType: 'passerelle' },
+      ],
     },
     {
       // Noémie Vasseur, inspectrice des Phares et Balises, bloquée par le coup de vent.
-      // « J'étais avec le gardien-chef, trois rangées au nord du marin. »
+      // « Travée 4, une rangée au sud du marin. »
       id: 'noemie',
       nameKey: 'noemie',
       constraints: [
-        { type: 'withPerson', other: 'gaspard' },
-        { type: 'distance', other: 'tanguy', axis: 'row', exact: 3 },
+        { type: 'inColumn', column: 4 },
+        { type: 'distance', other: 'tanguy', axis: 'row', exact: 1 },
       ],
     },
     {
-      // Tanguy Morvan, patron de la vedette de ravitaillement, à la machine.
+      // Tanguy Morvan, patron de la vedette de ravitaillement.
+      // « Travée 1, et sûrement pas dans la salle de veille. »
       id: 'tanguy',
       nameKey: 'tanguy',
       constraints: [
-        { type: 'inZone', zoneId: 'machinerie' },
-        { type: 'direction', other: 'noemie', dir: 'W' },
+        { type: 'inColumn', column: 1 },
+        { type: 'not', of: { type: 'inZone', zoneId: 'veille' } },
       ],
     },
   ],

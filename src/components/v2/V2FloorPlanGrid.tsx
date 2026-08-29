@@ -4,9 +4,10 @@ import type { Cell, SceneObject } from '../../core/model/types'
 import { useV2Session } from '../../store/v2Session'
 import { DecorIcon } from '../icons/DecorIcon'
 import { PersonAvatar } from '../game/PersonAvatar'
-import { HAIRLINE, INK, LABEL_TILT, WALL, patternStyle, personColor, roomPalette } from '../game/planStyle'
+import { HAIRLINE, INK, LABEL_TILT, WALL, patternStyle, personColor, roomPalette, windowPaneStyle } from '../game/planStyle'
 import { iconForObjectType } from './objectIcon'
 import { useV2Text } from './useV2Text'
+import { windowSegments } from './windowRun'
 
 export const V2_PERSON_DRAG_TYPE = 'application/x-murdoku-v2-person'
 
@@ -28,9 +29,14 @@ export function V2FloorPlanGrid() {
   const zoneStyle = new Map(puzzle.zones.map((zone, i) => [zone.id, roomPalette[i % roomPalette.length]]))
   const zoneTilt = new Map(puzzle.zones.map((zone, i) => [zone.id, LABEL_TILT[i % LABEL_TILT.length]]))
 
+  // Windows are drawn on the wall rather than in the tile (§10), so they are kept
+  // out of the furniture layer entirely: no dashed footprint, no centred icon and
+  // no name tag would be true of a tile that is just floor in front of an opening.
+  const panes = windowSegments(board)
   const objectByCell = new Map<string, SceneObject>()
   const objectAnchors = new Map<string, SceneObject>()
   for (const object of board.objects) {
+    if (object.type === 'window') continue
     for (const ref of object.cells) objectByCell.set(cellKey(ref), object)
     objectAnchors.set(anchorKeyOf(object), object)
   }
@@ -77,6 +83,7 @@ export function V2FloorPlanGrid() {
           const style = zoneStyle.get(cell.zoneId) ?? roomPalette[0]
           const occupant = occupantAt(key)
           const object = objectByCell.get(key)
+          const pane = panes.get(key)
           const anchored = objectAnchors.get(key)
           const icon = object && iconForObjectType(object.type)
           const isBlocked = blocked.has(key)
@@ -129,6 +136,8 @@ export function V2FloorPlanGrid() {
                   style={{ backgroundImage: `repeating-linear-gradient(45deg, rgb(36 31 29 / 0.16) 0 2px, transparent 2px 7px)` }}
                 />
               )}
+
+              {pane && <span aria-hidden className="pointer-events-none" style={windowPaneStyle(pane.side, pane.startsRun, pane.endsRun)} />}
 
               {object && !occupant && (
                 <span aria-hidden className="pointer-events-none absolute inset-[3px] rounded-[2px] border border-dashed border-[#241f1d]/35" />

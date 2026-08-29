@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Constraint } from '../../core/constraints/types'
-import { isPeripheral } from '../../core/model/geometry'
+import { isPeripheral, unoccupiableCells } from '../../core/model/geometry'
 import { loadPuzzle } from '../../core/model/loadPuzzle'
 import type { Assignment } from '../../core/model/types'
 import { propagate } from '../../core/possibility/propagate'
@@ -38,9 +38,17 @@ describe('Le Cormoran — the board itself loads and validates', () => {
     const windows = puzzle.board.objects.filter((o) => o.type === 'window')
     expect(windows.map((o) => o.id).sort()).toEqual(['hublotBabord', 'hublotTribord'])
     for (const window of windows) {
-      expect(window.occupiable).toBe(false)
+      // §10/§42: the opening is in the hull, the cell in front of it is ordinary
+      // floor — a window costs no standing room, unlike the stove next to it.
+      expect(window.occupiable).toBe(true)
       for (const cell of window.cells) expect(isPeripheral(puzzle.board, cell)).toBe(true)
     }
+  })
+
+  it('leaves window cells standable, and only the stove blocked', () => {
+    expect([...unoccupiableCells(puzzle.board)]).toEqual(['3:1'])
+    expect(unoccupiableCells(puzzle.board).has('1:5')).toBe(false)
+    expect(unoccupiableCells(puzzle.board).has('4:0')).toBe(false)
   })
 
   it('refuses to load if a window is moved off the hull', () => {
@@ -97,16 +105,28 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     expect(report.maxChainDepth).toBeGreaterThan(1)
   })
 
-  it('makes Armand himself un-deducible until Hélène is placed', () => {
-    // Armand's own clues leave him on both couchette cells; only Hélène's column
-    // settles him. Strike Hélène's naked single and Armand loses his proof.
-    const helenePlacement = propagate(puzzle).journal.find((s) => s.personId === 'helene' && s.placed)!
-    const keystone = report.keystones.find((k) => k.stepId === helenePlacement.id)
-    expect(keystone).toBeDefined()
-    expect(keystone!.unprovenPeople).toContain('armand')
+  it('keeps Armand on three cells until the very last placement (§14)', () => {
+    // "In his cabin, against the forward bulkhead" is three cells wide — the two
+    // of the bunk plus one. Saying "on the bunk" would have pinned him the moment
+    // Hélène landed; the spare cell is what holds the body back to the end.
+    const journal = propagate(puzzle).journal
+    const armandSteps = journal.filter((s) => s.personId === 'armand')
+    expect(armandSteps.map((s) => s.after.length)).toEqual([2, 1, 1])
+
+    const helenePlaced = journal.find((s) => s.personId === 'helene' && s.placed)!
+    const pascalPlaced = journal.find((s) => s.personId === 'pascal' && s.placed)!
+    expect(armandSteps[0].premises).toContain(helenePlaced.id)
+    expect(armandSteps[1].premises).toContain(pascalPlaced.id)
   })
 
-  it('runs the chain Oscar -> Victoire -> Pascal, each unlocked by the previous', () => {
+  it('places people in the order the chain forces, the body dead last (§14)', () => {
+    const placed = propagate(puzzle)
+      .journal.filter((s) => s.placed)
+      .map((s) => s.personId)
+    expect(placed).toEqual(['helene', 'oscar', 'victoire', 'pascal', 'armand'])
+  })
+
+  it('runs the chain Oscar -> Victoire -> Pascal -> Armand, each unlocked by the previous', () => {
     const journal = propagate(puzzle).journal
     const oscarPlaced = journal.find((s) => s.personId === 'oscar' && s.placed)!
     const victoireCut = journal.find((s) => s.personId === 'victoire' && s.technique === 'rowColElimination')!
@@ -116,9 +136,9 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     expect(victoireCut.premises).toContain(oscarPlaced.id)
     expect(pascalCut.premises).toContain(victoirePlaced.id)
 
-    // Strike Oscar's placement and two *other* people lose their proof with him.
+    // Strike Oscar's placement and three *other* people lose their proof with him.
     const oscarKeystone = report.keystones.find((k) => k.stepId === oscarPlaced.id)!
-    expect(oscarKeystone.unprovenPeople.sort()).toEqual(['oscar', 'pascal', 'victoire'])
+    expect(oscarKeystone.unprovenPeople.sort()).toEqual(['armand', 'oscar', 'pascal', 'victoire'])
   })
 
   it('needs more than one technique, including an intermediate one', () => {

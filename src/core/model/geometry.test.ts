@@ -14,7 +14,9 @@ import {
 import type { Board, Cell, SceneObject } from './types'
 
 // 3 rows x 5 cols, one zone. bed_01 sits mid-board (interior); window_01 sits on
-// the top exterior row — mirrors the architecture dossier's worked example.
+// the top exterior row — mirrors the architecture dossier's worked example. The
+// window is occupiable: §42 calls its cells `cellsFacingWindow`, the ordinary
+// floor one stands on to face the opening. table_01 is the blocked object here.
 function buildBoard(): Board {
   const cells: Cell[] = []
   for (let row = 0; row < 3; row++) {
@@ -33,11 +35,17 @@ function buildBoard(): Board {
     {
       id: 'window_01',
       type: 'window',
-      occupiable: false,
+      occupiable: true,
       cells: [
         { row: 0, col: 3 },
         { row: 0, col: 4 },
       ],
+    },
+    {
+      id: 'table_01',
+      type: 'table',
+      occupiable: false,
+      cells: [{ row: 2, col: 0 }],
     },
   ]
   return { cells, rows: 3, cols: 5, objects, cellsByKey: new Map(cells.map((c) => [cellKey(c), c])) }
@@ -65,8 +73,8 @@ describe('multi-cell objects', () => {
 
   it('a non-occupiable object offers no cell to stand on', () => {
     const board = buildBoard()
-    const window = board.objects[1]
-    expect(onObjectCells(board, window)).toEqual([])
+    const table = board.objects[2]
+    expect(onObjectCells(board, table)).toEqual([])
   })
 
   it('an occupiable object offers exactly its own cells', () => {
@@ -75,9 +83,15 @@ describe('multi-cell objects', () => {
     expect(onObjectCells(board, bed).map(cellKey).sort()).toEqual(['1:1', '1:2'])
   })
 
-  it('collects every non-occupiable cell on the board', () => {
+  it('a window offers every cell facing it — "devant la fenêtre" is standable (§10)', () => {
     const board = buildBoard()
-    expect(unoccupiableCells(board)).toEqual(new Set(['0:3', '0:4']))
+    const window = board.objects[1]
+    expect(onObjectCells(board, window).map(cellKey).sort()).toEqual(['0:3', '0:4'])
+  })
+
+  it('collects every non-occupiable cell on the board, windows excluded', () => {
+    const board = buildBoard()
+    expect(unoccupiableCells(board)).toEqual(new Set(['2:0']))
   })
 })
 

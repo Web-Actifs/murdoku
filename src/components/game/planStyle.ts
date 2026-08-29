@@ -45,6 +45,64 @@ export function patternStyle(style: RoomStyle): CSSProperties {
   return {}
 }
 
+export type WallSide = 'top' | 'bottom' | 'left' | 'right'
+
+const PANE_GLASS = '#eef1f0'
+/** How far the pane reaches across the wall, in px — it straddles the 3px ink line. */
+const PANE_DEPTH = 10
+/** How far a run's outer end stops short of the tile corner, so it reads as a fixture, not a border. */
+const PANE_END_INSET = '16%'
+const PANE_RADIUS = 5
+const SASH = 'rgb(36 31 29 / 0.4)'
+
+/**
+ * A window is mounted *in* the wall, not standing on the floor (Claude/claude.md
+ * §10): its cells are ordinary tiles, so the pane is drawn astride the tile's
+ * outward edge rather than centred in it like furniture.
+ *
+ * Multi-cell windows are drawn one segment per tile, but only the two ends of the
+ * run are inset and rounded — the inner ends butt flush, so the segments read as a
+ * single fixture whose per-tile joins are its mullions. That is what stops a
+ * two-tile bay from looking like the same icon pasted twice.
+ */
+export function windowPaneStyle(side: WallSide, startsRun: boolean, endsRun: boolean): CSSProperties {
+  const offset = -(PANE_DEPTH / 2) - 1
+  const near = startsRun ? PANE_END_INSET : 0
+  const far = endsRun ? PANE_END_INSET : 0
+  const r = (rounded: boolean) => (rounded ? PANE_RADIUS : 0)
+  const vertical = side === 'left' || side === 'right'
+
+  const box: CSSProperties = vertical
+    ? {
+        [side]: offset,
+        width: PANE_DEPTH,
+        top: near,
+        bottom: far,
+        borderRadius: `${r(startsRun)}px ${r(startsRun)}px ${r(endsRun)}px ${r(endsRun)}px`,
+      }
+    : {
+        [side]: offset,
+        height: PANE_DEPTH,
+        left: near,
+        right: far,
+        borderRadius: `${r(startsRun)}px ${r(endsRun)}px ${r(endsRun)}px ${r(startsRun)}px`,
+      }
+
+  return {
+    ...box,
+    position: 'absolute',
+    boxSizing: 'border-box',
+    backgroundColor: PANE_GLASS,
+    border: `1.5px solid ${INK}`,
+    // The sash: one hairline down the middle of the run, so the pane reads as
+    // glazing rather than as a blank capsule.
+    backgroundImage:
+      `linear-gradient(${vertical ? 'to right' : 'to bottom'}, transparent calc(50% - 0.5px), ${SASH} calc(50% - 0.5px), ` +
+      `${SASH} calc(50% + 0.5px), transparent calc(50% + 0.5px))`,
+    zIndex: 25,
+  }
+}
+
 const AVATAR_COLORS = ['#7c3aed', '#b8503a', '#3f8c84', '#ca8a04', '#166534', '#2563eb', '#be185d', '#0f766e']
 
 /** FNV-1a 32-bit, same hash the avatar art uses — stable across reloads. */

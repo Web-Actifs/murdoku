@@ -17,8 +17,13 @@ export interface Zone {
 /**
  * A first-class entity, not a per-cell tag — `cells` can span more than one cell
  * (a bed, a window) and every spatial relation is evaluated over all of them
- * (Claude/claude.md §7-9). Windows are objects with `occupiable: false` whose
- * cells must sit on the building's exterior boundary (validated in validateModel).
+ * (Claude/claude.md §7-9).
+ *
+ * A window is the one type whose `cells` are not the thing itself: §42 names them
+ * `cellsFacingWindow` — the opening is in the wall, and the cells are the ordinary
+ * floor tiles one stands on to be in front of it. So a window is `occupiable:
+ * true` (it consumes no floor, unlike a vat or a stove) while validateModel still
+ * requires each of its cells to sit on the building's exterior hull.
  */
 export interface SceneObject {
   id: string
