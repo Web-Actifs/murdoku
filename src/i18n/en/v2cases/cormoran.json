@@ -1,0 +1,27 @@
+{
+  "title": "The Cormorant Case",
+  "flavorText": "The yacht never left its mooring, and yet the owner never saw the sun come up.",
+  "intro": "Night of 3 September, jetty 7 in Port-Vendres. At dawn, Armand Delcourt is found dead on his bunk, the cabin door locked from the inside — or so everyone says. Four people were sleeping on board.",
+  "zones": {
+    "salon": "the saloon",
+    "cabine": "the cabin",
+    "cuisine": "the galley",
+    "pont": "the deck"
+  },
+  "objects": {
+    "banquette": "Bench seat",
+    "tableBasse": "Low table",
+    "couchette": "Bunk",
+    "hublotTribord": "Starboard porthole",
+    "hublotBabord": "Port porthole",
+    "fourneau": "Range",
+    "barre": "Helm station"
+  },
+  "people": {
+    "armand": "Armand Delcourt",
+    "helene": "Hélène Delcourt",
+    "victoire": "Victoire Marsan",
+    "pascal": "Pascal Ferrer",
+    "oscar": "Oscar Nunes"
+  }
+}

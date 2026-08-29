@@ -1,0 +1,28 @@
+{
+  "title": "Le chai de Valmorin",
+  "flavorText": "On a fêté la fin des vendanges jusqu’à deux heures. À six heures, le propriétaire gisait sur la passerelle.",
+  "intro": "Dernière nuit des vendanges au domaine de Valmorin, côtes de Blaye. Edmond Valmorin est retrouvé sur la passerelle de la cuverie, au-dessus d’une cuve encore tiède. Trois personnes avaient les clés du bâtiment.",
+  "zones": {
+    "cuverie": "la cuverie",
+    "chai": "le chai",
+    "bureau": "le bureau",
+    "serre": "la serre"
+  },
+  "objects": {
+    "cuveInox": "Cuve inox",
+    "passerelle": "Passerelle",
+    "barriques": "Barriques",
+    "lucarneDuChai": "Lucarne du chai",
+    "tabouret": "Tabouret",
+    "bureauDeChene": "Bureau de chêne",
+    "fenetreBureau": "Fenêtre du bureau",
+    "jardiniere": "Jardinière",
+    "banc": "Banc"
+  },
+  "people": {
+    "edmond": "Edmond Valmorin",
+    "blanche": "Blanche Valmorin",
+    "raymond": "Raymond Pech",
+    "lucie": "Lucie Andrieu"
+  }
+}

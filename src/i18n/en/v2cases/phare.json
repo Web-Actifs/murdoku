@@ -1,0 +1,31 @@
+{
+  "title": "The Aiguilles Lighthouse",
+  "flavorText": "Force 9 gale: five people stuck in the tower, and the head keeper no longer writing up his watch log.",
+  "intro": "The supply launch could not leave, and neither could the lighthouse inspection: there were five of them in the tower that night. At the six o’clock reading the lantern was still turning, but Gaspard Quéré was no longer keeping his watch log.",
+  "zones": {
+    "veille": "the watch room",
+    "logement": "the living quarters",
+    "reserve": "the store room",
+    "machinerie": "the machine room"
+  },
+  "objects": {
+    "baieDuLevant": "East bay window",
+    "bancDeQuart": "Watch bench",
+    "tableDesCartes": "Chart table",
+    "lucarneNord": "North skylight",
+    "tapisTresse": "Braided rug",
+    "litDeCamp": "Camp bed",
+    "poele": "Stove",
+    "cuveMazout": "Fuel tank",
+    "etabli": "Workbench",
+    "generatrice": "Generator",
+    "passerelle": "Catwalk"
+  },
+  "people": {
+    "gaspard": "Gaspard Quéré",
+    "soizic": "Soizic Le Bihan",
+    "armel": "Armel Cariou",
+    "noemie": "Noémie Terrec",
+    "tanguy": "Tanguy Prigent"
+  }
+}

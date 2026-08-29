@@ -1,0 +1,27 @@
+{
+  "title": "El caso del Cormorán",
+  "flavorText": "El yate no soltó amarras y, aun así, el armador no vio amanecer.",
+  "intro": "Noche del 3 de septiembre, pantalán 7 de Port-Vendres. Al amanecer, Armand Delcourt aparece muerto en su litera, con la puerta del camarote cerrada por dentro; o eso dicen todos. Cuatro personas dormían a bordo.",
+  "zones": {
+    "salon": "el salón",
+    "cabine": "el camarote",
+    "cuisine": "la cocina",
+    "pont": "la cubierta"
+  },
+  "objects": {
+    "banquette": "Banco corrido",
+    "tableBasse": "Mesa baja",
+    "couchette": "Litera",
+    "hublotTribord": "Portilla de estribor",
+    "hublotBabord": "Portilla de babor",
+    "fourneau": "Fogón",
+    "barre": "Puesto de mando"
+  },
+  "people": {
+    "armand": "Armand Delcourt",
+    "helene": "Hélène Delcourt",
+    "victoire": "Victoire Marsan",
+    "pascal": "Pascal Ferrer",
+    "oscar": "Oscar Nunes"
+  }
+}

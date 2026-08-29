@@ -20,18 +20,21 @@ export function HomePage() {
       </div>
       <p className="mt-2 text-[var(--color-text-muted)]">{t('home.subheading')}</p>
 
-      <Link
-        to="/v2/cormoran"
-        className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-surface)] p-4 transition-transform hover:-translate-y-0.5"
-      >
-        <span>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-surface)] p-4">
+        <div>
           <span className="block text-sm font-extrabold uppercase tracking-wide text-[var(--color-accent)]">{t('home.v2Preview.title')}</span>
-          <span className="mt-1 block max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('home.v2Preview.description')}</span>
-        </span>
-        <span className="inline-block shrink-0 rounded-[var(--radius-sm)] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white">
+          <p className="mt-1 max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('home.v2Preview.description')}</p>
+          <Link to="/v2/cormoran" className="mt-1 inline-block text-xs text-[var(--color-text-muted)] underline decoration-dotted">
+            {t('home.v2Preview.devLink')}
+          </Link>
+        </div>
+        <Link
+          to="/v2"
+          className="inline-block shrink-0 rounded-[var(--radius-sm)] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-105"
+        >
           {t('home.v2Preview.cta')}
-        </span>
-      </Link>
+        </Link>
+      </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {sortedCases.map((c) => (

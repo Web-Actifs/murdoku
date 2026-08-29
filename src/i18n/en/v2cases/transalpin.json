@@ -1,0 +1,31 @@
+{
+  "title": "The Night of the Transalpine",
+  "flavorText": "Twenty minutes stopped inside the Simplon tunnel, and the conductor stopped answering.",
+  "intro": "Sleeping car 12 of the Transalpine, between Vallorbe and Domodossola. When the train came out of the tunnel, Bertrand Aubier was no longer answering. Four passengers occupied the car, and the service door was bolted.",
+  "zones": {
+    "onze": "compartment 11",
+    "douze": "compartment 12",
+    "treize": "compartment 13",
+    "couloir": "the corridor"
+  },
+  "objects": {
+    "fenetreOnze": "Window of 11",
+    "couchetteOnze": "Bunk of 11",
+    "malle": "Trunk",
+    "voletDouze": "Shutter of 12",
+    "couchetteDouze": "Bunk of 12",
+    "lavabo": "Washbasin",
+    "fenetreTreize": "Window of 13",
+    "banquetteTreize": "Bench seat of 13",
+    "cantine": "Footlocker",
+    "samovar": "Samovar",
+    "strapontin": "Folding seat"
+  },
+  "people": {
+    "bertrand": "Bertrand Aubier",
+    "irina": "Irina Vlasek",
+    "hugo": "Hugo Renner",
+    "margot": "Margot Sauvin",
+    "stefan": "Stefan Baur"
+  }
+}

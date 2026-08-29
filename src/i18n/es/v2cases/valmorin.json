@@ -1,0 +1,28 @@
+{
+  "title": "La bodega de Valmorin",
+  "flavorText": "Celebraron el fin de la vendimia hasta las dos. A las seis, el propietario yacía en la pasarela.",
+  "intro": "Última noche de la vendimia en la finca de Valmorin, Côtes de Blaye. Edmond Valmorin aparece en la pasarela de la sala de cubas, sobre una cuba todavía tibia. Tres personas tenían las llaves del edificio.",
+  "zones": {
+    "cuverie": "la sala de cubas",
+    "chai": "la bodega",
+    "bureau": "la oficina",
+    "serre": "el invernadero"
+  },
+  "objects": {
+    "cuveInox": "Cuba de acero",
+    "passerelle": "Pasarela",
+    "barriques": "Barricas",
+    "lucarneDuChai": "Tragaluz de la bodega",
+    "tabouret": "Taburete",
+    "bureauDeChene": "Escritorio de roble",
+    "fenetreBureau": "Ventana de la oficina",
+    "jardiniere": "Jardinera",
+    "banc": "Banco"
+  },
+  "people": {
+    "edmond": "Edmond Valmorin",
+    "blanche": "Blanche Valmorin",
+    "raymond": "Raymond Pech",
+    "lucie": "Lucie Andrieu"
+  }
+}

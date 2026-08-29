@@ -1,0 +1,31 @@
+{
+  "title": "La nuit du Transalpin",
+  "flavorText": "Vingt minutes d’arrêt dans le tunnel du Simplon, et le contrôleur ne répondait plus.",
+  "intro": "Voiture-lits 12 du Transalpin, entre Vallorbe et Domodossola. Quand le train est ressorti du tunnel, Bertrand Aubier ne répondait plus. Quatre voyageurs occupaient la voiture, et la porte de service était bouclée.",
+  "zones": {
+    "onze": "le compartiment 11",
+    "douze": "le compartiment 12",
+    "treize": "le compartiment 13",
+    "couloir": "le couloir"
+  },
+  "objects": {
+    "fenetreOnze": "Fenêtre du 11",
+    "couchetteOnze": "Couchette du 11",
+    "malle": "Malle",
+    "voletDouze": "Volet du 12",
+    "couchetteDouze": "Couchette du 12",
+    "lavabo": "Lavabo",
+    "fenetreTreize": "Fenêtre du 13",
+    "banquetteTreize": "Banquette du 13",
+    "cantine": "Cantine",
+    "samovar": "Samovar",
+    "strapontin": "Strapontin"
+  },
+  "people": {
+    "bertrand": "Bertrand Aubier",
+    "irina": "Irina Vlasek",
+    "hugo": "Hugo Renner",
+    "margot": "Margot Sauvin",
+    "stefan": "Stefan Baur"
+  }
+}

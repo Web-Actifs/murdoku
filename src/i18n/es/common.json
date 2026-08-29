@@ -9,9 +9,10 @@
     "betaBadge": "Beta",
     "betaTooltip": "Versión actual del juego — una nueva versión con reglas más completas está en preparación.",
     "v2Preview": {
-      "title": "Nuevo motor en preparación",
-      "description": "Un adelanto del futuro motor V2: propagación de restricciones, pistas de 5 niveles, modo hipótesis. Todavía en obras, no es un nivel real.",
-      "cta": "Ver el adelanto"
+      "title": "El nuevo motor ya se puede jugar",
+      "description": "Cuatro casos escritos para el motor V2: propagación de restricciones, pistas de cinco niveles, cuaderno de investigación y un culpable deducido del plano en lugar de escrito de antemano.",
+      "cta": "Jugar a los casos V2",
+      "devLink": "Adelanto técnico del motor (herramienta de desarrollo)"
     }
   },
   "case": {
@@ -128,5 +129,189 @@
     "lock": "Capítulo {{index}} — El cerrojo",
     "thread": "Capítulo {{index}} — Siguiendo el hilo",
     "progress": "Capítulo {{current}} de {{total}}"
+  },
+  "clue": {
+    "unit": {
+      "row_one": "fila",
+      "row_other": "filas",
+      "col_one": "columna",
+      "col_other": "columnas"
+    },
+    "is": {
+      "inZone": "estaba en {{zone}}.",
+      "onObject": "estaba sobre {{object}}.",
+      "adjacentToObject": "estaba justo al lado de {{object}}.",
+      "withPerson": "estaba en la misma sala que {{name}}.",
+      "directionN": "estaba más al norte que {{name}} en el plano.",
+      "directionS": "estaba más al sur que {{name}} en el plano.",
+      "directionE": "estaba más al este que {{name}} en el plano.",
+      "directionW": "estaba más al oeste que {{name}} en el plano.",
+      "distanceAbove": "estaba exactamente {{count}} {{unit}} por encima de {{name}}.",
+      "distanceBelow": "estaba exactamente {{count}} {{unit}} por debajo de {{name}}.",
+      "distanceLeft": "estaba exactamente {{count}} {{unit}} a la izquierda de {{name}}.",
+      "distanceRight": "estaba exactamente {{count}} {{unit}} a la derecha de {{name}}.",
+      "sameRow": "estaba en la misma fila que {{name}}.",
+      "sameCol": "estaba en la misma columna que {{name}}.",
+      "rowTop": "estaba en la fila superior del plano.",
+      "rowBottom": "estaba en la fila inferior del plano.",
+      "rowN": "estaba en la fila {{n}} del plano, contando desde arriba.",
+      "colLeft": "estaba en la columna más a la izquierda del plano.",
+      "colRight": "estaba en la columna más a la derecha del plano.",
+      "colN": "estaba en la columna {{n}} del plano, contando desde la izquierda.",
+      "alone": "estaba solo·a en su sala.",
+      "aloneInZone": "estaba solo·a en {{zone}}.",
+      "notAlone": "no estaba solo·a en su sala.",
+      "notAloneInZone": "no estaba solo·a en {{zone}}."
+    },
+    "no": {
+      "inZone": "no estaba en {{zone}}.",
+      "onObject": "no estaba sobre {{object}}.",
+      "adjacentToObject": "no estaba justo al lado de {{object}}.",
+      "withPerson": "no estaba en la misma sala que {{name}}.",
+      "directionN": "no estaba más al norte que {{name}} en el plano.",
+      "directionS": "no estaba más al sur que {{name}} en el plano.",
+      "directionE": "no estaba más al este que {{name}} en el plano.",
+      "directionW": "no estaba más al oeste que {{name}} en el plano.",
+      "distanceAbove": "no estaba exactamente {{count}} {{unit}} por encima de {{name}}.",
+      "distanceBelow": "no estaba exactamente {{count}} {{unit}} por debajo de {{name}}.",
+      "distanceLeft": "no estaba exactamente {{count}} {{unit}} a la izquierda de {{name}}.",
+      "distanceRight": "no estaba exactamente {{count}} {{unit}} a la derecha de {{name}}.",
+      "sameRow": "no estaba en la misma fila que {{name}}.",
+      "sameCol": "no estaba en la misma columna que {{name}}.",
+      "rowTop": "no estaba en la fila superior del plano.",
+      "rowBottom": "no estaba en la fila inferior del plano.",
+      "rowN": "no estaba en la fila {{n}} del plano, contando desde arriba.",
+      "colLeft": "no estaba en la columna más a la izquierda del plano.",
+      "colRight": "no estaba en la columna más a la derecha del plano.",
+      "colN": "no estaba en la columna {{n}} del plano, contando desde la izquierda.",
+      "alone": "no estaba solo·a en su sala.",
+      "aloneInZone": "no estaba solo·a en {{zone}}.",
+      "notAlone": "estaba solo·a en su sala.",
+      "notAloneInZone": "estaba solo·a en {{zone}}."
+    },
+    "object": {
+      "banquette": "un banco corrido",
+      "tableBasse": "una mesa baja",
+      "couchette": "una litera",
+      "window": "una ventana",
+      "volet": "una contraventana",
+      "fourneau": "un fogón",
+      "barre": "un puesto de mando",
+      "cuve": "una cuba",
+      "passerelle": "una pasarela",
+      "barrique": "una barrica",
+      "tabouret": "un taburete",
+      "table": "una mesa",
+      "plante": "una planta",
+      "banc": "un banco",
+      "malle": "un baúl",
+      "lavabo": "un lavabo",
+      "samovar": "un samovar",
+      "strapontin": "un asiento abatible",
+      "tapis": "una alfombra",
+      "lit": "una cama",
+      "poele": "una estufa",
+      "generatrice": "un generador"
+    }
+  },
+  "v2": {
+    "picker": {
+      "heading": "Los casos del nuevo motor",
+      "badge": "Motor V2",
+      "subheading": "El motor V2 razona como un jugador: nunca adivina. Cada caso se resuelve por pura deducción, y el culpable no está escrito en ninguna parte: lo señala el plano correcto.",
+      "stats": "{{people}} personas · plano {{rows}}×{{cols}} · {{steps}} deducciones",
+      "devNote": "¿Buscas las tripas del motor?",
+      "devLink": "Abrir el adelanto técnico"
+    },
+    "play": {
+      "backToCases": "Volver a los casos V2",
+      "barHeading": "Tu plano",
+      "placeHint": "Elige a una persona y luego una casilla del plano (también puedes arrastrarla).",
+      "crossHint": "Modo lápiz: elige a una persona y marca las casillas donde no pudo estar.",
+      "modePlace": "Colocar",
+      "modeCross": "Tachar",
+      "solveButton": "Resolver",
+      "solveBlocked": "{{placed}} / {{total}} personas colocadas: el plano debe estar completo.",
+      "hintButton": "💡 Pista",
+      "hintHeading": "Pista",
+      "hintLevel": "Nivel {{level}}",
+      "hintApply": "Colocar a esa persona",
+      "hintDismiss": "Cerrar",
+      "testimoniesHeading": "Testimonios",
+      "testimoniesNote": "Nadie miente: todo lo que se declara aquí es cierto.",
+      "noClue": "No declaró nada.",
+      "objectOccupiable": "Se puede estar encima.",
+      "objectBlocked": "Infranqueable: nadie puede estar ahí.",
+      "blockedTag": "prohibido",
+      "blockedNote": "Las casillas rayadas tienen un objeto infranqueable: nadie está ahí.",
+      "rulesNote": "💡 Una sola persona por fila y por columna, en todo el plano. «Fila», «columna» y «más al norte/sur/este/oeste que X» se cuentan en todo el plano, no solo dentro de la sala, y «más al norte» no significa «en la misma columna»."
+    },
+    "notebook": {
+      "heading": "Cuaderno de investigación",
+      "pitch": "Contrasta tus marcas con la demostración del motor: lo que has probado, lo que has acertado por intuición y lo que ya está desmentido.",
+      "open": "Hacer balance",
+      "empty": "Nada que contrastar todavía: coloca a alguien o tacha una casilla.",
+      "depth": "Razonamiento seguido hasta el eslabón {{reached}} de {{total}}.",
+      "verdict": {
+        "justified": {
+          "label_one": "{{count}} marca probada",
+          "label_other": "{{count}} marcas probadas",
+          "help_one": "deducida de lo que ya habías establecido.",
+          "help_other": "deducidas de lo que ya habías establecido."
+        },
+        "premature": {
+          "label_one": "{{count}} marca adivinada",
+          "label_other": "{{count}} marcas adivinadas",
+          "help_one": "correcta, pero anotada antes de que la demostración llegara.",
+          "help_other": "correctas, pero anotadas antes de que la demostración llegara."
+        },
+        "contradicted": {
+          "label_one": "{{count}} marca desmentida",
+          "label_other": "{{count}} marcas desmentidas",
+          "help_one": "lo que el plano ya permite establecer la contradice.",
+          "help_other": "lo que el plano ya permite establecer las contradice."
+        },
+        "unproven": {
+          "label_one": "{{count}} marca indecidible",
+          "label_other": "{{count}} marcas indecidibles",
+          "help_one": "la propagación no la resuelve en ningún sentido.",
+          "help_other": "la propagación no las resuelve en ningún sentido."
+        }
+      },
+      "disciplined": "Sin suposiciones: todo lo que has anotado era deducible.",
+      "undisciplined_one": "Tu conclusión más avanzada va una deducción por delante de tu razonamiento.",
+      "undisciplined_other": "Tu conclusión más avanzada va {{count}} deducciones por delante de tu razonamiento."
+    },
+    "result": {
+      "solvedTitle": "¡Caso resuelto!",
+      "wrongTitle": "No es correcto…",
+      "gaveUpTitle": "Aquí tienes la solución",
+      "placementsCorrect": "{{correct}} / {{total}} personas bien colocadas.",
+      "hintsUsed_one": "{{count}} pista consultada.",
+      "hintsUsed_other": "{{count}} pistas consultadas.",
+      "verdictHeading": "El culpable",
+      "murdererIs": "Fue {{name}}.",
+      "murdererWhy": "{{name}} es la única persona que estuvo en {{zone}} con {{victim}}.",
+      "noMurderer": "Nadie queda señalado: la víctima no pasó la noche a solas con un único sospechoso."
+    },
+    "difficulty": {
+      "score": "puntuación {{score}}",
+      "beginner": {
+        "label": "Iniciación",
+        "description": "Cada deducción se sigue directamente de la anterior."
+      },
+      "intermediate": {
+        "label": "Intermedio",
+        "description": "Hay que encadenar varias deducciones antes de que caiga una casilla."
+      },
+      "advanced": {
+        "label": "Avanzado",
+        "description": "Cadenas largas y un paso del que depende casi todo lo demás."
+      },
+      "expert": {
+        "label": "Experto",
+        "description": "Las técnicas más finas, en casi toda la cuadrícula."
+      }
+    }
   }
 }

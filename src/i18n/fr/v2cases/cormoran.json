@@ -1,0 +1,27 @@
+{
+  "title": "L’affaire du Cormoran",
+  "flavorText": "Le yacht n’a pas quitté son amarre, et pourtant l’armateur n’a pas vu le jour se lever.",
+  "intro": "Nuit du 3 septembre, ponton 7 de Port-Vendres. Au petit matin, Armand Delcourt est retrouvé mort sur sa couchette, la porte de la cabine fermée de l’intérieur — enfin, c’est ce que tout le monde raconte. Quatre personnes dormaient à bord.",
+  "zones": {
+    "salon": "le salon",
+    "cabine": "la cabine",
+    "cuisine": "la cuisine",
+    "pont": "le pont"
+  },
+  "objects": {
+    "banquette": "Banquette",
+    "tableBasse": "Table basse",
+    "couchette": "Couchette",
+    "hublotTribord": "Hublot tribord",
+    "hublotBabord": "Hublot bâbord",
+    "fourneau": "Fourneau",
+    "barre": "Poste de barre"
+  },
+  "people": {
+    "armand": "Armand Delcourt",
+    "helene": "Hélène Delcourt",
+    "victoire": "Victoire Marsan",
+    "pascal": "Pascal Ferrer",
+    "oscar": "Oscar Nunes"
+  }
+}

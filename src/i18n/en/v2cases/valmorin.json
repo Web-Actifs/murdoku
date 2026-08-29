@@ -1,0 +1,28 @@
+{
+  "title": "The Valmorin Wine Store",
+  "flavorText": "They celebrated the end of the harvest until two. By six, the owner lay on the catwalk.",
+  "intro": "Last night of the harvest at the Valmorin estate, Côtes de Blaye. Edmond Valmorin is found on the vat-room catwalk, above a vat still warm. Three people had keys to the building.",
+  "zones": {
+    "cuverie": "the vat room",
+    "chai": "the wine store",
+    "bureau": "the office",
+    "serre": "the greenhouse"
+  },
+  "objects": {
+    "cuveInox": "Steel vat",
+    "passerelle": "Catwalk",
+    "barriques": "Barrels",
+    "lucarneDuChai": "Store skylight",
+    "tabouret": "Stool",
+    "bureauDeChene": "Oak desk",
+    "fenetreBureau": "Office window",
+    "jardiniere": "Planter",
+    "banc": "Bench"
+  },
+  "people": {
+    "edmond": "Edmond Valmorin",
+    "blanche": "Blanche Valmorin",
+    "raymond": "Raymond Pech",
+    "lucie": "Lucie Andrieu"
+  }
+}

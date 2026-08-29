@@ -1,0 +1,31 @@
+{
+  "title": "La noche del Transalpino",
+  "flavorText": "Veinte minutos parados en el túnel del Simplón, y el revisor dejó de contestar.",
+  "intro": "Coche cama 12 del Transalpino, entre Vallorbe y Domodossola. Cuando el tren salió del túnel, Bertrand Aubier ya no contestaba. Cuatro viajeros ocupaban el coche y la puerta de servicio estaba cerrada.",
+  "zones": {
+    "onze": "el compartimento 11",
+    "douze": "el compartimento 12",
+    "treize": "el compartimento 13",
+    "couloir": "el pasillo"
+  },
+  "objects": {
+    "fenetreOnze": "Ventana del 11",
+    "couchetteOnze": "Litera del 11",
+    "malle": "Baúl",
+    "voletDouze": "Contraventana del 12",
+    "couchetteDouze": "Litera del 12",
+    "lavabo": "Lavabo",
+    "fenetreTreize": "Ventana del 13",
+    "banquetteTreize": "Banco del 13",
+    "cantine": "Arcón",
+    "samovar": "Samovar",
+    "strapontin": "Asiento abatible"
+  },
+  "people": {
+    "bertrand": "Bertrand Aubier",
+    "irina": "Irina Vlasek",
+    "hugo": "Hugo Renner",
+    "margot": "Margot Sauvin",
+    "stefan": "Stefan Baur"
+  }
+}

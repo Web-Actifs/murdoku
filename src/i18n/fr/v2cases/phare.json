@@ -1,0 +1,31 @@
+{
+  "title": "Le phare des Aiguilles",
+  "flavorText": "Coup de vent force 9 : cinq personnes bloquées dans la tour, et le gardien-chef qui ne tient plus son cahier de quart.",
+  "intro": "La vedette de ravitaillement n’a pas pu repartir, l’inspection des Phares et Balises non plus : ils étaient cinq dans la tour cette nuit-là. Au relevé de six heures, la lanterne tournait toujours, mais Gaspard Quéré ne tenait plus son cahier de quart.",
+  "zones": {
+    "veille": "la salle de veille",
+    "logement": "le logement",
+    "reserve": "la réserve",
+    "machinerie": "la machinerie"
+  },
+  "objects": {
+    "baieDuLevant": "Baie du levant",
+    "bancDeQuart": "Banc de quart",
+    "tableDesCartes": "Table des cartes",
+    "lucarneNord": "Lucarne nord",
+    "tapisTresse": "Tapis tressé",
+    "litDeCamp": "Lit de camp",
+    "poele": "Poêle",
+    "cuveMazout": "Cuve à mazout",
+    "etabli": "Établi",
+    "generatrice": "Génératrice",
+    "passerelle": "Passerelle"
+  },
+  "people": {
+    "gaspard": "Gaspard Quéré",
+    "soizic": "Soizic Le Bihan",
+    "armel": "Armel Cariou",
+    "noemie": "Noémie Terrec",
+    "tanguy": "Tanguy Prigent"
+  }
+}

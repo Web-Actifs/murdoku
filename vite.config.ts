@@ -7,6 +7,6 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   test: {
     environment: 'node',
-    include: ['src/engine/**/*.test.ts', 'src/core/**/*.test.ts', 'src/data/**/*.test.ts'],
+    include: ['src/engine/**/*.test.ts', 'src/core/**/*.test.ts', 'src/data/**/*.test.ts', 'src/game/**/*.test.ts', 'src/i18n/**/*.test.ts'],
   },
 })

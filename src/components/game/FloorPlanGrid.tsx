@@ -1,51 +1,10 @@
-import { useEffect, useRef, useState, type CSSProperties, type DragEvent } from 'react'
+import { useEffect, useRef, useState, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gridBounds } from '../../engine/grid'
 import { useCaseSession } from '../../store/caseSession'
 import { DecorIcon } from '../icons/DecorIcon'
 import { PersonAvatar } from './PersonAvatar'
-
-/*
- * Floor plan chrome, styled after a printed puzzle-book plan:
- * - one heavy ink wall around the plan and between rooms, hairlines inside a room
- * - muted retro fills, some rooms tiled (checkerboard / diamond lattice)
- * - room names on little rounded "sticker" tags overlapping the wall
- */
-
-const INK = '#241f1d'
-const WALL = `3px solid ${INK}`
-const HAIRLINE = '1px solid rgb(36 31 29 / 0.16)'
-
-type RoomStyle = { bg: string; tile: string; pattern: 'flat' | 'check' | 'diamond' }
-
-const roomPalette: RoomStyle[] = [
-  { bg: '#a9c5be', tile: '#93b4ac', pattern: 'diamond' }, // dusty teal
-  { bg: '#e2a794', tile: '#cd8b76', pattern: 'check' }, // faded rust
-  { bg: '#c9c2dd', tile: '#b5accd', pattern: 'flat' }, // washed purple
-  { bg: '#dfc98d', tile: '#cbb373', pattern: 'check' }, // mustard
-  { bg: '#b7cad9', tile: '#a1b8ca', pattern: 'diamond' }, // powder blue
-  { bg: '#d0d4c6', tile: '#bec3b2', pattern: 'flat' }, // stone
-  { bg: '#c6b6a0', tile: '#b3a189', pattern: 'check' }, // taupe
-]
-
-const LABEL_TILT = [-2, 1.6, -1.2, 2.2, -1.6, 1.1]
-
-function patternStyle(style: RoomStyle): CSSProperties {
-  if (style.pattern === 'check') {
-    return {
-      backgroundImage: `conic-gradient(${style.tile} 0 25%, ${style.bg} 0 50%, ${style.tile} 0 75%, ${style.bg} 0)`,
-      backgroundSize: '100% 100%',
-    }
-  }
-  if (style.pattern === 'diamond') {
-    return {
-      backgroundImage:
-        `repeating-linear-gradient(45deg, ${style.tile} 0 1.5px, transparent 1.5px 13px),` +
-        `repeating-linear-gradient(-45deg, ${style.tile} 0 1.5px, transparent 1.5px 13px)`,
-    }
-  }
-  return {}
-}
+import { HAIRLINE, INK, LABEL_TILT, WALL, patternStyle, roomPalette } from './planStyle'
 
 export const CHARACTER_DRAG_TYPE = 'application/x-murdoku-character'
 

@@ -9,9 +9,10 @@
     "betaBadge": "Beta",
     "betaTooltip": "Current version of the game — a new version with richer rules is in the works.",
     "v2Preview": {
-      "title": "New engine in the works",
-      "description": "A preview of the upcoming V2 engine: constraint propagation, 5-level hints, hypothesis mode. Still a work in progress, not a real level yet.",
-      "cta": "See the preview"
+      "title": "The new engine is playable",
+      "description": "Four cases written for the V2 engine: constraint propagation, five-level hints, an investigator’s notebook, and a murderer derived from the plan instead of written in advance.",
+      "cta": "Play the V2 cases",
+      "devLink": "Engine preview (developer tool)"
     }
   },
   "case": {
@@ -128,5 +129,189 @@
     "lock": "Chapter {{index}} — The lock",
     "thread": "Chapter {{index}} — Following the thread",
     "progress": "Chapter {{current}} of {{total}}"
+  },
+  "clue": {
+    "unit": {
+      "row_one": "row",
+      "row_other": "rows",
+      "col_one": "column",
+      "col_other": "columns"
+    },
+    "is": {
+      "inZone": "was in {{zone}}.",
+      "onObject": "was standing on {{object}}.",
+      "adjacentToObject": "was right next to {{object}}.",
+      "withPerson": "was in the same room as {{name}}.",
+      "directionN": "was further north than {{name}} on the plan.",
+      "directionS": "was further south than {{name}} on the plan.",
+      "directionE": "was further east than {{name}} on the plan.",
+      "directionW": "was further west than {{name}} on the plan.",
+      "distanceAbove": "was exactly {{count}} {{unit}} above {{name}}.",
+      "distanceBelow": "was exactly {{count}} {{unit}} below {{name}}.",
+      "distanceLeft": "was exactly {{count}} {{unit}} to the left of {{name}}.",
+      "distanceRight": "was exactly {{count}} {{unit}} to the right of {{name}}.",
+      "sameRow": "was on the same row as {{name}}.",
+      "sameCol": "was on the same column as {{name}}.",
+      "rowTop": "was on the top row of the plan.",
+      "rowBottom": "was on the bottom row of the plan.",
+      "rowN": "was on row {{n}} of the plan, counting from the top.",
+      "colLeft": "was on the leftmost column of the plan.",
+      "colRight": "was on the rightmost column of the plan.",
+      "colN": "was on column {{n}} of the plan, counting from the left.",
+      "alone": "was alone in the room.",
+      "aloneInZone": "was alone in {{zone}}.",
+      "notAlone": "was not alone in the room.",
+      "notAloneInZone": "was not alone in {{zone}}."
+    },
+    "no": {
+      "inZone": "was not in {{zone}}.",
+      "onObject": "was not standing on {{object}}.",
+      "adjacentToObject": "was not right next to {{object}}.",
+      "withPerson": "was not in the same room as {{name}}.",
+      "directionN": "was not further north than {{name}} on the plan.",
+      "directionS": "was not further south than {{name}} on the plan.",
+      "directionE": "was not further east than {{name}} on the plan.",
+      "directionW": "was not further west than {{name}} on the plan.",
+      "distanceAbove": "was not exactly {{count}} {{unit}} above {{name}}.",
+      "distanceBelow": "was not exactly {{count}} {{unit}} below {{name}}.",
+      "distanceLeft": "was not exactly {{count}} {{unit}} to the left of {{name}}.",
+      "distanceRight": "was not exactly {{count}} {{unit}} to the right of {{name}}.",
+      "sameRow": "was not on the same row as {{name}}.",
+      "sameCol": "was not on the same column as {{name}}.",
+      "rowTop": "was not on the top row of the plan.",
+      "rowBottom": "was not on the bottom row of the plan.",
+      "rowN": "was not on row {{n}} of the plan, counting from the top.",
+      "colLeft": "was not on the leftmost column of the plan.",
+      "colRight": "was not on the rightmost column of the plan.",
+      "colN": "was not on column {{n}} of the plan, counting from the left.",
+      "alone": "was not alone in the room.",
+      "aloneInZone": "was not alone in {{zone}}.",
+      "notAlone": "was alone in the room.",
+      "notAloneInZone": "was alone in {{zone}}."
+    },
+    "object": {
+      "banquette": "a bench seat",
+      "tableBasse": "a low table",
+      "couchette": "a bunk",
+      "window": "a window",
+      "volet": "a shutter",
+      "fourneau": "a range",
+      "barre": "a helm station",
+      "cuve": "a vat",
+      "passerelle": "a catwalk",
+      "barrique": "a barrel",
+      "tabouret": "a stool",
+      "table": "a table",
+      "plante": "a plant",
+      "banc": "a bench",
+      "malle": "a trunk",
+      "lavabo": "a washbasin",
+      "samovar": "a samovar",
+      "strapontin": "a folding seat",
+      "tapis": "a rug",
+      "lit": "a bed",
+      "poele": "a stove",
+      "generatrice": "a generator"
+    }
+  },
+  "v2": {
+    "picker": {
+      "heading": "Cases for the new engine",
+      "badge": "V2 engine",
+      "subheading": "The V2 engine reasons like a player: it never guesses. Every case below is solvable by deduction alone, and the murderer is written nowhere — a correct plan is what names them.",
+      "stats": "{{people}} people · {{rows}}×{{cols}} plan · {{steps}} deductions",
+      "devNote": "Looking for the engine internals?",
+      "devLink": "Open the technical preview"
+    },
+    "play": {
+      "backToCases": "Back to the V2 cases",
+      "barHeading": "Your plan",
+      "placeHint": "Pick a person, then a cell on the plan (dragging works too).",
+      "crossHint": "Pencil mode: pick a person, then click the cells where they cannot have been.",
+      "modePlace": "Place",
+      "modeCross": "Cross out",
+      "solveButton": "Solve",
+      "solveBlocked": "{{placed}} / {{total}} people placed: the plan has to be complete.",
+      "hintButton": "💡 Hint",
+      "hintHeading": "Hint",
+      "hintLevel": "Level {{level}}",
+      "hintApply": "Place that person",
+      "hintDismiss": "Close",
+      "testimoniesHeading": "Testimonies",
+      "testimoniesNote": "Nobody lies: everything stated here is true.",
+      "noClue": "Said nothing.",
+      "objectOccupiable": "You can stand on it.",
+      "objectBlocked": "Impassable: nobody can stand there.",
+      "blockedTag": "off-limits",
+      "blockedNote": "Hatched cells hold an impassable object: nobody stands there.",
+      "rulesNote": "💡 One person per row and per column, across the whole plan. \"Row\", \"column\" and \"further north/south/east/west than X\" are counted across the whole plan, not just within a room — and \"further north\" does not mean \"in the same column\"."
+    },
+    "notebook": {
+      "heading": "Investigator’s notebook",
+      "pitch": "Check your marks against the engine’s proof: what you proved, what you guessed right, what is already refuted.",
+      "open": "Take stock",
+      "empty": "Nothing to check yet: place someone, or cross out a cell.",
+      "depth": "Reasoning followed up to link {{reached}} of {{total}}.",
+      "verdict": {
+        "justified": {
+          "label_one": "{{count}} proven mark",
+          "label_other": "{{count}} proven marks",
+          "help_one": "deduced from what you had already established.",
+          "help_other": "deduced from what you had already established."
+        },
+        "premature": {
+          "label_one": "{{count}} guessed mark",
+          "label_other": "{{count}} guessed marks",
+          "help_one": "right, but written down before the proof reached it.",
+          "help_other": "right, but written down before the proof reached them."
+        },
+        "contradicted": {
+          "label_one": "{{count}} refuted mark",
+          "label_other": "{{count}} refuted marks",
+          "help_one": "what the plan already establishes contradicts it.",
+          "help_other": "what the plan already establishes contradicts them."
+        },
+        "unproven": {
+          "label_one": "{{count}} undecidable mark",
+          "label_other": "{{count}} undecidable marks",
+          "help_one": "propagation settles it neither way.",
+          "help_other": "propagation settles them neither way."
+        }
+      },
+      "disciplined": "No guessing: everything you wrote down was deducible.",
+      "undisciplined_one": "Your furthest conclusion runs one deduction ahead of your reasoning.",
+      "undisciplined_other": "Your furthest conclusion runs {{count}} deductions ahead of your reasoning."
+    },
+    "result": {
+      "solvedTitle": "Case solved!",
+      "wrongTitle": "Not quite…",
+      "gaveUpTitle": "Here’s the solution",
+      "placementsCorrect": "{{correct}} / {{total}} people correctly placed.",
+      "hintsUsed_one": "{{count}} hint used.",
+      "hintsUsed_other": "{{count}} hints used.",
+      "verdictHeading": "The murderer",
+      "murdererIs": "It was {{name}}.",
+      "murdererWhy": "{{name}} is the only person who was in {{zone}} with {{victim}}.",
+      "noMurderer": "Nobody is convicted: the victim did not spend the night alone with a single suspect."
+    },
+    "difficulty": {
+      "score": "score {{score}}",
+      "beginner": {
+        "label": "Beginner",
+        "description": "Every deduction follows directly from the previous one."
+      },
+      "intermediate": {
+        "label": "Intermediate",
+        "description": "Several deductions have to be chained before a cell falls."
+      },
+      "advanced": {
+        "label": "Advanced",
+        "description": "Long chains, and one step almost everything else depends on."
+      },
+      "expert": {
+        "label": "Expert",
+        "description": "The finest techniques, across nearly the whole grid."
+      }
+    }
   }
 }

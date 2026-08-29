@@ -1,0 +1,31 @@
+{
+  "title": "El faro de las Agujas",
+  "flavorText": "Temporal de fuerza 9: cinco personas atrapadas en la torre y el torrero jefe sin escribir su cuaderno de guardia.",
+  "intro": "La lancha de suministro no pudo zarpar, ni tampoco la inspección de Faros y Balizas: aquella noche eran cinco en la torre. En la lectura de las seis la linterna seguía girando, pero Gaspard Quéré ya no llevaba su cuaderno de guardia.",
+  "zones": {
+    "veille": "la sala de vigilancia",
+    "logement": "la vivienda",
+    "reserve": "el almacén",
+    "machinerie": "la sala de máquinas"
+  },
+  "objects": {
+    "baieDuLevant": "Ventanal de levante",
+    "bancDeQuart": "Banco de guardia",
+    "tableDesCartes": "Mesa de cartas",
+    "lucarneNord": "Tragaluz norte",
+    "tapisTresse": "Alfombra trenzada",
+    "litDeCamp": "Cama de campaña",
+    "poele": "Estufa",
+    "cuveMazout": "Depósito de fueloil",
+    "etabli": "Banco de trabajo",
+    "generatrice": "Generador",
+    "passerelle": "Pasarela"
+  },
+  "people": {
+    "gaspard": "Gaspard Quéré",
+    "soizic": "Soizic Le Bihan",
+    "armel": "Armel Cariou",
+    "noemie": "Noémie Terrec",
+    "tanguy": "Tanguy Prigent"
+  }
+}
