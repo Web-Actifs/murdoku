@@ -9,7 +9,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)]">
       <header className="border-b-2 border-[#241f1d] bg-[var(--color-surface)] shadow-[0_2px_0_rgb(36_31_29/0.12)]">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-6 py-4">
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-3 px-6 py-3">
           <Link to="/" className="flex items-center gap-2 text-xl font-extrabold tracking-tight text-[var(--color-primary)]">
             <span aria-hidden className="text-2xl">
               🔎
@@ -19,7 +19,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <LanguageSwitcher />
         </div>
       </header>
-      <main className="mx-auto max-w-5xl px-6 py-10">{children}</main>
+      <main className="mx-auto max-w-[1600px] px-6 pb-10">{children}</main>
     </div>
   )
 }

@@ -9,8 +9,29 @@ export function HomePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-extrabold tracking-tight">{t('home.heading')}</h1>
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-3xl font-extrabold tracking-tight">{t('home.heading')}</h1>
+        <span
+          className="inline-flex items-center rounded-full bg-[var(--color-accent)] px-2.5 py-1 text-xs font-bold text-white"
+          title={t('home.betaTooltip')}
+        >
+          {t('home.betaBadge')}
+        </span>
+      </div>
       <p className="mt-2 text-[var(--color-text-muted)]">{t('home.subheading')}</p>
+
+      <Link
+        to="/v2/cormoran"
+        className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-surface)] p-4 transition-transform hover:-translate-y-0.5"
+      >
+        <span>
+          <span className="block text-sm font-extrabold uppercase tracking-wide text-[var(--color-accent)]">{t('home.v2Preview.title')}</span>
+          <span className="mt-1 block max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('home.v2Preview.description')}</span>
+        </span>
+        <span className="inline-block shrink-0 rounded-[var(--radius-sm)] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white">
+          {t('home.v2Preview.cta')}
+        </span>
+      </Link>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {sortedCases.map((c) => (

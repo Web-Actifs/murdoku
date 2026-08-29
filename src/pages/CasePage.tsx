@@ -29,23 +29,33 @@ export function CasePage() {
         ← {t('case.backToHome')}
       </Link>
 
-      <div className="mt-2">
-        <DifficultyBadge difficulty={caseDef.difficulty} showDescription />
-      </div>
-      <h1 className="mt-2 text-3xl font-extrabold tracking-tight">{t(`cases:${caseDef.titleKey}`)}</h1>
-      {caseDef.flavorTextKey && <p className="mt-1 italic text-[var(--color-text-muted)]">{t(`cases:${caseDef.flavorTextKey}`)}</p>}
+      <details open className="group mt-2">
+        <summary className="flex cursor-pointer list-none items-center gap-2">
+          <h1 className="text-3xl font-extrabold tracking-tight">{t(`cases:${caseDef.titleKey}`)}</h1>
+          <span aria-hidden className="text-2xl leading-none text-[var(--color-text-muted)] transition-transform group-open:rotate-180">
+            ▾
+          </span>
+        </summary>
+        <div className="mt-2 flex flex-col gap-1.5">
+          <DifficultyBadge difficulty={caseDef.difficulty} showDescription />
+          {caseDef.flavorTextKey && <p className="italic text-[var(--color-text-muted)]">{t(`cases:${caseDef.flavorTextKey}`)}</p>}
+        </div>
+      </details>
 
       <div className="mt-6">
         <ResultPanel />
       </div>
 
-      <div className="mt-6 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
+      <div className="mt-6">
+        <AnswerBar />
+      </div>
+
+      <div className="mt-6 grid items-start gap-8 md:grid-cols-[3fr_2fr]">
         <div className="flex flex-col gap-3">
           <FloorPlanGrid />
           <DecorLegend />
         </div>
         <div className="flex flex-col gap-6">
-          <AnswerBar />
           <SuspectRoster />
         </div>
       </div>

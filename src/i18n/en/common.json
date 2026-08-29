@@ -5,10 +5,18 @@
   "home": {
     "heading": "Choose a case",
     "subheading": "Crime scenes to solve through pure deduction.",
-    "play": "Play"
+    "play": "Play",
+    "betaBadge": "Beta",
+    "betaTooltip": "Current version of the game — a new version with richer rules is in the works.",
+    "v2Preview": {
+      "title": "New engine in the works",
+      "description": "A preview of the upcoming V2 engine: constraint propagation, 5-level hints, hypothesis mode. Still a work in progress, not a real level yet.",
+      "cta": "See the preview"
+    }
   },
   "case": {
     "suspectsHeading": "Suspects",
+    "legendHeading": "Legend",
     "victimBadge": "Victim",
     "accusationHeading": "Who is the murderer?",
     "accusationPlaceholder": "Choose a suspect…",
@@ -20,7 +28,7 @@
     "resultGaveUpTitle": "Here's the solution",
     "resultMurdererIs": "The murderer was {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} suspects correctly placed.",
-    "selectHint": "Drag a suspect onto the floor plan (or select them, then click a cell) to place them.",
+    "selectHint": "Click a suspect, then click a cell to place them (dragging works too).",
     "rowColumnHint": "💡 \"Row\" and \"column\" are counted across the whole floor plan (like coordinates), not just the suspect's room. \"North/south/east/west of X\" works the same way: relative to the whole plan.",
     "closeResult": "Keep investigating",
     "hintButton": "💡 Hint ({{remaining}})",
@@ -31,12 +39,94 @@
     "explanationCorrected": "Corrected",
     "difficultyLabel": "Difficulty"
   },
+  "hint": {
+    "none": "Nothing left to reveal: your plan already reflects every available deduction.",
+    "l1": {
+      "rowColEliminationRow": "Someone is already placed on row {{index}}: that row is closed to everyone else.",
+      "rowColEliminationCol": "Someone is already placed on column {{index}}: that column is closed to everyone else.",
+      "lockedCandidatesRow": "Someone still unlocated has no possible cells left outside row {{index}}. That row is reserved for them.",
+      "lockedCandidatesCol": "Someone still unlocated has no possible cells left outside column {{index}}. That column is reserved for them.",
+      "relationalFilter": "A clue linking two people already rules cells out, even though neither of them is placed yet.",
+      "relationalExclusion": "Someone denies a link to another person: wherever that link would be unavoidable, they cannot have been.",
+      "zoneExclusivityTaken": "Someone swears they were alone in their room, yet another person is bound to be in it: that is not where they were.",
+      "zoneExclusivityClaimedAlone": "A room is already claimed by someone who says they were alone in it: it closes to everyone else.",
+      "zoneCompany": "Someone swears they were not alone: a room nobody could still join them in is therefore ruled out for them.",
+      "nakedSingle": "Look for the person who has only one possible cell left."
+    },
+    "l2": {
+      "rowColElimination": "It is {{person}}'s options that shrink, through the one-person-per-row-and-column rule.",
+      "lockedCandidates": "It is {{person}}'s options that shrink: someone else, without even being located, denies them a row or a column.",
+      "relationalFilter": "It is {{person}}'s options that shrink, because of the clue tying them to another person.",
+      "relationalExclusion": "It is {{person}}'s options that shrink: on those cells the link they deny would hold, wherever the other person ends up.",
+      "zoneExclusivity": "It is {{person}}'s options that shrink: a whole room is closed to them, because it cannot hold two.",
+      "zoneCompany": "It is {{person}}'s options that shrink: in that room, nobody could have been with them.",
+      "nakedSingle": "{{person}} has only one possible cell left. Up to you to find which one."
+    },
+    "l3": {
+      "rowTaken": "{{person}} cannot stay on row {{row}}: {{by}} is already there.",
+      "colTaken": "{{person}} cannot stay on column {{col}}: {{by}} is already there.",
+      "confinedToRow": "Every cell still possible for {{confinedPerson}} sits on row {{row}}, so that row is reserved for them and {{person}} must leave it.",
+      "confinedToCol": "Every cell still possible for {{confinedPerson}} sits on column {{col}}, so that column is reserved for them and {{person}} must leave it.",
+      "relationalWithPerson": "{{person}} was with {{other}}: only the cells in a room where {{other}} can still be remain.",
+      "relationalDirection": "How {{person}} lies relative to {{other}} rules out the cells incompatible with every position {{other}} can still take.",
+      "relationalDistance": "The exact gap between {{person}} and {{other}} rules out the cells incompatible with every position {{other}} can still take.",
+      "relational": "The clue tying {{person}} to {{other}} rules out the incompatible cells.",
+      "relationalNotWithPerson": "{{person}} was not with {{other}}: on those cells they would share {{other}}'s room, wherever {{other}} turns out to be.",
+      "relationalNotDirection": "{{person}} denies lying that way relative to {{other}}: on those cells it would be true for every position {{other}} can still take.",
+      "relationalNotDistance": "{{person}} denies that exact gap to {{other}}: on those cells it would hold for every position {{other}} can still take.",
+      "relationalNot": "{{person}} denies the link they are credited with to {{other}}: on those cells that link would be unavoidable.",
+      "zoneTaken": "{{person}} claims to have been alone, yet {{by}} is bound to be in {{zone}}: so {{person}} was not there.",
+      "zoneClaimedAlone": "{{by}} was alone in {{zone}}: nobody else can be there, {{person}} included.",
+      "zoneNeedsCompany": "{{person}} was not alone, yet nobody else can be in {{zone}} with them: so that is not where they were.",
+      "onlyOptionLeft": "Every other cell for {{person}} has already been eliminated."
+    },
+    "l4": {
+      "rowColEliminationRow": "{{by}} already occupies row {{row}}, so {{person}} cannot be at {{cells}}.",
+      "rowColEliminationCol": "{{by}} already occupies column {{col}}, so {{person}} cannot be at {{cells}}.",
+      "lockedCandidatesRow": "{{confinedPerson}} can only be on row {{row}}, which is therefore reserved for them: {{person}} cannot be at {{cells}}.",
+      "lockedCandidatesCol": "{{confinedPerson}} can only be on column {{col}}, which is therefore reserved for them: {{person}} cannot be at {{cells}}.",
+      "relationalFilter": "The clue tying {{person}} to {{other}} is incompatible with {{cells}}: those cells fall.",
+      "relationalExclusion": "At {{cells}}, {{person}} could not have denied the link to {{other}}: wherever {{other}} can still be, it would hold. Those cells fall.",
+      "zoneExclusivityTaken": "{{by}} is bound to be in {{zone}}, where {{person}} claims to have been alone: {{person}} cannot be at {{cells}}.",
+      "zoneExclusivityClaimedAlone": "{{by}} was alone in {{zone}}: {{person}} cannot be at {{cells}}.",
+      "zoneCompany": "Nobody can keep {{person}} company in {{zone}}: {{cells}} fall.",
+      "nakedSingle": "With every other cell eliminated, {{person}} must be at {{cell}}."
+    },
+    "l5": {
+      "place": "{{person}} is placed at {{cell}}.",
+      "nothingToPlace": "No cell can be settled for certain yet: keep eliminating."
+    }
+  },
   "difficulty": {
-    "1": { "label": "Beginner", "description": "Every suspect can be worked out alone, one direct clue is enough." },
-    "2": { "label": "Easy", "description": "A few suspects need two clues combined." },
-    "3": { "label": "Medium", "description": "You need to place some suspects before you can deduce others." },
-    "4": { "label": "Advanced", "description": "Several deduction chains, plus at least two suspects who only resolve relative to each other." },
-    "5": { "label": "Hard", "description": "Few direct clues: you'll need to reason by elimination across nearly the whole grid." },
-    "6": { "label": "Fiendish", "description": "The biggest cast, the longest chains, and even the fact that no room is empty becomes something you must use." }
+    "1": {
+      "label": "Beginner",
+      "description": "Every suspect can be worked out alone, one direct clue is enough."
+    },
+    "2": {
+      "label": "Easy",
+      "description": "A few suspects need two clues combined."
+    },
+    "3": {
+      "label": "Medium",
+      "description": "You need to place some suspects before you can deduce others."
+    },
+    "4": {
+      "label": "Advanced",
+      "description": "Several deduction chains, plus at least two suspects who only resolve relative to each other."
+    },
+    "5": {
+      "label": "Hard",
+      "description": "Few direct clues: you'll need to reason by elimination across nearly the whole grid."
+    },
+    "6": {
+      "label": "Fiendish",
+      "description": "The biggest cast, the longest chains, and even the fact that no room is empty becomes something you must use."
+    }
+  },
+  "chapter": {
+    "givens": "Chapter {{index}} — What you are handed",
+    "lock": "Chapter {{index}} — The lock",
+    "thread": "Chapter {{index}} — Following the thread",
+    "progress": "Chapter {{current}} of {{total}}"
   }
 }

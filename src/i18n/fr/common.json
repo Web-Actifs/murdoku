@@ -5,10 +5,18 @@
   "home": {
     "heading": "Choisissez une affaire",
     "subheading": "Des scènes de crime à élucider par pure déduction.",
-    "play": "Jouer"
+    "play": "Jouer",
+    "betaBadge": "Bêta",
+    "betaTooltip": "Version actuelle du jeu — une nouvelle version, avec des règles plus riches, est en préparation.",
+    "v2Preview": {
+      "title": "Nouveau moteur en préparation",
+      "description": "Un aperçu du futur moteur V2 : propagation de contraintes, indices à 5 niveaux, mode hypothèse. Encore un chantier, pas un vrai niveau.",
+      "cta": "Voir l'aperçu"
+    }
   },
   "case": {
     "suspectsHeading": "Suspects",
+    "legendHeading": "Légende",
     "victimBadge": "Victime",
     "accusationHeading": "Qui est l'assassin ?",
     "accusationPlaceholder": "Choisissez un suspect…",
@@ -20,7 +28,7 @@
     "resultGaveUpTitle": "Voici la solution",
     "resultMurdererIs": "L'assassin était {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} suspects bien placés.",
-    "selectHint": "Faites glisser un suspect sur le plan (ou sélectionnez-le puis cliquez sur une case) pour le placer.",
+    "selectHint": "Cliquez un suspect puis une case du plan pour le placer (vous pouvez aussi le glisser).",
     "rowColumnHint": "💡 \"Ligne\" et \"colonne\" se comptent sur le plan tout entier (comme des coordonnées), pas seulement dans la pièce du suspect. \"Nord/sud/est/ouest de X\" se lit pareil : par rapport à tout le plan.",
     "closeResult": "Continuer l'enquête",
     "hintButton": "💡 Indice ({{remaining}})",
@@ -31,12 +39,94 @@
     "explanationCorrected": "Corrigé",
     "difficultyLabel": "Difficulté"
   },
+  "hint": {
+    "none": "Il n'y a plus rien à révéler : votre plan reflète déjà toutes les déductions disponibles.",
+    "l1": {
+      "rowColEliminationRow": "Quelqu'un est déjà posé sur la ligne {{index}} : cette ligne est fermée pour tous les autres.",
+      "rowColEliminationCol": "Quelqu'un est déjà posé sur la colonne {{index}} : cette colonne est fermée pour tous les autres.",
+      "lockedCandidatesRow": "Une personne encore non localisée n'a plus de cases possibles que sur la ligne {{index}}. Cette ligne lui est donc réservée.",
+      "lockedCandidatesCol": "Une personne encore non localisée n'a plus de cases possibles que sur la colonne {{index}}. Cette colonne lui est donc réservée.",
+      "relationalFilter": "Un indice qui relie deux personnes élimine déjà des cases, même si aucune des deux n'est encore placée.",
+      "relationalExclusion": "Quelqu'un dément un lien avec une autre personne : là où ce lien serait inévitable, il ne pouvait pas se trouver.",
+      "zoneExclusivityTaken": "Quelqu'un jure avoir été seul dans sa pièce, alors qu'une autre personne s'y trouve forcément : ce n'est donc pas là qu'il était.",
+      "zoneExclusivityClaimedAlone": "Une pièce est déjà revendiquée par quelqu'un qui s'y dit seul : elle se ferme à tous les autres.",
+      "zoneCompany": "Quelqu'un jure ne pas avoir été seul : une pièce où plus personne ne pourrait le rejoindre lui est donc interdite.",
+      "nakedSingle": "Cherchez la personne à qui il ne reste plus qu'une seule case possible."
+    },
+    "l2": {
+      "rowColElimination": "C'est le domaine de {{person}} qui se réduit, par la règle « une personne par ligne et par colonne ».",
+      "lockedCandidates": "C'est le domaine de {{person}} qui se réduit : quelqu'un d'autre, sans même être localisé, lui interdit une ligne ou une colonne.",
+      "relationalFilter": "C'est le domaine de {{person}} qui se réduit, à cause de l'indice qui le relie à une autre personne.",
+      "relationalExclusion": "C'est le domaine de {{person}} qui se réduit : sur ces cases-là, le lien qu'il dément serait forcé, où que soit l'autre.",
+      "zoneExclusivity": "C'est le domaine de {{person}} qui se réduit : une pièce entière lui est fermée, parce qu'on n'y tient pas à deux.",
+      "zoneCompany": "C'est le domaine de {{person}} qui se réduit : dans cette pièce-là, il n'aurait eu personne avec lui.",
+      "nakedSingle": "{{person}} n'a plus qu'une seule case possible. À vous de retrouver laquelle."
+    },
+    "l3": {
+      "rowTaken": "{{person}} ne peut pas rester sur la ligne {{row}} : {{by}} y est déjà.",
+      "colTaken": "{{person}} ne peut pas rester sur la colonne {{col}} : {{by}} y est déjà.",
+      "confinedToRow": "Toutes les cases encore possibles pour {{confinedPerson}} sont sur la ligne {{row}} : cette ligne lui est réservée, donc {{person}} doit la quitter.",
+      "confinedToCol": "Toutes les cases encore possibles pour {{confinedPerson}} sont sur la colonne {{col}} : cette colonne lui est réservée, donc {{person}} doit la quitter.",
+      "relationalWithPerson": "{{person}} était avec {{other}} : seules restent les cases situées dans une pièce où {{other}} peut encore se trouver.",
+      "relationalDirection": "L'orientation de {{person}} par rapport à {{other}} exclut les cases incompatibles avec toutes les positions encore possibles de {{other}}.",
+      "relationalDistance": "L'écart exact entre {{person}} et {{other}} exclut les cases incompatibles avec toutes les positions encore possibles de {{other}}.",
+      "relational": "L'indice qui relie {{person}} à {{other}} exclut les cases incompatibles.",
+      "relationalNotWithPerson": "{{person}} n'était pas avec {{other}} : sur ces cases, il aurait forcément partagé la pièce de {{other}}, où que celui-ci se trouve.",
+      "relationalNotDirection": "{{person}} dément cette orientation par rapport à {{other}} : sur ces cases, elle serait vraie quelle que soit la position encore possible de {{other}}.",
+      "relationalNotDistance": "{{person}} dément cet écart avec {{other}} : sur ces cases, il serait exact quelle que soit la position encore possible de {{other}}.",
+      "relationalNot": "{{person}} dément le lien qu'on lui prête avec {{other}} : sur ces cases, ce lien serait pourtant inévitable.",
+      "zoneTaken": "{{person}} affirme avoir été seul, or {{by}} se trouve forcément dans {{zone}} : {{person}} n'y était donc pas.",
+      "zoneClaimedAlone": "{{by}} était seul dans {{zone}} : plus personne ne peut s'y trouver, {{person}} compris.",
+      "zoneNeedsCompany": "{{person}} n'était pas seul, or plus personne ne peut se trouver dans {{zone}} avec lui : il n'y était donc pas.",
+      "onlyOptionLeft": "Toutes les autres cases de {{person}} ont déjà été éliminées."
+    },
+    "l4": {
+      "rowColEliminationRow": "{{by}} occupe déjà la ligne {{row}}, donc {{person}} ne peut pas être en {{cells}}.",
+      "rowColEliminationCol": "{{by}} occupe déjà la colonne {{col}}, donc {{person}} ne peut pas être en {{cells}}.",
+      "lockedCandidatesRow": "{{confinedPerson}} ne peut plus être que sur la ligne {{row}}, qui lui est donc réservée : {{person}} ne peut pas être en {{cells}}.",
+      "lockedCandidatesCol": "{{confinedPerson}} ne peut plus être que sur la colonne {{col}}, qui lui est donc réservée : {{person}} ne peut pas être en {{cells}}.",
+      "relationalFilter": "L'indice qui relie {{person}} à {{other}} est incompatible avec {{cells}} : ces cases tombent.",
+      "relationalExclusion": "En {{cells}}, {{person}} n'aurait pas pu démentir le lien qui le rattache à {{other}} : où que {{other}} se trouve encore, il serait vrai. Ces cases tombent.",
+      "zoneExclusivityTaken": "{{by}} est forcément dans {{zone}}, où {{person}} se dit pourtant seul : {{person}} ne peut pas être en {{cells}}.",
+      "zoneExclusivityClaimedAlone": "{{by}} était seul dans {{zone}} : {{person}} ne peut pas être en {{cells}}.",
+      "zoneCompany": "Plus personne ne peut tenir compagnie à {{person}} dans {{zone}} : {{cells}} tombent.",
+      "nakedSingle": "Toutes ses autres cases ayant été éliminées, {{person}} est forcément en {{cell}}."
+    },
+    "l5": {
+      "place": "{{person}} est placé en {{cell}}.",
+      "nothingToPlace": "Aucune case ne peut encore être posée avec certitude : continuez d'éliminer."
+    }
+  },
   "difficulty": {
-    "1": { "label": "Découverte", "description": "Chaque suspect se déduit seul, un indice direct suffit." },
-    "2": { "label": "Facile", "description": "Quelques suspects demandent de combiner deux indices." },
-    "3": { "label": "Moyen", "description": "Il faut placer certains suspects avant de pouvoir en déduire d'autres." },
-    "4": { "label": "Confirmé", "description": "Plusieurs chaînes de déduction, et au moins deux suspects qui ne se déduisent que l'un par rapport à l'autre." },
-    "5": { "label": "Difficile", "description": "Peu d'indices directs : il faut raisonner par élimination sur presque toute la grille." },
-    "6": { "label": "Diabolique", "description": "Le plus gros casting, les chaînes les plus longues, et jusqu'au fait qu'aucune pièce n'est vide qu'il faut exploiter." }
+    "1": {
+      "label": "Découverte",
+      "description": "Chaque suspect se déduit seul, un indice direct suffit."
+    },
+    "2": {
+      "label": "Facile",
+      "description": "Quelques suspects demandent de combiner deux indices."
+    },
+    "3": {
+      "label": "Moyen",
+      "description": "Il faut placer certains suspects avant de pouvoir en déduire d'autres."
+    },
+    "4": {
+      "label": "Confirmé",
+      "description": "Plusieurs chaînes de déduction, et au moins deux suspects qui ne se déduisent que l'un par rapport à l'autre."
+    },
+    "5": {
+      "label": "Difficile",
+      "description": "Peu d'indices directs : il faut raisonner par élimination sur presque toute la grille."
+    },
+    "6": {
+      "label": "Diabolique",
+      "description": "Le plus gros casting, les chaînes les plus longues, et jusqu'au fait qu'aucune pièce n'est vide qu'il faut exploiter."
+    }
+  },
+  "chapter": {
+    "givens": "Chapitre {{index}} — Le point de départ",
+    "lock": "Chapitre {{index}} — Le verrou",
+    "thread": "Chapitre {{index}} — Le fil se déroule",
+    "progress": "Chapitre {{current}} sur {{total}}"
   }
 }

@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "validate:cases": "tsx tools/validate-cases.ts"
+    "validate:cases": "tsx tools/validate-cases.ts",
+    "generate:case": "tsx tools/generate-case.ts"
   },
   "dependencies": {
     "i18next": "^26.4.0",

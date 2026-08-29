@@ -5,10 +5,18 @@
   "home": {
     "heading": "Elige un caso",
     "subheading": "Escenas del crimen que resolver por pura deducción.",
-    "play": "Jugar"
+    "play": "Jugar",
+    "betaBadge": "Beta",
+    "betaTooltip": "Versión actual del juego — una nueva versión con reglas más completas está en preparación.",
+    "v2Preview": {
+      "title": "Nuevo motor en preparación",
+      "description": "Un adelanto del futuro motor V2: propagación de restricciones, pistas de 5 niveles, modo hipótesis. Todavía en obras, no es un nivel real.",
+      "cta": "Ver el adelanto"
+    }
   },
   "case": {
     "suspectsHeading": "Sospechosos",
+    "legendHeading": "Leyenda",
     "victimBadge": "Víctima",
     "accusationHeading": "¿Quién es el asesino?",
     "accusationPlaceholder": "Elige un sospechoso…",
@@ -20,7 +28,7 @@
     "resultGaveUpTitle": "Aquí tienes la solución",
     "resultMurdererIs": "El asesino era {{name}}.",
     "resultPlacementsCorrect": "{{correct}} / {{total}} sospechosos bien colocados.",
-    "selectHint": "Arrastra a un sospechoso sobre el plano (o selecciónalo y haz clic en una casilla) para colocarlo.",
+    "selectHint": "Haz clic en un sospechoso y luego en una casilla para colocarlo (también puedes arrastrarlo).",
     "rowColumnHint": "💡 \"Fila\" y \"columna\" se cuentan en todo el plano (como coordenadas), no solo en la sala del sospechoso. \"Norte/sur/este/oeste de X\" funciona igual: respecto a todo el plano.",
     "closeResult": "Seguir investigando",
     "hintButton": "💡 Pista ({{remaining}})",
@@ -31,12 +39,94 @@
     "explanationCorrected": "Corregido",
     "difficultyLabel": "Dificultad"
   },
+  "hint": {
+    "none": "No queda nada por revelar: tu plano ya refleja todas las deducciones disponibles.",
+    "l1": {
+      "rowColEliminationRow": "Ya hay alguien colocado en la fila {{index}}: esa fila queda cerrada para todos los demás.",
+      "rowColEliminationCol": "Ya hay alguien colocado en la columna {{index}}: esa columna queda cerrada para todos los demás.",
+      "lockedCandidatesRow": "A alguien todavía sin localizar no le quedan casillas posibles fuera de la fila {{index}}. Esa fila queda reservada para esa persona.",
+      "lockedCandidatesCol": "A alguien todavía sin localizar no le quedan casillas posibles fuera de la columna {{index}}. Esa columna queda reservada para esa persona.",
+      "relationalFilter": "Una pista que relaciona a dos personas ya elimina casillas, aunque ninguna de las dos esté colocada.",
+      "relationalExclusion": "Alguien niega un vínculo con otra persona: allí donde ese vínculo sería inevitable, no pudo estar.",
+      "zoneExclusivityTaken": "Alguien jura que estaba solo en su sala, pero otra persona está forzosamente allí: no era ahí donde estaba.",
+      "zoneExclusivityClaimedAlone": "Una sala ya la reclama alguien que dice haber estado solo en ella: queda cerrada para todos los demás.",
+      "zoneCompany": "Alguien jura que no estaba solo: una sala donde ya nadie podría acompañarlo le queda prohibida.",
+      "nakedSingle": "Busca a la persona a la que solo le queda una casilla posible."
+    },
+    "l2": {
+      "rowColElimination": "Es el dominio de {{person}} el que se reduce, por la regla de una persona por fila y por columna.",
+      "lockedCandidates": "Es el dominio de {{person}} el que se reduce: otra persona, sin estar siquiera localizada, le prohíbe una fila o una columna.",
+      "relationalFilter": "Es el dominio de {{person}} el que se reduce, por la pista que lo relaciona con otra persona.",
+      "relationalExclusion": "Es el dominio de {{person}} el que se reduce: en esas casillas el vínculo que niega se cumpliría, esté donde esté la otra persona.",
+      "zoneExclusivity": "Es el dominio de {{person}} el que se reduce: una sala entera le queda cerrada, porque en ella no caben dos.",
+      "zoneCompany": "Es el dominio de {{person}} el que se reduce: en esa sala no habría tenido a nadie con él.",
+      "nakedSingle": "A {{person}} solo le queda una casilla posible. A ti te toca encontrarla."
+    },
+    "l3": {
+      "rowTaken": "{{person}} no puede quedarse en la fila {{row}}: {{by}} ya está allí.",
+      "colTaken": "{{person}} no puede quedarse en la columna {{col}}: {{by}} ya está allí.",
+      "confinedToRow": "Todas las casillas aún posibles para {{confinedPerson}} están en la fila {{row}}: esa fila le queda reservada, así que {{person}} debe abandonarla.",
+      "confinedToCol": "Todas las casillas aún posibles para {{confinedPerson}} están en la columna {{col}}: esa columna le queda reservada, así que {{person}} debe abandonarla.",
+      "relationalWithPerson": "{{person}} estaba con {{other}}: solo quedan las casillas situadas en una sala donde {{other}} todavía puede estar.",
+      "relationalDirection": "La orientación de {{person}} respecto a {{other}} descarta las casillas incompatibles con todas las posiciones que {{other}} aún puede ocupar.",
+      "relationalDistance": "La distancia exacta entre {{person}} y {{other}} descarta las casillas incompatibles con todas las posiciones que {{other}} aún puede ocupar.",
+      "relational": "La pista que relaciona a {{person}} con {{other}} descarta las casillas incompatibles.",
+      "relationalNotWithPerson": "{{person}} no estaba con {{other}}: en esas casillas compartiría forzosamente la sala de {{other}}, esté donde esté.",
+      "relationalNotDirection": "{{person}} niega esa orientación respecto a {{other}}: en esas casillas se cumpliría en cualquier posición que {{other}} aún pueda ocupar.",
+      "relationalNotDistance": "{{person}} niega esa distancia exacta con {{other}}: en esas casillas se cumpliría en cualquier posición que {{other}} aún pueda ocupar.",
+      "relationalNot": "{{person}} niega el vínculo que se le atribuye con {{other}}: en esas casillas ese vínculo sería inevitable.",
+      "zoneTaken": "{{person}} afirma haber estado solo, pero {{by}} está forzosamente en {{zone}}: así que {{person}} no estaba allí.",
+      "zoneClaimedAlone": "{{by}} estaba solo en {{zone}}: ya nadie más puede estar allí, {{person}} incluido.",
+      "zoneNeedsCompany": "{{person}} no estaba solo, pero ya nadie más puede estar en {{zone}} con él: así que no era ahí donde estaba.",
+      "onlyOptionLeft": "Todas las demás casillas de {{person}} ya han sido eliminadas."
+    },
+    "l4": {
+      "rowColEliminationRow": "{{by}} ya ocupa la fila {{row}}, así que {{person}} no puede estar en {{cells}}.",
+      "rowColEliminationCol": "{{by}} ya ocupa la columna {{col}}, así que {{person}} no puede estar en {{cells}}.",
+      "lockedCandidatesRow": "{{confinedPerson}} solo puede estar en la fila {{row}}, que le queda reservada: {{person}} no puede estar en {{cells}}.",
+      "lockedCandidatesCol": "{{confinedPerson}} solo puede estar en la columna {{col}}, que le queda reservada: {{person}} no puede estar en {{cells}}.",
+      "relationalFilter": "La pista que relaciona a {{person}} con {{other}} es incompatible con {{cells}}: esas casillas caen.",
+      "relationalExclusion": "En {{cells}}, {{person}} no habría podido negar el vínculo con {{other}}: esté donde esté {{other}}, se cumpliría. Esas casillas caen.",
+      "zoneExclusivityTaken": "{{by}} está forzosamente en {{zone}}, donde {{person}} dice haber estado solo: {{person}} no puede estar en {{cells}}.",
+      "zoneExclusivityClaimedAlone": "{{by}} estaba solo en {{zone}}: {{person}} no puede estar en {{cells}}.",
+      "zoneCompany": "Ya nadie puede hacerle compañía a {{person}} en {{zone}}: {{cells}} caen.",
+      "nakedSingle": "Eliminadas todas sus demás casillas, {{person}} tiene que estar en {{cell}}."
+    },
+    "l5": {
+      "place": "{{person}} queda colocado en {{cell}}.",
+      "nothingToPlace": "Todavía no hay ninguna casilla segura que colocar: sigue eliminando."
+    }
+  },
   "difficulty": {
-    "1": { "label": "Iniciación", "description": "Cada sospechoso se deduce solo, basta una pista directa." },
-    "2": { "label": "Fácil", "description": "Algunos sospechosos requieren combinar dos pistas." },
-    "3": { "label": "Medio", "description": "Hay que colocar a algunos sospechosos antes de poder deducir a otros." },
-    "4": { "label": "Avanzado", "description": "Varias cadenas de deducción, y al menos dos sospechosos que solo se resuelven el uno respecto al otro." },
-    "5": { "label": "Difícil", "description": "Pocas pistas directas: hay que razonar por eliminación en casi todo el tablero." },
-    "6": { "label": "Diabólico", "description": "El reparto más grande, las cadenas más largas, e incluso el hecho de que ninguna sala esté vacía hay que aprovecharlo." }
+    "1": {
+      "label": "Iniciación",
+      "description": "Cada sospechoso se deduce solo, basta una pista directa."
+    },
+    "2": {
+      "label": "Fácil",
+      "description": "Algunos sospechosos requieren combinar dos pistas."
+    },
+    "3": {
+      "label": "Medio",
+      "description": "Hay que colocar a algunos sospechosos antes de poder deducir a otros."
+    },
+    "4": {
+      "label": "Avanzado",
+      "description": "Varias cadenas de deducción, y al menos dos sospechosos que solo se resuelven el uno respecto al otro."
+    },
+    "5": {
+      "label": "Difícil",
+      "description": "Pocas pistas directas: hay que razonar por eliminación en casi todo el tablero."
+    },
+    "6": {
+      "label": "Diabólico",
+      "description": "El reparto más grande, las cadenas más largas, e incluso el hecho de que ninguna sala esté vacía hay que aprovecharlo."
+    }
+  },
+  "chapter": {
+    "givens": "Capítulo {{index}} — El punto de partida",
+    "lock": "Capítulo {{index}} — El cerrojo",
+    "thread": "Capítulo {{index}} — Siguiendo el hilo",
+    "progress": "Capítulo {{current}} de {{total}}"
   }
 }

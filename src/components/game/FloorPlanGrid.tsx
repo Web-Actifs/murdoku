@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type DragEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type DragEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { gridBounds } from '../../engine/grid'
 import { useCaseSession } from '../../store/caseSession'
@@ -55,6 +55,13 @@ export function FloorPlanGrid() {
   const { grid, rooms, characters } = caseDef
   const bounds = gridBounds(grid)
   const [dragOverCellId, setDragOverCellId] = useState<string | null>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (state.selectedCharacterId) {
+      containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+  }, [state.selectedCharacterId])
 
   const roomStyle = new Map(rooms.map((room, i) => [room.id, roomPalette[i % roomPalette.length]]))
   const roomTilt = new Map(rooms.map((room, i) => [room.id, LABEL_TILT[i % LABEL_TILT.length]]))
@@ -92,7 +99,7 @@ export function FloorPlanGrid() {
   }
 
   return (
-    <div className="rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-4 pb-6 shadow-[var(--shadow-card)]">
+    <div ref={containerRef} className="rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-4 pb-6 shadow-[var(--shadow-card)]">
       <div
         className="grid rounded-[3px]"
         style={{
