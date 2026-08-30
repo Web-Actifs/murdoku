@@ -34,8 +34,13 @@ export function V2DifficultyBadge({
         style={{ backgroundColor: COLOR[category] }}
         title={t(`v2.difficulty.${category}.description`)}
       >
-        {'●'.repeat(filled)}
-        {'○'.repeat(4 - filled)}
+        <span aria-hidden className="inline-flex items-center gap-[1px] leading-none">
+          {Array.from({ length: 4 }, (_, i) => (
+            <span key={i} className={`mk-pop inline-block ${i < filled ? '' : 'opacity-50'}`} style={{ animationDelay: `${i * 55}ms` }}>
+              {i < filled ? '●' : '○'}
+            </span>
+          ))}
+        </span>
         <span className="ml-0.5">{t(`v2.difficulty.${category}.label`)}</span>
       </span>
       {score !== undefined && (

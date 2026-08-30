@@ -33,7 +33,7 @@ export function V2PlayPage() {
 }
 
 function V2PlayScreen() {
-  const { puzzle, difficulty } = useV2Session()
+  const { puzzle, difficulty, state } = useV2Session()
   const text = useV2Text(puzzle.id)
 
   return (
@@ -56,7 +56,8 @@ function V2PlayScreen() {
       </details>
 
       <div className="mt-6">
-        <V2ResultPanel />
+        {/* Keyed so each new verdict re-runs its own reveal beat instead of inheriting the last one's. */}
+        <V2ResultPanel key={state.phase} />
       </div>
 
       <div className="mt-6">

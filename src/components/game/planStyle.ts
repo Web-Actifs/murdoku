@@ -122,3 +122,12 @@ function hashString(value: string): number {
 export function personColor(key: string): string {
   return AVATAR_COLORS[hashString(key) % AVATAR_COLORS.length]
 }
+
+/**
+ * A small, stable tilt in degrees for anything that should look hand-placed
+ * rather than printed — the angle a stamp or a token comes down at. Stable per
+ * key, so the same cell always settles the same way.
+ */
+export function paperTilt(key: string, spread = 7): number {
+  return ((hashString(key) % 2000) / 2000) * spread * 2 - spread
+}

@@ -31,11 +31,12 @@ export function V2CasesPage() {
       <p className="mt-2 max-w-[75ch] text-[var(--color-text-muted)]">{t('v2.picker.subheading')}</p>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        {entries.map(({ def, puzzle, difficulty }) => (
+        {entries.map(({ def, puzzle, difficulty }, i) => (
           <Link
             key={def.id}
             to={`/v2/jouer/${def.id}`}
-            className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)] transition-transform hover:-translate-y-1"
+            style={{ animationDelay: `${i * 70}ms` }}
+            className="mk-card group rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:border-[#241f1d] hover:shadow-[0_10px_0_rgb(36_31_29/0.14)]"
           >
             <V2DifficultyBadge category={difficulty.category} score={difficulty.score} />
             <h2 className="mt-3 text-xl font-bold">{t(`v2cases:${def.id}.title`)}</h2>

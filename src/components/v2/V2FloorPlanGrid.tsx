@@ -1,15 +1,31 @@
-import { useState, type DragEvent } from 'react'
+import { useEffect, useState, type CSSProperties, type DragEvent } from 'react'
 import { cellKey, unoccupiableCells } from '../../core/model/geometry'
 import type { Cell, SceneObject } from '../../core/model/types'
 import { useV2Session } from '../../store/v2Session'
 import { DecorIcon } from '../icons/DecorIcon'
 import { PersonAvatar } from '../game/PersonAvatar'
-import { HAIRLINE, INK, LABEL_TILT, WALL, patternStyle, personColor, roomPalette, windowPaneStyle } from '../game/planStyle'
+import { HAIRLINE, INK, LABEL_TILT, WALL, paperTilt, patternStyle, personColor, roomPalette, windowPaneStyle } from '../game/planStyle'
 import { iconForObjectType } from './objectIcon'
 import { useV2Text } from './useV2Text'
+import {
+  CULPRIT_GAP_MS,
+  GIVE_UP_PANEL_MS,
+  STAMP_LEAD_MS,
+  STAMP_STEP_MS,
+  SWEEP_STEP_MS,
+  VERDICT_PANEL_GAP_MS,
+  boardRevealMs,
+} from './verdictChoreography'
 import { windowSegments } from './windowRun'
 
 export const V2_PERSON_DRAG_TYPE = 'application/x-murdoku-v2-person'
+
+/** How long a lifted suspect's chalk outline lingers, in ms. */
+const VACATE_MS = 500
+
+/** The solution is dumped all at once, so its stagger is a texture, not a wait. */
+const GIVE_UP_STEP_MS = 45
+const GIVE_UP_MAX_STEPS = 8
 
 /** Top-left cell of an object: where its name tag hangs. */
 function anchorKeyOf(object: SceneObject): string {
@@ -17,12 +33,14 @@ function anchorKeyOf(object: SceneObject): string {
 }
 
 export function V2FloorPlanGrid() {
-  const { puzzle, state, displayed, solution, outcome, clickCell, placeAtCell } = useV2Session()
+  const { puzzle, state, displayed, solution, outcome, murdererId, clickCell, placeAtCell } = useV2Session()
   const text = useV2Text(puzzle.id)
   const [dragOverCell, setDragOverCell] = useState<string | null>(null)
+  const [lifted, setLifted] = useState<{ cell: string; token: number } | null>(null)
 
   const { board } = puzzle
   const frozen = state.phase !== 'investigating'
+  const gaveUp = state.phase === 'gaveUp'
   const blocked = unoccupiableCells(board)
   const hintCells = new Set(state.hint?.cells ?? [])
 
@@ -54,17 +72,49 @@ export function V2FloorPlanGrid() {
   const crossedAt = (key: string) =>
     puzzle.people.filter((p) => (state.notebook.exclusions[p.id] ?? []).includes(key) && displayed[p.id] !== key)
 
+  // Reading order, but the victim's cell resolves last — the same order the engine
+  // itself is obliged to reach them in (Claude/claude.md §14), which is what makes
+  // the last mark of a reveal the one that matters.
+  const revealOrder = new Map<string, number>()
+  if (frozen) {
+    const victimCell = displayed[puzzle.victimId]
+    const ordered = board.cells
+      .map(cellKey)
+      .filter((key) => occupantAt(key) !== undefined && key !== victimCell)
+    if (victimCell) ordered.push(victimCell)
+    ordered.forEach((key, i) => revealOrder.set(key, i))
+  }
+
+  const culpritCell =
+    murdererId && (gaveUp || (state.phase === 'verdict' && outcome.solved)) ? displayed[murdererId] : undefined
+  const culpritDelay = gaveUp
+    ? GIVE_UP_PANEL_MS + CULPRIT_GAP_MS
+    : boardRevealMs(outcome.placed, true) + VERDICT_PANEL_GAP_MS + CULPRIT_GAP_MS
+
   const neighborOf = (cell: Cell, dr: number, dc: number) => board.cellsByKey.get(`${cell.row + dr}:${cell.col + dc}`)
   const isWall = (cell: Cell, dr: number, dc: number) => {
     const n = neighborOf(cell, dr, dc)
     return !n || n.zoneId !== cell.zoneId
   }
 
+  useEffect(() => {
+    if (!lifted) return
+    const timer = window.setTimeout(() => setLifted(null), VACATE_MS)
+    return () => window.clearTimeout(timer)
+  }, [lifted])
+
   function handleDrop(e: DragEvent<HTMLButtonElement>, key: string) {
     e.preventDefault()
     setDragOverCell(null)
     const personId = e.dataTransfer.getData(V2_PERSON_DRAG_TYPE)
     if (personId && !blocked.has(key)) placeAtCell(personId, key)
+  }
+
+  function handleClick(key: string) {
+    // The token only has to differ from the last one, so lifting from the same cell twice replays the outline.
+    if (state.mode === 'place' && !state.selectedPersonId && occupantAt(key))
+      setLifted((prev) => ({ cell: key, token: (prev?.token ?? 0) + 1 }))
+    clickCell(key)
   }
 
   return (
@@ -95,11 +145,17 @@ export function V2FloorPlanGrid() {
           const showVerdict = state.phase === 'verdict' && occupant !== undefined
           const wasRight = occupant !== undefined && solution[occupant.id] === key
 
+          const order = revealOrder.get(key) ?? 0
+          const settleDelay = gaveUp ? Math.min(order, GIVE_UP_MAX_STEPS) * GIVE_UP_STEP_MS : 0
+          const stampDelay = STAMP_LEAD_MS + order * STAMP_STEP_MS
+          const sweepDelay = STAMP_LEAD_MS + order * SWEEP_STEP_MS
+          const showSweep = state.phase === 'verdict' && outcome.solved && occupant !== undefined
+
           return (
             <button
               key={key}
               type="button"
-              onClick={() => clickCell(key)}
+              onClick={() => handleClick(key)}
               onDragOver={(e) => {
                 if (frozen || isBlocked) return
                 e.preventDefault()
@@ -121,12 +177,10 @@ export function V2FloorPlanGrid() {
                 borderBottom: neighborOf(cell, 1, 0) ? 'none' : WALL,
                 zIndex: zoneIdForLabel ? 20 : undefined,
               }}
-              className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow enabled:hover:z-30 disabled:cursor-default ${
+              className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow duration-150 enabled:hover:z-30 disabled:cursor-default ${
                 canDropHere || dragOverCell === key
                   ? 'shadow-[inset_0_0_0_3px_var(--color-accent)]'
-                  : hintCells.has(key)
-                    ? 'shadow-[inset_0_0_0_3px_#ca8a04]'
-                    : 'enabled:hover:shadow-[inset_0_0_0_3px_rgb(36_31_29/0.35)]'
+                  : 'enabled:hover:shadow-[inset_0_0_0_3px_rgb(36_31_29/0.35)]'
               }`}
             >
               {isBlocked && (
@@ -134,6 +188,25 @@ export function V2FloorPlanGrid() {
                   aria-hidden
                   className="pointer-events-none absolute inset-0"
                   style={{ backgroundImage: `repeating-linear-gradient(45deg, rgb(36 31 29 / 0.16) 0 2px, transparent 2px 7px)` }}
+                />
+              )}
+
+              {isBlocked && state.selectedPersonId !== null && !frozen && (
+                <span aria-hidden className="pointer-events-none absolute inset-0 bg-[rgb(200_50_31/0.12)]" />
+              )}
+
+              {hintCells.has(key) && (
+                <span
+                  aria-hidden
+                  className="mk-hint pointer-events-none absolute inset-0 shadow-[inset_0_0_0_3px_#ca8a04]"
+                />
+              )}
+
+              {lifted?.cell === key && (
+                <span
+                  key={lifted.token}
+                  aria-hidden
+                  className="mk-vacate pointer-events-none absolute inset-1 rounded-[3px] border-2 border-dashed border-[var(--color-accent)]"
                 />
               )}
 
@@ -151,12 +224,14 @@ export function V2FloorPlanGrid() {
 
               {occupant ? (
                 <span
+                  key={occupant.id}
                   draggable={!frozen}
                   onDragStart={(e) => {
                     e.dataTransfer.setData(V2_PERSON_DRAG_TYPE, occupant.id)
                     e.dataTransfer.effectAllowed = 'move'
                   }}
-                  className="cursor-grab active:cursor-grabbing"
+                  className="mk-settle inline-block cursor-grab active:cursor-grabbing"
+                  style={{ animationDelay: `${settleDelay}ms`, '--mk-tilt': `${paperTilt(key)}deg` } as CSSProperties}
                 >
                   <PersonAvatar
                     name={text.person(occupant.id)}
@@ -168,9 +243,10 @@ export function V2FloorPlanGrid() {
                   {showVerdict && !outcome.solved && (
                     <span
                       aria-hidden
-                      className={`absolute bottom-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white ring-[1.5px] ring-[#241f1d] ${
+                      className={`mk-stamp absolute bottom-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold text-white ring-[1.5px] ring-[#241f1d] ${
                         wasRight ? 'bg-[var(--color-success)]' : 'bg-[var(--color-danger)]'
                       }`}
+                      style={{ animationDelay: `${stampDelay}ms`, '--mk-tilt': `${paperTilt(`v:${key}`, 16)}deg` } as CSSProperties}
                     >
                       {wasRight ? '✓' : '✗'}
                     </span>
@@ -180,12 +256,36 @@ export function V2FloorPlanGrid() {
                 icon && <DecorIcon type={icon} className="h-[62%] w-[62%] max-w-full opacity-80" />
               )}
 
+              {occupant && !frozen && (
+                <span
+                  key={`land:${occupant.id}`}
+                  aria-hidden
+                  className="mk-land pointer-events-none absolute inset-0 shadow-[inset_0_0_0_3px_rgb(202_138_4/0.9)]"
+                />
+              )}
+
+              {showSweep && (
+                <span
+                  aria-hidden
+                  className="mk-sweep pointer-events-none absolute inset-0 bg-[rgb(223_201_141/0.4)] shadow-[inset_0_0_0_3px_var(--color-success)]"
+                  style={{ animationDelay: `${sweepDelay}ms` }}
+                />
+              )}
+
+              {culpritCell === key && (
+                <span
+                  aria-hidden
+                  className="mk-culprit pointer-events-none absolute inset-0 shadow-[inset_0_0_0_3px_#c8321f]"
+                  style={{ animationDelay: `${culpritDelay}ms, ${culpritDelay + 420}ms` }}
+                />
+              )}
+
               {crossed.length > 0 && !occupant && (
                 <span className="pointer-events-none absolute bottom-0.5 right-0.5 flex flex-wrap justify-end gap-0.5">
                   {crossed.map((person) => (
                     <span
                       key={person.id}
-                      className="flex h-4 w-4 items-center justify-center rounded-full border border-[#241f1d]/60 bg-[var(--color-surface)] text-[0.55rem] font-bold text-[#241f1d] line-through"
+                      className="mk-scratch flex h-4 w-4 items-center justify-center rounded-full border border-[#241f1d]/60 bg-[var(--color-surface)] text-[0.55rem] font-bold text-[#241f1d] line-through"
                     >
                       {text.person(person.id).charAt(0)}
                     </span>
