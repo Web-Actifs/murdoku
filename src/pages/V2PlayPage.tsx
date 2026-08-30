@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { V2AnswerBar } from '../components/v2/V2AnswerBar'
 import { V2DifficultyBadge } from '../components/v2/V2DifficultyBadge'
 import { V2FloorPlanGrid } from '../components/v2/V2FloorPlanGrid'
+import { V2HowToPlay } from '../components/v2/V2HowToPlay'
 import { V2NotebookPanel } from '../components/v2/V2NotebookPanel'
 import { V2PlanLegend } from '../components/v2/V2PlanLegend'
 import { V2ResultPanel } from '../components/v2/V2ResultPanel'
@@ -38,9 +39,12 @@ function V2PlayScreen() {
 
   return (
     <div className="pb-12">
-      <Link to="/v2" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
-        ← {text.t('v2.play.backToCases')}
-      </Link>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <Link to="/v2" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
+          ← {text.t('v2.play.backToCases')}
+        </Link>
+        <V2HowToPlay openOnFirstVisit />
+      </div>
 
       <details open className="group mt-2">
         <summary className="flex cursor-pointer list-none items-center gap-2">

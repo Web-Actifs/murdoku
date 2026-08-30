@@ -215,6 +215,87 @@
     }
   },
   "v2": {
+    "howTo": {
+      "open": "Cómo jugar",
+      "step": "Pantalla {{current}} / {{total}}",
+      "prev": "Anterior",
+      "next": "Siguiente",
+      "done": "Empezar la investigación",
+      "close": "Cerrar la guía",
+      "goto": "Ir a la pantalla {{step}}",
+      "cast": {
+        "victor": "Víctor",
+        "alba": "Alba",
+        "bruno": "Bruno",
+        "brunoInitial": "B"
+      },
+      "zones": {
+        "lounge": "Salón",
+        "kitchen": "Cocina"
+      },
+      "steps": {
+        "goal": {
+          "title": "El objetivo: desenmascarar al asesino",
+          "body": "Recibes el plano de un lugar dividido en habitaciones, las personas que estaban allí esa noche —varios sospechosos y una víctima— y lo que declaró cada una. Nadie miente. Te toca colocarlos a todos en el plano.",
+          "note": "El nombre del culpable no está escrito en ninguna parte: es el plano correcto el que lo señala. El asesino es quien se quedó a solas con la víctima en una habitación.",
+          "figAlone": "En el salón solo están la víctima y Alba: Alba es la asesina.",
+          "figCrowd": "Tres personas en el salón: nadie estuvo a solas con la víctima."
+        },
+        "rowcol": {
+          "title": "Una persona por fila y por columna",
+          "body": "Es la regla más exigente del juego. Dos personas nunca comparten una fila, ni una columna. Colocar a alguien prohíbe por tanto toda una fila y toda una columna a los demás.",
+          "note": "Los muros no cambian nada: la regla vale en todo el plano, incluso entre dos habitaciones incomunicadas. Y vale también para la víctima.",
+          "figClash": "Alba y Bruno están en la misma fila: imposible, aunque sea en dos habitaciones distintas.",
+          "figClear": "Cada uno con su fila y su columna: el plano se sostiene."
+        },
+        "neighbour": {
+          "title": "«Al lado» no es «con»",
+          "body": "«Al lado de» significa inmediatamente a la izquierda, a la derecha, arriba o abajo —nunca en diagonal— y en la misma habitación. «Con» significa simplemente en la misma habitación, a cualquier distancia.",
+          "note": "Dos casillas pegadas a ambos lados de un muro no están, pues, «al lado». En cambio «más al norte que X» se cuenta en todo el plano: no significa «en la misma columna».",
+          "figNext": "Alba está justo encima de la planta, en la misma habitación: está al lado.",
+          "figDiagonal": "En diagonal nunca es «al lado».",
+          "figWall": "Las dos casillas se tocan, pero las separa un muro: no están «al lado».",
+          "figWith": "Alba está «con» Bruno: la misma habitación, por lejos que estén."
+        },
+        "objects": {
+          "title": "El mobiliario y las ventanas",
+          "body": "Sobre algunos objetos se puede estar: una litera, un banco, una alfombra. Otros son infranqueables: sus casillas van rayadas y nadie se coloca ahí. Un objeto puede ocupar varias casillas y seguir siendo una sola cosa.",
+          "note": "Una pista no siempre señala una única casilla, y es a propósito: son las demás pistas las que lo decidirán.",
+          "figBed": "«Sobre la litera»: tres casillas posibles, no una.",
+          "figWindow": "Una ventana es una abertura en el muro. «Delante de la ventana»: todas las casillas que dan a ella.",
+          "figBlocked": "Nadie se sube a la mesa, pero una pista puede hablar perfectamente de ella."
+        },
+        "tools": {
+          "title": "Tus herramientas",
+          "body": "El plano se trabaja como sobre papel: colocas a una persona cuando estás seguro y tachas a lápiz las casillas de las que la has descartado. Nada es definitivo mientras no resuelvas.",
+          "note": "Al pulsar sobre una persona ya colocada vuelves a tenerla en la mano. Arrastrar también funciona.",
+          "figMarks": "Alba está colocada; Bruno queda descartado de dos casillas a lápiz.",
+          "place": {
+            "label": "Colocar",
+            "help": "Elige a una persona y luego su casilla en el plano."
+          },
+          "cross": {
+            "label": "Tachar",
+            "help": "Modo lápiz: marca las casillas donde una persona no puede haber estado. Una marca a lápiz es solo una nota, no bloquea nada."
+          },
+          "hint": {
+            "label": "💡 Pista",
+            "help": "Cinco niveles, desde una simple orientación («busca a la persona a la que solo le queda una casilla») hasta revelar una posición."
+          },
+          "notebook": {
+            "label": "Cuaderno de investigación",
+            "help": "Confronta tus marcas con la demostración del motor: lo que habías probado, lo que acertaste por intuición y lo que ya estaba desmentido."
+          }
+        },
+        "verdict": {
+          "title": "Resolver",
+          "body": "Cuando todas las personas están en el plano, el botón «Resolver» se enciende. El motor compara entonces tu plano con el único plano posible.",
+          "note": "Una cuadrícula equivocada no te hace perder nada: retomas justo donde lo habías dejado.",
+          "figWrong": "Cuadrícula equivocada: cada persona queda marcada como acertada o errónea, y sigues jugando.",
+          "figRight": "Cuadrícula correcta: en la habitación de la víctima solo queda una persona más: el culpable se revela."
+        }
+      }
+    },
     "picker": {
       "heading": "Los casos del nuevo motor",
       "badge": "Motor V2",

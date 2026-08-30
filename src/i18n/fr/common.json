@@ -215,6 +215,87 @@
     }
   },
   "v2": {
+    "howTo": {
+      "open": "Comment jouer",
+      "step": "Écran {{current}} / {{total}}",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "done": "Commencer l’enquête",
+      "close": "Fermer le guide",
+      "goto": "Aller à l’écran {{step}}",
+      "cast": {
+        "victor": "Victor",
+        "alba": "Alba",
+        "bruno": "Bruno",
+        "brunoInitial": "B"
+      },
+      "zones": {
+        "lounge": "Salon",
+        "kitchen": "Cuisine"
+      },
+      "steps": {
+        "goal": {
+          "title": "Le but : démasquer le meurtrier",
+          "body": "Vous recevez le plan d’un lieu découpé en pièces, les personnes présentes cette nuit-là — des suspects et une victime — et ce que chacune a déclaré. Personne ne ment. À vous de placer tout le monde sur le plan.",
+          "note": "Le nom du coupable n’est écrit nulle part : c’est le plan juste qui le désigne. Le meurtrier est la personne qui s’est retrouvée seule avec la victime dans une pièce.",
+          "figAlone": "Le salon ne contient que la victime et Alba : Alba est la meurtrière.",
+          "figCrowd": "Trois personnes dans le salon : personne n’a été seul avec la victime."
+        },
+        "rowcol": {
+          "title": "Une personne par ligne et par colonne",
+          "body": "C’est la règle la plus contraignante du jeu. Deux personnes ne partagent jamais une ligne, et jamais une colonne. Poser quelqu’un, c’est donc interdire toute une ligne et toute une colonne à tous les autres.",
+          "note": "Les murs n’y changent rien : la règle vaut sur le plan entier, même entre deux pièces qui ne communiquent pas. Et elle vaut aussi pour la victime.",
+          "figClash": "Alba et Bruno sont sur la même ligne : impossible, même dans deux pièces différentes.",
+          "figClear": "Chacun sa ligne et sa colonne : le plan tient."
+        },
+        "neighbour": {
+          "title": "« À côté » n’est pas « avec »",
+          "body": "« À côté de » veut dire immédiatement à gauche, à droite, au-dessus ou en dessous — jamais en diagonale — et dans la même pièce. « Avec » veut simplement dire dans la même pièce, à n’importe quelle distance.",
+          "note": "Deux cases collées de part et d’autre d’un mur ne sont donc pas « à côté ». En revanche « plus au nord que X » se compte sur tout le plan : cela ne veut pas dire « dans la même colonne ».",
+          "figNext": "Alba est juste au-dessus de la plante, dans la même pièce : elle est à côté.",
+          "figDiagonal": "En diagonale, ce n’est jamais « à côté ».",
+          "figWall": "Les deux cases se touchent, mais un mur les sépare : ce n’est pas « à côté ».",
+          "figWith": "Alba est « avec » Bruno : même pièce, même éloignés."
+        },
+        "objects": {
+          "title": "Le mobilier et les fenêtres",
+          "body": "On peut se tenir sur certains objets — une couchette, un banc, un tapis. D’autres sont infranchissables : leurs cases sont hachurées et personne ne s’y tient jamais. Un objet peut couvrir plusieurs cases tout en restant une seule et même chose.",
+          "note": "Un indice ne désigne donc pas toujours une case unique, et c’est voulu : ce sont les autres indices qui trancheront.",
+          "figBed": "« Sur la couchette » : trois cases possibles, pas une.",
+          "figWindow": "Une fenêtre est une ouverture dans le mur. « Devant la fenêtre » : toutes les cases qui lui font face.",
+          "figBlocked": "Personne ne monte sur la table — mais un indice peut très bien parler d’elle."
+        },
+        "tools": {
+          "title": "Vos outils",
+          "body": "Le plan se travaille comme sur le papier : on pose une personne quand on en est sûr, on barre au crayon les cases dont on l’a écartée. Rien n’est définitif tant que vous n’avez pas élucidé.",
+          "note": "Cliquer une personne déjà posée la reprend en main. Le glisser-déposer marche aussi.",
+          "figMarks": "Alba est posée ; Bruno est écarté de deux cases au crayon.",
+          "place": {
+            "label": "Placer",
+            "help": "Choisissez une personne, puis sa case sur le plan."
+          },
+          "cross": {
+            "label": "Barrer",
+            "help": "Mode crayon : marquez les cases où une personne ne peut pas être. Une marque au crayon n’est qu’une note, elle ne bloque rien."
+          },
+          "hint": {
+            "label": "💡 Indice",
+            "help": "Cinq niveaux, du simple aiguillage (« cherchez la personne qui n’a plus qu’une case ») jusqu’à la révélation d’une position."
+          },
+          "notebook": {
+            "label": "Carnet d’enquête",
+            "help": "Confronte vos marques à la démonstration du moteur : ce que vous aviez prouvé, ce que vous aviez deviné juste, ce qui était déjà démenti."
+          }
+        },
+        "verdict": {
+          "title": "Élucider",
+          "body": "Quand toutes les personnes sont sur le plan, le bouton « Élucider » s’allume. Le moteur compare alors votre plan au seul plan possible.",
+          "note": "Une grille fausse ne vous fait rien perdre : vous reprenez la main là où vous l’aviez laissée.",
+          "figWrong": "Grille fausse : chaque personne est marquée juste ou fausse, et vous continuez.",
+          "figRight": "Grille juste : la pièce de la victime ne contient plus qu’une personne — le coupable se révèle."
+        }
+      }
+    },
     "picker": {
       "heading": "Les affaires du nouveau moteur",
       "badge": "Moteur V2",

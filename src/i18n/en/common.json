@@ -215,6 +215,87 @@
     }
   },
   "v2": {
+    "howTo": {
+      "open": "How to play",
+      "step": "Screen {{current}} / {{total}}",
+      "prev": "Back",
+      "next": "Next",
+      "done": "Start investigating",
+      "close": "Close the guide",
+      "goto": "Go to screen {{step}}",
+      "cast": {
+        "victor": "Victor",
+        "alba": "Alba",
+        "bruno": "Bruno",
+        "brunoInitial": "B"
+      },
+      "zones": {
+        "lounge": "Lounge",
+        "kitchen": "Kitchen"
+      },
+      "steps": {
+        "goal": {
+          "title": "The goal: unmask the murderer",
+          "body": "You are handed the plan of a place divided into rooms, the people who were there that night — suspects and one victim — and what each of them said. Nobody lies. Your job is to place everyone on the plan.",
+          "note": "The culprit's name is written nowhere: the correct plan is what points at them. The murderer is whoever ended up alone with the victim in a room.",
+          "figAlone": "The lounge holds only the victim and Alba: Alba is the murderer.",
+          "figCrowd": "Three people in the lounge: nobody was alone with the victim."
+        },
+        "rowcol": {
+          "title": "One person per row and per column",
+          "body": "This is the tightest rule in the game. Two people never share a row, and never share a column. Placing someone therefore denies a whole row and a whole column to everybody else.",
+          "note": "Walls change nothing: the rule holds across the entire plan, even between two rooms with no way through. It holds for the victim too.",
+          "figClash": "Alba and Bruno are on the same row: impossible, even in two different rooms.",
+          "figClear": "Everyone with their own row and column: this plan stands."
+        },
+        "neighbour": {
+          "title": "\"Next to\" is not \"with\"",
+          "body": "\"Next to\" means immediately left, right, above or below — never diagonally — and in the same room. \"With\" simply means in the same room, at any distance at all.",
+          "note": "So two cells touching across a wall are not \"next to\" each other. \"Further north than X\", on the other hand, is counted across the whole plan: it does not mean \"in the same column\".",
+          "figNext": "Alba is directly above the plant, in the same room: she is next to it.",
+          "figDiagonal": "Diagonally is never \"next to\".",
+          "figWall": "The two cells touch, but a wall separates them: that is not \"next to\".",
+          "figWith": "Alba is \"with\" Bruno: same room, however far apart."
+        },
+        "objects": {
+          "title": "Furniture and windows",
+          "body": "Some objects can be stood on — a bunk, a bench, a rug. Others are impassable: their cells are hatched and nobody ever stands there. An object can cover several cells and still be one single thing.",
+          "note": "A clue therefore does not always name a single cell, and that is deliberate: the other clues are what settle it.",
+          "figBed": "\"On the bunk\": three possible cells, not one.",
+          "figWindow": "A window is an opening in the wall. \"In front of the window\": every cell facing it.",
+          "figBlocked": "Nobody climbs onto the table — but a clue can perfectly well talk about it."
+        },
+        "tools": {
+          "title": "Your tools",
+          "body": "The plan works like paper: place a person once you are sure, pencil out the cells you have ruled them out of. Nothing is final until you solve.",
+          "note": "Clicking a person already on the plan picks them back up. Dragging works too.",
+          "figMarks": "Alba is placed; Bruno has been pencilled out of two cells.",
+          "place": {
+            "label": "Place",
+            "help": "Pick a person, then their cell on the plan."
+          },
+          "cross": {
+            "label": "Cross out",
+            "help": "Pencil mode: mark the cells where a person cannot have been. A pencil mark is only a note — it blocks nothing."
+          },
+          "hint": {
+            "label": "💡 Hint",
+            "help": "Five levels, from a nudge (\"look for the person with only one cell left\") all the way to revealing a position."
+          },
+          "notebook": {
+            "label": "Case notebook",
+            "help": "Holds your marks up against the engine's own proof: what you had proved, what you had guessed right, what was already contradicted."
+          }
+        },
+        "verdict": {
+          "title": "Solving",
+          "body": "Once everybody is on the plan, the \"Solve\" button lights up. The engine then compares your plan to the one and only possible plan.",
+          "note": "A wrong grid costs you nothing: you pick up exactly where you left off.",
+          "figWrong": "Wrong grid: every person is marked right or wrong, and you carry on.",
+          "figRight": "Correct grid: the victim's room holds just one other person — the culprit reveals themselves."
+        }
+      }
+    },
     "picker": {
       "heading": "Cases for the new engine",
       "badge": "V2 engine",

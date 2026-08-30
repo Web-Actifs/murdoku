@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { loadPuzzle } from '../core/model/loadPuzzle'
 import { analyzeDifficulty } from '../core/proof/difficulty'
 import { V2DifficultyBadge } from '../components/v2/V2DifficultyBadge'
+import { V2HowToPlay } from '../components/v2/V2HowToPlay'
 import { v2Cases } from '../data/v2/caseIndex'
 
 export function V2CasesPage() {
@@ -27,6 +28,9 @@ export function V2CasesPage() {
       <div className="mt-2 flex flex-wrap items-center gap-3">
         <h1 className="text-3xl font-extrabold tracking-tight">{t('v2.picker.heading')}</h1>
         <span className="inline-flex items-center rounded-full bg-[var(--color-accent)] px-2.5 py-1 text-xs font-bold text-white">{t('v2.picker.badge')}</span>
+        <span className="ml-auto">
+          <V2HowToPlay />
+        </span>
       </div>
       <p className="mt-2 max-w-[75ch] text-[var(--color-text-muted)]">{t('v2.picker.subheading')}</p>
 
