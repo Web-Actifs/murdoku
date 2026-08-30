@@ -105,40 +105,44 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     expect(report.maxChainDepth).toBeGreaterThan(1)
   })
 
-  it('keeps Armand on three cells until the very last placement (§14)', () => {
-    // "In his cabin, against the forward bulkhead" is three cells wide — the two
-    // of the bunk plus one. Saying "on the bunk" would have pinned him the moment
-    // Hélène landed; the spare cell is what holds the body back to the end.
+  it('holds Armand on a wide domain until the very last placement (§14)', () => {
+    // His whole dossier is "found in his cabin" — nine cells. Nothing else is
+    // ever said about him, so every cut he takes is somebody else's row or
+    // column arriving; the body cannot close before the living do.
     const journal = propagate(puzzle).journal
     const armandSteps = journal.filter((s) => s.personId === 'armand')
-    expect(armandSteps.map((s) => s.after.length)).toEqual([2, 1, 1])
+    expect(armandSteps.map((s) => s.after.length)).toEqual([6, 3, 2, 1, 1])
 
-    const helenePlaced = journal.find((s) => s.personId === 'helene' && s.placed)!
     const pascalPlaced = journal.find((s) => s.personId === 'pascal' && s.placed)!
-    expect(armandSteps[0].premises).toContain(helenePlaced.id)
-    expect(armandSteps[1].premises).toContain(pascalPlaced.id)
+    const helenePlaced = journal.find((s) => s.personId === 'helene' && s.placed)!
+    // The last two cells fall to Pascal's column, then Hélène's — in that order.
+    expect(armandSteps[2].premises).toContain(pascalPlaced.id)
+    expect(armandSteps[3].premises).toContain(helenePlaced.id)
   })
 
-  it('places people in the order the chain forces, the body dead last (§14)', () => {
+  it('places people in the order the chain forces, the culprit then the body last (§14)', () => {
     const placed = propagate(puzzle)
       .journal.filter((s) => s.placed)
       .map((s) => s.personId)
-    expect(placed).toEqual(['helene', 'oscar', 'victoire', 'pascal', 'armand'])
+    expect(placed).toEqual(['oscar', 'victoire', 'pascal', 'helene', 'armand'])
   })
 
-  it('runs the chain Oscar -> Victoire -> Pascal -> Armand, each unlocked by the previous', () => {
+  it('runs the chain Oscar -> Victoire -> Pascal -> Hélène -> Armand, each unlocked by the previous', () => {
     const journal = propagate(puzzle).journal
     const oscarPlaced = journal.find((s) => s.personId === 'oscar' && s.placed)!
     const victoireCut = journal.find((s) => s.personId === 'victoire' && s.technique === 'rowColElimination')!
     const victoirePlaced = journal.find((s) => s.personId === 'victoire' && s.placed)!
     const pascalCut = journal.find((s) => s.personId === 'pascal' && s.technique === 'rowColElimination')!
+    const pascalPlaced = journal.find((s) => s.personId === 'pascal' && s.placed)!
+    const heleneCut = journal.find((s) => s.personId === 'helene' && s.technique === 'rowColElimination')!
 
     expect(victoireCut.premises).toContain(oscarPlaced.id)
     expect(pascalCut.premises).toContain(victoirePlaced.id)
+    expect(heleneCut.premises).toContain(pascalPlaced.id)
 
-    // Strike Oscar's placement and three *other* people lose their proof with him.
+    // Strike Oscar's placement and every other person loses their proof with him.
     const oscarKeystone = report.keystones.find((k) => k.stepId === oscarPlaced.id)!
-    expect(oscarKeystone.unprovenPeople.sort()).toEqual(['armand', 'oscar', 'pascal', 'victoire'])
+    expect(oscarKeystone.unprovenPeople.sort()).toEqual(['armand', 'helene', 'oscar', 'pascal', 'victoire'])
   })
 
   it('needs more than one technique, including an intermediate one', () => {
@@ -147,6 +151,36 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     expect(report.techniqueCounts.relationalFilter).toBeGreaterThan(0)
     expect(report.techniqueCounts.nakedSingle).toBeGreaterThan(0)
     expect(report.tier).toBe('intermediate')
+  })
+})
+
+describe('Le Cormoran — every clue is load-bearing', () => {
+  /**
+   * The regression this file exists to prevent. The hand-written version of this
+   * case carried fifteen clues, six of which the proof never used: the player
+   * read them, re-read them, and nothing they did with them moved the grid. The
+   * generated cases are minimal by construction (grow, then prune); this asserts
+   * the hand-kept one is held to the same standard.
+   */
+  const withoutClue = (personId: string, index: number) => {
+    const trimmed = structuredClone(cormoranDef)
+    trimmed.people.find((p) => p.id === personId)!.constraints.splice(index, 1)
+    return loadPuzzle(trimmed)
+  }
+
+  it.each(cormoranDef.people.flatMap((p) => p.constraints.map((_, index) => [p.id, index] as const)))(
+    'breaks when %s drops clue %i',
+    (personId, index) => {
+      const weakened = withoutClue(personId, index)
+      const stillSolves = propagate(weakened).status === 'solved'
+      const stillUnique = solvePuzzle(weakened, { limit: 2 }).length === 1
+      expect(stillSolves && stillUnique).toBe(false)
+    },
+  )
+
+  it('carries ten clues in all, and the victim only one of them', () => {
+    expect(cormoranDef.people.reduce((n, p) => n + p.constraints.length, 0)).toBe(10)
+    expect(cormoranDef.people.find((p) => p.id === 'armand')!.constraints).toHaveLength(1)
   })
 })
 
@@ -197,7 +231,6 @@ describe('Le Cormoran — the clue vocabulary is varied (§7)', () => {
 
     expect([...seen].sort()).toEqual([
       'adjacentToObjectType',
-      'alone',
       'direction',
       'distance',
       'inColumn',
@@ -207,6 +240,15 @@ describe('Le Cormoran — the clue vocabulary is varied (§7)', () => {
       'onObjectType',
       'withPerson',
     ])
+  })
+
+  it('never repeats a clue kind inside one dossier', () => {
+    // Two clues of the same shape on the same witness is what reads as filler,
+    // even when both are load-bearing.
+    for (const person of cormoranDef.people) {
+      const kinds = person.constraints.map((c) => (c.type === 'not' ? `not.${c.of.type}` : c.type))
+      expect(new Set(kinds).size).toBe(kinds.length)
+    }
   })
 
   it('gives the victim the lightest dossier of anyone', () => {

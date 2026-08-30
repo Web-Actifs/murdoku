@@ -327,6 +327,17 @@
       "blockedNote": "Las casillas rayadas tienen un objeto infranqueable: nadie está ahí.",
       "rulesNote": "💡 Una sola persona por fila y por columna, en todo el plano. «Fila», «columna» y «más al norte/sur/este/oeste que X» se cuentan en todo el plano, no solo dentro de la sala, y «más al norte» no significa «en la misma columna»."
     },
+    "trail": {
+      "heading": "El hilo de la investigación",
+      "steps": "{{done}} / {{total}} deducciones establecidas",
+      "discovery": "Lo que acabas de establecer",
+      "waiting": "Aún no hay nada establecido. Coloca a alguien o tacha una casilla: la primera deducción se escribirá aquí.",
+      "chapterCurrent": "en curso",
+      "revealsLeft_one": "Queda una persona por situar antes de que el asesino se delate.",
+      "revealsLeft_other": "Quedan {{count}} personas por situar antes de que el asesino se delate.",
+      "lastThread": "Todos están situados: solo falta desplegar el final del razonamiento.",
+      "closed": "La cadena se ha seguido hasta el final. Solo falta dictar el veredicto."
+    },
     "notebook": {
       "heading": "Cuaderno de investigación",
       "pitch": "Contrasta tus marcas con la demostración del motor: lo que has probado, lo que has acertado por intuición y lo que ya está desmentido.",

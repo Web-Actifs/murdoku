@@ -327,6 +327,17 @@
       "blockedNote": "Hatched cells hold an impassable object: nobody stands there.",
       "rulesNote": "💡 One person per row and per column, across the whole plan. \"Row\", \"column\" and \"further north/south/east/west than X\" are counted across the whole plan, not just within a room — and \"further north\" does not mean \"in the same column\"."
     },
+    "trail": {
+      "heading": "The thread of the case",
+      "steps": "{{done}} / {{total}} deductions established",
+      "discovery": "What you have just established",
+      "waiting": "Nothing established yet. Place someone or cross out a cell, and the first deduction will be written here.",
+      "chapterCurrent": "in progress",
+      "revealsLeft_one": "One more person to locate before the murderer names themselves.",
+      "revealsLeft_other": "{{count}} more people to locate before the murderer names themselves.",
+      "lastThread": "Everyone is located: all that is left is to follow the reasoning to its end.",
+      "closed": "The chain has been followed all the way to its end. All that is left is the verdict."
+    },
     "notebook": {
       "heading": "Investigator’s notebook",
       "pitch": "Check your marks against the engine’s proof: what you proved, what you guessed right, what is already refuted.",

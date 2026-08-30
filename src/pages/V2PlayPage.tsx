@@ -4,6 +4,7 @@ import { V2AnswerBar } from '../components/v2/V2AnswerBar'
 import { V2DifficultyBadge } from '../components/v2/V2DifficultyBadge'
 import { V2FloorPlanGrid } from '../components/v2/V2FloorPlanGrid'
 import { V2HowToPlay } from '../components/v2/V2HowToPlay'
+import { V2InvestigationTrail } from '../components/v2/V2InvestigationTrail'
 import { V2NotebookPanel } from '../components/v2/V2NotebookPanel'
 import { V2PlanLegend } from '../components/v2/V2PlanLegend'
 import { V2ResultPanel } from '../components/v2/V2ResultPanel'
@@ -66,6 +67,10 @@ function V2PlayScreen() {
 
       <div className="mt-6">
         <V2AnswerBar />
+      </div>
+
+      <div className="mt-6">
+        <V2InvestigationTrail />
       </div>
 
       <div className="mt-6 grid items-start gap-8 md:grid-cols-[3fr_2fr]">

@@ -327,6 +327,17 @@
       "blockedNote": "Les cases hachurées portent un objet infranchissable : personne ne s’y tient.",
       "rulesNote": "💡 Une seule personne par ligne et par colonne, sur le plan tout entier. « Ligne », « colonne » et « plus au nord/sud/est/ouest que X » se comptent sur tout le plan, pas seulement dans la pièce — et « plus au nord » ne veut pas dire « dans la même colonne »."
     },
+    "trail": {
+      "heading": "Le fil de l'enquête",
+      "steps": "{{done}} / {{total}} déductions établies",
+      "discovery": "Ce que vous venez d'établir",
+      "waiting": "Rien d'établi pour l'instant. Posez quelqu'un ou barrez une case : la première déduction s'inscrira ici.",
+      "chapterCurrent": "en cours",
+      "revealsLeft_one": "Encore une personne à situer avant que l'assassin ne se désigne.",
+      "revealsLeft_other": "Encore {{count}} personnes à situer avant que l'assassin ne se désigne.",
+      "lastThread": "Tout le monde est situé : il ne reste qu'à dérouler la fin du raisonnement.",
+      "closed": "Toute la chaîne est déroulée jusqu'au bout. Il ne reste plus qu'à rendre le verdict."
+    },
     "notebook": {
       "heading": "Carnet d'enquête",
       "pitch": "Confrontez vos marques à la démonstration du moteur : ce que vous avez prouvé, ce que vous avez deviné juste, ce qui est déjà démenti.",

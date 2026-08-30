@@ -108,21 +108,19 @@ function reasonParams(reason: Reason): Record<string, string | number> {
 const NOTHING_LEFT: Omit<Hint, 'level'> = { i18nKey: 'hint.none', params: {}, cells: [], exhausted: true }
 
 /**
- * Progressive reveal over one single step of the proof (Claude/claude.md §32).
- * Nothing is recomputed: the journal produced by `propagate` is the source of
- * truth, this only decides how much of the first step the player hasn't reached
- * yet is allowed to surface.
- *
- * 1 — the technique and a vague locus, never an identity.
- * 2 — whose domain is moving, and by how much.
- * 3 — the structured reason: why those cells fall.
- * 4 — the complete deduction, cells included, still without touching the grid.
- * 5 — the placement itself, ready to apply.
+ * The reveal levels that read one single step and nothing else — so they can be
+ * asked about *any* step, not only the one the player is standing in front of.
+ * Level 5 is absent on purpose: placing needs the rest of the journal to look
+ * ahead through eliminations, which only `getHint` has.
  */
-export function getHint(journal: DeductionStep[], player: PlayerAssignment, level: HintLevel): Hint {
-  const step = nextUnreflectedStep(journal, player)
-  if (!step) return { level, ...NOTHING_LEFT }
+export type StepHintLevel = 1 | 2 | 3 | 4
 
+/**
+ * One step of the proof, rendered at a given depth of reveal. Split out of
+ * `getHint` so a step the player has *already* worked out can be narrated back
+ * to them with the same vocabulary that would have hinted at it.
+ */
+export function hintForStep(step: DeductionStep, level: StepHintLevel): Hint {
   const base = { level, stepId: step.id, exhausted: false }
   const person = step.personId
 
@@ -172,6 +170,33 @@ export function getHint(journal: DeductionStep[], player: PlayerAssignment, leve
         cells,
       }
     }
+  }
+}
+
+/**
+ * Progressive reveal over one single step of the proof (Claude/claude.md §32).
+ * Nothing is recomputed: the journal produced by `propagate` is the source of
+ * truth, this only decides how much of the first step the player hasn't reached
+ * yet is allowed to surface.
+ *
+ * 1 — the technique and a vague locus, never an identity.
+ * 2 — whose domain is moving, and by how much.
+ * 3 — the structured reason: why those cells fall.
+ * 4 — the complete deduction, cells included, still without touching the grid.
+ * 5 — the placement itself, ready to apply.
+ */
+export function getHint(journal: DeductionStep[], player: PlayerAssignment, level: HintLevel): Hint {
+  const step = nextUnreflectedStep(journal, player)
+  if (!step) return { level, ...NOTHING_LEFT }
+
+  const base = { level, stepId: step.id, exhausted: false }
+
+  switch (level) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return hintForStep(step, level)
 
     case 5: {
       // An elimination has nothing to place, so look forward to the first
