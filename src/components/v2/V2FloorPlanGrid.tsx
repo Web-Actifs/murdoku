@@ -334,7 +334,7 @@ export function V2FloorPlanGrid() {
                     personIndex={puzzle.people.findIndex((p) => p.id === occupant.id)}
                     caseRotation={caseRotation}
                     showMonogram={true}
-                    size="md"
+                    size="base"
                   />
                   {showVerdict && !outcome.solved && (
                     <span
@@ -405,7 +405,9 @@ export function V2FloorPlanGrid() {
         {/* SVG overlay for axis lines (row and column) */}
         {axisRowCol && (
           <svg
-            className="pointer-events-none absolute inset-0 overflow-visible"
+            className="pointer-events-none absolute inset-0"
+            viewBox={`0 0 ${board.cols} ${board.rows}`}
+            preserveAspectRatio="none"
             style={{
               width: '100%',
               height: '100%',
@@ -416,22 +418,22 @@ export function V2FloorPlanGrid() {
             {/* Horizontal line (row) */}
             <line
               x1="0"
-              y1={`${(axisRowCol.row + 0.5) * (100 / board.rows)}%`}
-              x2="100%"
-              y2={`${(axisRowCol.row + 0.5) * (100 / board.rows)}%`}
+              y1={axisRowCol.row + 0.5}
+              x2={board.cols}
+              y2={axisRowCol.row + 0.5}
               stroke="#9ca3af"
-              strokeWidth="2"
-              strokeDasharray="4,4"
+              strokeWidth="0.05"
+              strokeDasharray="0.2,0.2"
             />
             {/* Vertical line (column) */}
             <line
-              x1={`${(axisRowCol.col + 0.5) * (100 / board.cols)}%`}
+              x1={axisRowCol.col + 0.5}
               y1="0"
-              x2={`${(axisRowCol.col + 0.5) * (100 / board.cols)}%`}
-              y2="100%"
+              x2={axisRowCol.col + 0.5}
+              y2={board.rows}
               stroke="#9ca3af"
-              strokeWidth="2"
-              strokeDasharray="4,4"
+              strokeWidth="0.05"
+              strokeDasharray="0.2,0.2"
             />
           </svg>
         )}
