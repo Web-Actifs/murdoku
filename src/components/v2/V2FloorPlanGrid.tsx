@@ -48,6 +48,8 @@ export function V2FloorPlanGrid() {
   const text = useV2Text(puzzle.id)
   const [dragOverCell, setDragOverCell] = useState<string | null>(null)
   const [lifted, setLifted] = useState<{ cell: string; token: number } | null>(null)
+  const [hoveredCell, setHoveredCell] = useState<string | null>(null)
+  const [placedPersonAxisCell, setPlacedPersonAxisCell] = useState<{ personId: string; cell: string } | null>(null)
 
   const { board } = puzzle
   const caseRotation = hashString(puzzle.id) % 13  // 13 is STYLE_COUNT
@@ -115,6 +117,14 @@ export function V2FloorPlanGrid() {
     return !n || n.zoneId !== cell.zoneId
   }
 
+  const cellKeyToRowCol = (key: string): { row: number; col: number } => {
+    const [row, col] = key.split(':').map(Number)
+    return { row, col }
+  }
+
+  const axisCell = hoveredCell || placedPersonAxisCell?.cell
+  const axisRowCol = axisCell ? cellKeyToRowCol(axisCell) : null
+
   /**
    * Inside a room the tiles are ruled with a hairline — except across the middle
    * of a piece of furniture. Two cells of the same table are one table, so the
@@ -145,19 +155,25 @@ export function V2FloorPlanGrid() {
     if (state.mode === 'place' && !state.selectedPersonId && occupantAt(key))
       setLifted((prev) => ({ cell: key, token: (prev?.token ?? 0) + 1 }))
     clickCell(key)
+    // Track the placed person's cell for axis display
+    const occupant = occupantAt(key)
+    if (occupant && state.mode === 'place') {
+      setPlacedPersonAxisCell({ personId: occupant.id, cell: key })
+    }
   }
 
   return (
     <div className="rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-4 pb-6 shadow-[var(--shadow-card)]">
-      <div
-        className="grid rounded-[3px]"
-        style={{
-          gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))`,
-          gridTemplateRows: `repeat(${board.rows}, minmax(0, 1fr))`,
-          border: `3px solid ${INK}`,
-          backgroundColor: INK,
-        }}
-      >
+      <div className="relative">
+        <div
+          className="grid rounded-[3px]"
+          style={{
+            gridTemplateColumns: `repeat(${board.cols}, minmax(0, 1fr))`,
+            gridTemplateRows: `repeat(${board.rows}, minmax(0, 1fr))`,
+            border: `3px solid ${INK}`,
+            backgroundColor: INK,
+          }}
+        >
         {/* Outside the building. A plan whose outline steps in and out reads as a
             shape cut from the page, not as a black hole punched in the floor. */}
         {Array.from({ length: board.rows * board.cols }, (_, i) => ({ row: Math.floor(i / board.cols), col: i % board.cols }))
@@ -240,6 +256,11 @@ export function V2FloorPlanGrid() {
           const sweepDelay = STAMP_LEAD_MS + order * SWEEP_STEP_MS
           const showSweep = state.phase === 'verdict' && outcome.solved && occupant !== undefined
 
+          const isOnAxisRow = axisRowCol?.row === cell.row
+          const isOnAxisCol = axisRowCol?.col === cell.col
+          const onAxis = isOnAxisRow || isOnAxisCol
+          const axisBgOpacity = hoveredCell ? 0.05 : 0.1
+
           return (
             <button
               key={key}
@@ -252,6 +273,8 @@ export function V2FloorPlanGrid() {
                 setDragOverCell(key)
               }}
               onDragLeave={() => setDragOverCell((c) => (c === key ? null : c))}
+              onMouseEnter={() => !frozen && setHoveredCell(key)}
+              onMouseLeave={() => setHoveredCell(null)}
               onDrop={(e) => handleDrop(e, key)}
               disabled={frozen || (isBlocked && !occupant)}
               aria-label={`R${cell.row + 1}C${cell.col + 1} — ${text.zone(cell.zoneId)}`}
@@ -263,6 +286,7 @@ export function V2FloorPlanGrid() {
                 borderRight: neighborOf(cell, 0, 1) ? 'none' : WALL,
                 borderBottom: neighborOf(cell, 1, 0) ? 'none' : WALL,
                 zIndex: zoneIdForLabel ? Z_ZONE_LABEL : Z_TILE,
+                backgroundColor: onAxis ? `rgb(156 163 175 / ${axisBgOpacity})` : undefined,
               }}
               className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow duration-150 disabled:cursor-default ${
                 canDropHere || dragOverCell === key
@@ -376,6 +400,41 @@ export function V2FloorPlanGrid() {
             </button>
           )
         })}
+        </div>
+
+        {/* SVG overlay for axis lines (row and column) */}
+        {axisRowCol && (
+          <svg
+            className="pointer-events-none absolute inset-0 overflow-visible"
+            style={{
+              width: '100%',
+              height: '100%',
+              opacity: hoveredCell ? 0.3 : 0.5,
+              transition: 'opacity 150ms ease-out',
+            }}
+          >
+            {/* Horizontal line (row) */}
+            <line
+              x1="0"
+              y1={`${(axisRowCol.row + 0.5) * (100 / board.rows)}%`}
+              x2="100%"
+              y2={`${(axisRowCol.row + 0.5) * (100 / board.rows)}%`}
+              stroke="#9ca3af"
+              strokeWidth="2"
+              strokeDasharray="4,4"
+            />
+            {/* Vertical line (column) */}
+            <line
+              x1={`${(axisRowCol.col + 0.5) * (100 / board.cols)}%`}
+              y1="0"
+              x2={`${(axisRowCol.col + 0.5) * (100 / board.cols)}%`}
+              y2="100%"
+              stroke="#9ca3af"
+              strokeWidth="2"
+              strokeDasharray="4,4"
+            />
+          </svg>
+        )}
       </div>
     </div>
   )
