@@ -168,16 +168,6 @@ export const phareDef: PuzzleDef = {
   ],
   people: [
     {
-      // Gaspard Quéré, gardien-chef. La victime : aucun indice ne porte sur lui.
-      // Les quatre autres parlent de leur propre position — deux d'entre eux se
-      // situent par rapport au corps sans jamais dire où il est — et sa case est
-      // la dernière que le plateau laisse ouverte (§14).
-      id: 'gaspard',
-      nameKey: 'gaspard',
-      isVictim: true,
-      constraints: [],
-    },
-    {
       // Soizic Le Bihan, gardienne adjointe, restée au banc de quart.
       // « Seule dans ma pièce, deux rangées au sud du chef. » — `exact` se lit
       // « l'autre moins moi », donc -2 la place deux rangées *sous* Gaspard.
@@ -219,6 +209,16 @@ export const phareDef: PuzzleDef = {
         { type: 'inColumn', column: 1 },
         { type: 'not', of: { type: 'inZone', zoneId: 'veille' } },
       ],
+    },
+    {
+      // Gaspard Quéré, gardien-chef. La victime : aucun indice ne porte sur lui.
+      // Les quatre autres parlent de leur propre position — deux d'entre eux se
+      // situent par rapport au corps sans jamais dire où il est — et sa case est
+      // la dernière que le plateau laisse ouverte (§14).
+      id: 'gaspard',
+      nameKey: 'gaspard',
+      isVictim: true,
+      constraints: [],
     },
   ],
   victimId: 'gaspard',

@@ -108,16 +108,6 @@ export const valmorinDef: PuzzleDef = {
   ],
   people: [
     {
-      // Edmond Valmorin, le propriétaire. La victime : le seul élément du dossier
-      // est le relevé de gendarmerie, « le long du mur ouest ». Deux cases
-      // seulement répondent à cela, et rien dans son propre dossier ne tranche :
-      // il faudra que les trois autres soient posés (§14).
-      id: 'edmond',
-      nameKey: 'edmond',
-      isVictim: true,
-      constraints: [{ type: 'inColumn', column: 'left' }],
-    },
-    {
       // Blanche Valmorin, sa belle-fille, qui tient les comptes du domaine.
       // « J'étais avec Lucie, un peu en avant d'elle. »
       id: 'blanche',
@@ -143,6 +133,16 @@ export const valmorinDef: PuzzleDef = {
       id: 'lucie',
       nameKey: 'lucie',
       constraints: [{ type: 'adjacentToObjectType', objectType: 'plante' }],
+    },
+    {
+      // Edmond Valmorin, le propriétaire. La victime : le seul élément du dossier
+      // est le relevé de gendarmerie, « le long du mur ouest ». Deux cases
+      // seulement répondent à cela, et rien dans son propre dossier ne tranche :
+      // il faudra que les trois autres soient posés (§14).
+      id: 'edmond',
+      nameKey: 'edmond',
+      isVictim: true,
+      constraints: [{ type: 'inColumn', column: 'left' }],
     },
   ],
   victimId: 'edmond',

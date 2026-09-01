@@ -304,16 +304,6 @@ export const bellevueDef: PuzzleDef = {
   ],
   people: [
     {
-      // Lucien Mareuil, le banquier de la table. La victime, et le dossier vide :
-      // pas une ligne. Son champ ne se referme que par les rangées, les colonnes
-      // et les pièces que les sept autres lui prennent — 60 cases au départ, une
-      // seule au tout dernier pas de la démonstration (§14).
-      id: 'lucien',
-      nameKey: 'lucien',
-      isVictim: true,
-      constraints: [],
-    },
-    {
       // Odile Sarrazin, croupière. Le dossier le plus léger des vivants, et le
       // plus ambigu : deux fenêtres sur le plateau, dans deux salles différentes
       // (§50). Rien ne tranche avant que Berthe ne tombe.
@@ -382,6 +372,16 @@ export const bellevueDef: PuzzleDef = {
       id: 'sylvain',
       nameKey: 'sylvain',
       constraints: [{ type: 'adjacentToObjectType', objectType: 'banquette' }],
+    },
+    {
+      // Lucien Mareuil, le banquier de la table. La victime, et le dossier vide :
+      // pas une ligne. Son champ ne se referme que par les rangées, les colonnes
+      // et les pièces que les sept autres lui prennent — 60 cases au départ, une
+      // seule au tout dernier pas de la démonstration (§14).
+      id: 'lucien',
+      nameKey: 'lucien',
+      isVictim: true,
+      constraints: [],
     },
   ],
   victimId: 'lucien',

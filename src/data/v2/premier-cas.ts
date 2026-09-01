@@ -164,16 +164,6 @@ export const cormoranDef: PuzzleDef = {
   ],
   people: [
     {
-      // Armand Delcourt, l'armateur. La victime, et le dossier le plus léger de
-      // tous : une seule ligne, la pièce où on l'a trouvé. Neuf cases, que rien
-      // ne réduit avant que les quatre autres ne soient posés — c'est ce qui le
-      // fait tomber en dernier (§14).
-      id: 'armand',
-      nameKey: 'armand',
-      isVictim: true,
-      constraints: [{ type: 'inZone', zoneId: 'cabine' }],
-    },
-    {
       // Hélène Delcourt, sa sœur — la seule dont tout le témoignage se rapporte
       // au mort, et qui ne se referme donc qu'une fois le reste du bord placé.
       // « Je ne l'ai pas quitté. » / « J'étais un peu en arrière de lui. » /
@@ -214,6 +204,16 @@ export const cormoranDef: PuzzleDef = {
       id: 'oscar',
       nameKey: 'oscar',
       constraints: [{ type: 'inFrontOfObjectType', objectType: 'window' }],
+    },
+    {
+      // Armand Delcourt, l'armateur. La victime, et le dossier le plus léger de
+      // tous : une seule ligne, la pièce où on l'a trouvé. Neuf cases, que rien
+      // ne réduit avant que les quatre autres ne soient posés — c'est ce qui le
+      // fait tomber en dernier (§14).
+      id: 'armand',
+      nameKey: 'armand',
+      isVictim: true,
+      constraints: [{ type: 'inZone', zoneId: 'cabine' }],
     },
   ],
   victimId: 'armand',

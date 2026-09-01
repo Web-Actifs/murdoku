@@ -114,16 +114,6 @@ export const transalpinDef: PuzzleDef = {
   ],
   people: [
     {
-      // Bertrand Aubier, contrôleur des wagons-lits. La victime : le seul élément
-      // du dossier est « on l'a trouvé contre une couchette » — et il y en a deux,
-      // dans deux compartiments différents (§50). Rien là-dedans ne désigne une
-      // case : il faudra les quatre autres pour trancher (§14).
-      id: 'bertrand',
-      nameKey: 'bertrand',
-      isVictim: true,
-      constraints: [{ type: 'adjacentToObjectType', objectType: 'couchette' }],
-    },
-    {
       // Irina Voskoff, cantatrice, dix-sept malles et un contrat à Milan.
       // « Sortie au couloir, derrière l'horloger, trois travées après le contrôleur. »
       id: 'irina',
@@ -157,6 +147,16 @@ export const transalpinDef: PuzzleDef = {
         { type: 'not', of: { type: 'inColumn', column: 2 } },
         { type: 'distance', other: 'bertrand', axis: 'row', exact: -4 },
       ],
+    },
+    {
+      // Bertrand Aubier, contrôleur des wagons-lits. La victime : le seul élément
+      // du dossier est « on l'a trouvé contre une couchette » — et il y en a deux,
+      // dans deux compartiments différents (§50). Rien là-dedans ne désigne une
+      // case : il faudra les quatre autres pour trancher (§14).
+      id: 'bertrand',
+      nameKey: 'bertrand',
+      isVictim: true,
+      constraints: [{ type: 'adjacentToObjectType', objectType: 'couchette' }],
     },
   ],
   victimId: 'bertrand',
