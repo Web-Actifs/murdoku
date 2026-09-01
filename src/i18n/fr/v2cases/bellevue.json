@@ -1,0 +1,67 @@
+{
+  "title": "La dernière donne du Bellevue",
+  "flavorText": "Dernière nuit de la saison au casino Bellevue : les portes closes, la caisse comptée, huit personnes dans la maison — et au petit matin, un banquier de moins.",
+  "tagline": "Toute la nuit, la maison a gagné. Au matin, il ne lui manquait plus que le banquier.",
+  "intro": "Les portes ont été fermées à deux heures, la caisse comptée à trois : ils n’étaient plus que huit dans la maison. À cinq heures, quand on a relevé les rideaux, Lucien Mareuil ne tenait plus la banque, ni rien d’autre. Personne n’était sorti, personne n’était entré.",
+  "zones": {
+    "baccara": "la salle de baccara",
+    "roulette": "la salle de roulette",
+    "galerie": "la galerie",
+    "bar": "le bar américain",
+    "fumoir": "le fumoir",
+    "caisse": "la caisse",
+    "office": "l’office",
+    "vestiaire": "le vestiaire"
+  },
+  "objects": {
+    "baieDuPerron": "Baie du perron",
+    "tableDeBaccara": "Table de baccara",
+    "banquetteDesJoueurs": "Banquette des joueurs",
+    "palmierDuBaccara": "Palmier du baccara",
+    "grandesBaies": "Grandes baies",
+    "tableDeRoulette": "Table de roulette",
+    "tapisDeLaRoulette": "Tapis d’Aubusson",
+    "palmierDeLaRoulette": "Palmier de la roulette",
+    "tapisDeLaGalerie": "Tapis de la galerie",
+    "comptoirDuBar": "Comptoir de zinc",
+    "tabouretDuBar": "Tabouret du bar",
+    "banquetteDuBar": "Banquette du bar",
+    "bancDuFumoir": "Banc du fumoir",
+    "tableBasseDuFumoir": "Table à journaux",
+    "poeleDuFumoir": "Poêle de faïence",
+    "coffreDeLaCaisse": "Coffre de la maison",
+    "fourneauDeLOffice": "Fourneau",
+    "lavaboDeLOffice": "Plonge",
+    "malleDuVestiaire": "Malle aux fourrures",
+    "bancDuVestiaire": "Banc du vestiaire"
+  },
+  "people": {
+    "lucien": "Lucien Mareuil",
+    "odile": "Odile Sarrazin",
+    "gaston": "Gaston Wilmet",
+    "berthe": "Berthe Lachaud",
+    "marcel": "Marcel Thouvenin",
+    "nina": "Nina Delaunay",
+    "theo": "Théo Vaugelas",
+    "sylvain": "Sylvain Ortoli"
+  },
+  "roles": {
+    "lucien": "le banquier de la table",
+    "odile": "croupière",
+    "gaston": "le physionomiste",
+    "berthe": "la caissière",
+    "marcel": "contrôleur des jeux",
+    "nina": "la chanteuse du dancing",
+    "theo": "l’habitué",
+    "sylvain": "le barman"
+  },
+  "voices": {
+    "odile": "Une croupière qui se trompe une fois, on la remercie. Moi je ne me suis jamais trompée, et on m’a remerciée quand même. Il fallait bien un nom au bas du rapport.",
+    "gaston": "Mon métier, c’est de reconnaître les gens. Quatre mille visages, et je ne me trompe pas d’un. Quand un habitué revient sous un autre nom, je le signale. J’ai fini par le lui signaler à lui aussi. Il ne m’a pas remercié.",
+    "berthe": "Onze ans que la caisse tombait juste. Depuis février elle tombe juste aussi, mais avec moins dedans. Un trou pareil, ça ne se creuse pas tout seul.",
+    "marcel": "Le ministère m’envoie deux fois l’an. On me sert un café, on me montre des registres tenus à la perfection. Trop bien tenus, justement.",
+    "nina": "Trois airs, un salut, et le reste de la nuit ne me regarde pas. Il m’avait promis la saison à Nice. Il l’avait promise à trois filles avant moi ; aucune n’a jamais vu Nice.",
+    "theo": "En neuf ans, cette maison m’a pris tout ce que j’avais. Cette nuit-là, pour une fois, c’est moi qui reprenais. Il aurait fallu me sortir de force.",
+    "sylvain": "On me paie pour entendre et pour me taire. Depuis six mois on me payait un peu plus pour ne pas me taire. C’est lui qui payait. Il a arrêté en janvier."
+  }
+}

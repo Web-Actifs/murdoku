@@ -1,0 +1,67 @@
+{
+  "title": "Last Hand at the Bellevue",
+  "flavorText": "Closing night at the Bellevue casino: the doors locked, the till counted, eight people left in the house — and by morning, one banker short.",
+  "tagline": "All night long the house won. By morning the only thing it was missing was its banker.",
+  "intro": "The doors were shut at two, the till counted at three: there were only eight of them left in the house. At five, when the shutters went up, Lucien Mareuil was no longer holding the bank, or anything else. Nobody had gone out, and nobody had come in.",
+  "zones": {
+    "baccara": "the baccarat room",
+    "roulette": "the roulette room",
+    "galerie": "the gallery",
+    "bar": "the American bar",
+    "fumoir": "the smoking room",
+    "caisse": "the cash office",
+    "office": "the pantry",
+    "vestiaire": "the cloakroom"
+  },
+  "objects": {
+    "baieDuPerron": "Front bay window",
+    "tableDeBaccara": "Baccarat table",
+    "banquetteDesJoueurs": "Players’ bench",
+    "palmierDuBaccara": "Baccarat room palm",
+    "grandesBaies": "Corner bay windows",
+    "tableDeRoulette": "Roulette table",
+    "tapisDeLaRoulette": "Aubusson rug",
+    "palmierDeLaRoulette": "Roulette room palm",
+    "tapisDeLaGalerie": "Gallery runner",
+    "comptoirDuBar": "Zinc counter",
+    "tabouretDuBar": "Bar stool",
+    "banquetteDuBar": "Bar bench",
+    "bancDuFumoir": "Smoking room bench",
+    "tableBasseDuFumoir": "Newspaper table",
+    "poeleDuFumoir": "Faience stove",
+    "coffreDeLaCaisse": "House safe",
+    "fourneauDeLOffice": "Range",
+    "lavaboDeLOffice": "Scullery sink",
+    "malleDuVestiaire": "Fur trunk",
+    "bancDuVestiaire": "Cloakroom bench"
+  },
+  "people": {
+    "lucien": "Lucien Mareuil",
+    "odile": "Odile Sarrazin",
+    "gaston": "Gaston Wilmet",
+    "berthe": "Berthe Lachaud",
+    "marcel": "Marcel Thouvenin",
+    "nina": "Nina Delaunay",
+    "theo": "Théo Vaugelas",
+    "sylvain": "Sylvain Ortoli"
+  },
+  "roles": {
+    "lucien": "the house banker",
+    "odile": "croupier",
+    "gaston": "the doorman",
+    "berthe": "the cashier",
+    "marcel": "gaming inspector",
+    "nina": "the dance-hall singer",
+    "theo": "the regular",
+    "sylvain": "the barman"
+  },
+  "voices": {
+    "odile": "A croupier who slips up once gets thanked and shown the door. I never slipped up once, and I was thanked all the same. They needed a name at the bottom of the report.",
+    "gaston": "My trade is recognising people. Four thousand faces, and I don't get one of them wrong. When a regular comes back under another name, I report it. In the end I reported it to him too. He didn't thank me for it.",
+    "berthe": "Eleven years the till balanced to the franc. Since February it still balances — with less in it. A hole like that doesn't dig itself.",
+    "marcel": "The ministry sends me twice a year. They pour me a coffee and show me ledgers kept to perfection. Kept a little too well, in fact.",
+    "nina": "Three numbers, a bow, and the rest of the night is none of my business. He'd promised me the season in Nice. He'd promised it to three girls before me; not one of them ever saw Nice.",
+    "theo": "In nine years this house took everything I had. That night, for once, I was taking it back. They'd have had to carry me out.",
+    "sylvain": "I'm paid to hear things and keep quiet. For six months I was paid a little extra not to keep quiet. He was the one paying. He stopped in January."
+  }
+}

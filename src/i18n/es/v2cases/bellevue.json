@@ -1,0 +1,67 @@
+{
+  "title": "La última mano del Bellevue",
+  "flavorText": "Última noche de la temporada en el casino Bellevue: las puertas cerradas, la caja contada, ocho personas en la casa — y por la mañana, un banquero de menos.",
+  "tagline": "Toda la noche ganó la casa. Por la mañana solo le faltaba el banquero.",
+  "intro": "Las puertas se cerraron a las dos, la caja se contó a las tres: solo quedaban ocho en la casa. A las cinco, cuando se levantaron las persianas, Lucien Mareuil ya no llevaba la banca, ni ninguna otra cosa. Nadie había salido, nadie había entrado.",
+  "zones": {
+    "baccara": "la sala de bacarrá",
+    "roulette": "la sala de ruleta",
+    "galerie": "la galería",
+    "bar": "el bar americano",
+    "fumoir": "el fumadero",
+    "caisse": "la caja",
+    "office": "la antecocina",
+    "vestiaire": "el guardarropa"
+  },
+  "objects": {
+    "baieDuPerron": "Ventanal de la entrada",
+    "tableDeBaccara": "Mesa de bacarrá",
+    "banquetteDesJoueurs": "Banqueta de los jugadores",
+    "palmierDuBaccara": "Palmera del bacarrá",
+    "grandesBaies": "Ventanales de la esquina",
+    "tableDeRoulette": "Mesa de ruleta",
+    "tapisDeLaRoulette": "Alfombra de Aubusson",
+    "palmierDeLaRoulette": "Palmera de la ruleta",
+    "tapisDeLaGalerie": "Alfombra de la galería",
+    "comptoirDuBar": "Barra de zinc",
+    "tabouretDuBar": "Taburete de la barra",
+    "banquetteDuBar": "Banqueta del bar",
+    "bancDuFumoir": "Banco del fumadero",
+    "tableBasseDuFumoir": "Mesa de periódicos",
+    "poeleDuFumoir": "Estufa de loza",
+    "coffreDeLaCaisse": "Caja fuerte",
+    "fourneauDeLOffice": "Fogón",
+    "lavaboDeLOffice": "Fregadero",
+    "malleDuVestiaire": "Baúl de las pieles",
+    "bancDuVestiaire": "Banco del guardarropa"
+  },
+  "people": {
+    "lucien": "Lucien Mareuil",
+    "odile": "Odile Sarrazin",
+    "gaston": "Gaston Wilmet",
+    "berthe": "Berthe Lachaud",
+    "marcel": "Marcel Thouvenin",
+    "nina": "Nina Delaunay",
+    "theo": "Théo Vaugelas",
+    "sylvain": "Sylvain Ortoli"
+  },
+  "roles": {
+    "lucien": "el banquero de la mesa",
+    "odile": "crupier",
+    "gaston": "el fisonomista",
+    "berthe": "la cajera",
+    "marcel": "inspector de juegos",
+    "nina": "la cantante de la sala de baile",
+    "theo": "el habitual",
+    "sylvain": "el barman"
+  },
+  "voices": {
+    "odile": "A una crupier que se equivoca una vez la despiden con las gracias. Yo no me equivoqué nunca y me despidieron igual. Hacía falta un nombre al pie del informe.",
+    "gaston": "Mi oficio es reconocer a la gente. Cuatro mil caras y no fallo ni una. Cuando un habitual vuelve con otro nombre, lo comunico. Acabé comunicándoselo también a él. No me lo agradeció.",
+    "berthe": "Once años cuadrando la caja al céntimo. Desde febrero sigue cuadrando, pero con menos dentro. Un agujero así no se cava solo.",
+    "marcel": "El ministerio me manda dos veces al año. Me sirven un café y me enseñan unos libros llevados a la perfección. Demasiado bien llevados, precisamente.",
+    "nina": "Tres canciones, una reverencia, y el resto de la noche no es asunto mío. Me había prometido la temporada en Niza. Se la había prometido a tres chicas antes que a mí; ninguna vio Niza jamás.",
+    "theo": "En nueve años esta casa me quitó todo lo que tenía. Aquella noche, por una vez, era yo quien recuperaba. Habrían tenido que sacarme a rastras.",
+    "sylvain": "Me pagan por oír y por callar. Desde hace seis meses me pagaban un poco más por no callar. Él era quien pagaba. Dejó de hacerlo en enero."
+  }
+}
