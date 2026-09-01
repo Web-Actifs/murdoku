@@ -358,6 +358,35 @@ const ART: Record<string, ArtSpec> = {
     ),
   },
 
+  /**
+   * The bar counter: authored in 'plan' mode because the Bellevue's runs around
+   * a corner, and a straight strip cannot describe an elbow. The zinc top
+   * follows the true outline of the union, so the same art serves a straight
+   * counter and an L without a second drawing.
+   */
+  comptoir: {
+    mode: 'plan',
+    draw: ({ cells, outline }) => (
+      <>
+        <path d={outline(6, 18)} fill={P.woodDark} />
+        <path d={outline(14, 14)} fill={P.wood} />
+        {/* The zinc itself — the reason anyone calls it a zinc. */}
+        <path d={outline(24, 10)} fill={P.silver} />
+        <path d={outline(31, 7)} fill={P.chrome} />
+        {cells.map((c) => {
+          const cx = c.col * U + U / 2
+          const cy = c.row * U + U / 2
+          return (
+            <g key={`${c.row}:${c.col}`}>
+              <circle cx={cx} cy={cy} r={13} fill={P.glass} />
+              <circle cx={cx} cy={cy} r={6} fill={P.gold} opacity={0.75} stroke="none" />
+            </g>
+          )
+        })}
+      </>
+    ),
+  },
+
   /* --- odds and ends -------------------------------------------------------- */
   malle: {
     draw: ({ len }) => (

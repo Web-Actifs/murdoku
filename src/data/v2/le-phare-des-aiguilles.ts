@@ -222,4 +222,5 @@ export const phareDef: PuzzleDef = {
     },
   ],
   victimId: 'gaspard',
+  difficultyOverride: 'intermediate',
 }

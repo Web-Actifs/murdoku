@@ -33,6 +33,16 @@ const Z_FURNITURE = 1
 const Z_TILE = 2
 const Z_ZONE_LABEL = 20
 
+/** FNV-1a 32-bit hash for case-level rotation offset. */
+function hashString(value: string): number {
+  let h = 0x811c9dc5
+  for (let i = 0; i < value.length; i += 1) {
+    h ^= value.charCodeAt(i)
+    h = Math.imul(h, 0x01000193)
+  }
+  return h >>> 0
+}
+
 export function V2FloorPlanGrid() {
   const { puzzle, state, displayed, solution, outcome, murdererId, clickCell, placeAtCell } = useV2Session()
   const text = useV2Text(puzzle.id)
@@ -40,6 +50,7 @@ export function V2FloorPlanGrid() {
   const [lifted, setLifted] = useState<{ cell: string; token: number } | null>(null)
 
   const { board } = puzzle
+  const caseRotation = hashString(puzzle.id) % 13  // 13 is STYLE_COUNT
   const frozen = state.phase !== 'investigating'
   const gaveUp = state.phase === 'gaveUp'
   const blocked = unoccupiableCells(board)
@@ -173,6 +184,7 @@ export function V2FloorPlanGrid() {
                 gridColumn: cell.col + 1,
                 gridRow: cell.row + 1,
                 backgroundColor: style.bg,
+                // Version 2 (background 70%): change backgroundColor to: `${style.bg}b3` (70% opacity)
                 ...patternStyle(style),
               }}
             />
@@ -197,7 +209,7 @@ export function V2FloorPlanGrid() {
                 zIndex: Z_FURNITURE,
               }}
             >
-              <V2ObjectArt object={object} className="absolute inset-0 h-full w-full" />
+              <V2ObjectArt object={object} className="absolute inset-0 h-full w-full opacity-70" />
               <span
                 className={`relative max-w-[160%] shrink-0 overflow-hidden text-ellipsis whitespace-nowrap rounded-full bg-[rgb(255_243_226/0.85)] px-1 text-[0.5rem] font-bold uppercase leading-[1.5] tracking-wide text-[#241f1d]/80 ${
                   captionAtFoot ? 'mb-[3px]' : 'mt-[3px]'
@@ -295,6 +307,9 @@ export function V2FloorPlanGrid() {
                     color={personColor(`${puzzle.id}:${occupant.id}`)}
                     isVictim={occupant.id === puzzle.victimId}
                     variantKey={`${puzzle.id}:${occupant.id}`}
+                    personIndex={puzzle.people.findIndex((p) => p.id === occupant.id)}
+                    caseRotation={caseRotation}
+                    showMonogram={true}
                     size="md"
                   />
                   {showVerdict && !outcome.solved && (
@@ -350,7 +365,7 @@ export function V2FloorPlanGrid() {
 
               {zoneIdForLabel && (
                 <span
-                  className="pointer-events-none absolute -bottom-[9px] left-1/2 max-w-[190%] overflow-hidden text-ellipsis whitespace-nowrap rounded-full border-[1.5px] border-[#241f1d] bg-[var(--color-surface)] px-1.5 py-[1px] text-[0.5rem] font-extrabold uppercase leading-[1.35] tracking-[0.04em] text-[#241f1d] shadow-[0_1.5px_0_rgb(36_31_29/0.35)]"
+                  className="pointer-events-none absolute -bottom-[9px] left-1/2 max-w-[190%] overflow-hidden text-ellipsis whitespace-nowrap rounded-full border-[1.5px] border-[#241f1d] bg-[var(--color-surface)] px-1.5 py-[1px] text-[0.55rem] font-extrabold uppercase leading-[1.35] tracking-[0.04em] text-[#241f1d] shadow-[0_1.5px_0_rgb(36_31_29/0.35)]"
                   style={{ transform: `translateX(-50%) rotate(${zoneTilt.get(zoneIdForLabel) ?? 0}deg)` }}
                 >
                   {text.zone(zoneIdForLabel)}

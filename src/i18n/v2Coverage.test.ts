@@ -133,8 +133,8 @@ describe('v2 case bundle coverage', () => {
     ]
   })
 
-  it('covers all four cases', () => {
-    expect(v2Cases).toHaveLength(4)
+  it('covers all five cases', () => {
+    expect(v2Cases).toHaveLength(5)
     expect(required.length).toBeGreaterThan(80)
   })
 

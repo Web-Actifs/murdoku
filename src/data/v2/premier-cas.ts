@@ -217,4 +217,5 @@ export const cormoranDef: PuzzleDef = {
     },
   ],
   victimId: 'armand',
+  difficultyOverride: 'intermediate',
 }

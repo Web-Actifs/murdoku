@@ -146,4 +146,5 @@ export const valmorinDef: PuzzleDef = {
     },
   ],
   victimId: 'edmond',
+  difficultyOverride: 'beginner',
 }

@@ -14,7 +14,11 @@ export function V2CasesPage() {
     () =>
       v2Cases.map((def) => {
         const puzzle = loadPuzzle(def)
-        return { def, puzzle, difficulty: analyzeDifficulty(puzzle) }
+        const analyzed = analyzeDifficulty(puzzle)
+        const difficulty = def.difficultyOverride
+          ? { ...analyzed, category: def.difficultyOverride }
+          : analyzed
+        return { def, puzzle, difficulty }
       }),
     [],
   )

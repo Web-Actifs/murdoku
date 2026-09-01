@@ -103,7 +103,7 @@ export function windowPaneStyle(side: WallSide, startsRun: boolean, endsRun: boo
   }
 }
 
-const AVATAR_COLORS = ['#7c3aed', '#b8503a', '#3f8c84', '#ca8a04', '#166534', '#2563eb', '#be185d', '#0f766e']
+const AVATAR_COLORS = ['#7c3aed', '#b8503a', '#3f8c84', '#ca8a04', '#166534', '#2563eb', '#be185d', '#5b2c6f']
 
 /** FNV-1a 32-bit, same hash the avatar art uses — stable across reloads. */
 function hashString(value: string): number {

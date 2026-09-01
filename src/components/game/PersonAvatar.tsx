@@ -151,6 +151,9 @@ export function PersonAvatar({
   size = 'md',
   isVictim = false,
   variantKey,
+  personIndex,
+  caseRotation = 0,
+  showMonogram = false,
 }: {
   name: string
   color: string
@@ -158,16 +161,39 @@ export function PersonAvatar({
   isVictim?: boolean
   /** Stable id used to pick the portrait. Defaults to `name`. */
   variantKey?: string
+  /** Person's index in the case roster — if provided, traits are index-based to prevent collisions. */
+  personIndex?: number
+  /** Case-level rotation offset to vary appearances across cases. */
+  caseRotation?: number
+  /** Show initial monogram for colourblind accessibility. */
+  showMonogram?: boolean
 }) {
   const sizeClasses = { sm: 'h-8 w-8', md: 'h-12 w-12', lg: 'h-20 w-20' }[size]
   const frame = { sm: 'p-[1.5px]', md: 'p-[2px]', lg: 'p-[3px]' }[size]
 
-  const h = hashString(variantKey ?? name)
-  const style = h % STYLE_COUNT
-  const skin = pick(SKIN, h, 13)
-  const hair = pick(HAIR, h, 149)
-  const garment = pick(GARMENT, h, 1597)
-  const hasGlasses = Math.floor(h / 20011) % 4 === 0
+  let style: number
+  let skin: string
+  let hair: string
+  let garment: string
+  let hasGlasses: boolean
+
+  if (personIndex !== undefined) {
+    // Index-based trait dealing (Opus fix 1): zero collisions, case rotation to vary appearance.
+    const rot = caseRotation
+    style = (personIndex + rot) % STYLE_COUNT
+    skin = SKIN[(personIndex * 5 + rot) % SKIN.length]  // stride 5, coprime with 6
+    hair = HAIR[(personIndex * 3 + rot) % HAIR.length]  // stride 3, coprime with 7
+    garment = GARMENT[(personIndex + rot) % GARMENT.length]
+    hasGlasses = (personIndex + rot) % 3 === 0  // 1 in 3 chance
+  } else {
+    // Fallback to hash-based for non-V2 contexts
+    const h = hashString(variantKey ?? name)
+    style = h % STYLE_COUNT
+    skin = pick(SKIN, h, 13)
+    hair = pick(HAIR, h, 149)
+    garment = pick(GARMENT, h, 1597)
+    hasGlasses = Math.floor(h / 20011) % 4 === 0
+  }
 
   return (
     <span
@@ -222,6 +248,16 @@ export function PersonAvatar({
             />
             <path d="M9 10 39 39M39 10 9 39" stroke="#c8321f" strokeWidth="3.2" strokeLinecap="round" fill="none" />
           </svg>
+        </span>
+      )}
+
+      {showMonogram && (
+        <span
+          aria-hidden
+          className="absolute bottom-0.5 left-1/2 flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full text-[0.6rem] font-bold text-white ring-1 ring-white"
+          style={{ backgroundColor: color }}
+        >
+          {name.charAt(0).toUpperCase()}
         </span>
       )}
     </span>

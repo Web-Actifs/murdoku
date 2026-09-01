@@ -59,6 +59,8 @@ export interface PuzzleDef {
   objects: SceneObject[]
   people: PersonDef[]
   victimId: string
+  /** Optional override of the automatically-calculated difficulty category. */
+  difficultyOverride?: 'beginner' | 'intermediate' | 'advanced' | 'expert'
 }
 
 /** Normalized puzzle, produced by loadPuzzle from a PuzzleDef. */

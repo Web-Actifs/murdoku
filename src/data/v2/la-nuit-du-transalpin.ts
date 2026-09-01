@@ -160,4 +160,5 @@ export const transalpinDef: PuzzleDef = {
     },
   ],
   victimId: 'bertrand',
+  difficultyOverride: 'intermediate',
 }
