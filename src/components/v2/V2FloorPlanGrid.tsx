@@ -259,7 +259,7 @@ export function V2FloorPlanGrid() {
           const isOnAxisRow = axisRowCol?.row === cell.row
           const isOnAxisCol = axisRowCol?.col === cell.col
           const onAxis = isOnAxisRow || isOnAxisCol
-          const axisBgOpacity = hoveredCell ? 0.05 : 0.1
+          const axisBgColor = hoveredCell ? 'rgb(59 130 246 / 0.15)' : 'rgb(59 130 246 / 0.25)'
 
           return (
             <button
@@ -286,7 +286,7 @@ export function V2FloorPlanGrid() {
                 borderRight: neighborOf(cell, 0, 1) ? 'none' : WALL,
                 borderBottom: neighborOf(cell, 1, 0) ? 'none' : WALL,
                 zIndex: zoneIdForLabel ? Z_ZONE_LABEL : Z_TILE,
-                backgroundColor: onAxis ? `rgb(156 163 175 / ${axisBgOpacity})` : undefined,
+                backgroundColor: onAxis ? axisBgColor : undefined,
               }}
               className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow duration-150 disabled:cursor-default ${
                 canDropHere || dragOverCell === key
@@ -402,41 +402,6 @@ export function V2FloorPlanGrid() {
         })}
         </div>
 
-        {/* SVG overlay for axis lines (row and column) */}
-        {axisRowCol && (
-          <svg
-            className="pointer-events-none absolute inset-0"
-            viewBox={`0 0 ${board.cols} ${board.rows}`}
-            preserveAspectRatio="none"
-            style={{
-              width: '100%',
-              height: '100%',
-              opacity: hoveredCell ? 0.3 : 0.5,
-              transition: 'opacity 150ms ease-out',
-            }}
-          >
-            {/* Horizontal line (row) */}
-            <line
-              x1="0"
-              y1={axisRowCol.row + 0.5}
-              x2={board.cols}
-              y2={axisRowCol.row + 0.5}
-              stroke="#9ca3af"
-              strokeWidth="0.05"
-              strokeDasharray="0.2,0.2"
-            />
-            {/* Vertical line (column) */}
-            <line
-              x1={axisRowCol.col + 0.5}
-              y1="0"
-              x2={axisRowCol.col + 0.5}
-              y2={board.rows}
-              stroke="#9ca3af"
-              strokeWidth="0.05"
-              strokeDasharray="0.2,0.2"
-            />
-          </svg>
-        )}
       </div>
     </div>
   )
