@@ -1,6 +1,7 @@
 {
   "title": "The Cormorant Case",
   "flavorText": "The yacht never left its mooring, and yet the owner never saw the sun come up.",
+  "tagline": "Locked from the inside, the cabin. That's what people always say when the door has no lock.",
   "intro": "Night of 3 September, jetty 7 in Port-Vendres. At dawn, Armand Delcourt is found dead on his bunk, the cabin door locked from the inside — or so everyone says. Four people were sleeping on board.",
   "zones": {
     "salon": "the saloon",
@@ -23,5 +24,18 @@
     "victoire": "Victoire Marsan",
     "pascal": "Pascal Ferrer",
     "oscar": "Oscar Nunes"
+  },
+  "roles": {
+    "armand": "the owner",
+    "helene": "his sister",
+    "victoire": "art dealer",
+    "pascal": "the skipper",
+    "oscar": "the steward"
+  },
+  "voices": {
+    "helene": "I never left his side all night. I'm the one who always sat up with him — always me.",
+    "victoire": "My papers were spread out everywhere, I work better at night. I could hear Oscar pottering about below — it was a comfort not to be the only one still up.",
+    "pascal": "On watch, like every night we're moored. You don't leave the helm just because the boat isn't going anywhere.",
+    "oscar": "I stepped out for air. I wasn't the only one not sleeping, believe me."
   }
 }

@@ -34,6 +34,8 @@ function phraseOf(constraint: Constraint, names: ClueNames): Phrase {
       return { key: 'inZone', params: { zone: names.zone(constraint.zoneId) } }
     case 'onObjectType':
       return { key: 'onObject', params: { object: names.objectType(constraint.objectType) } }
+    case 'inFrontOfObjectType':
+      return { key: 'inFrontOfObject', params: { object: names.objectType(constraint.objectType) } }
     case 'adjacentToObjectType':
       return { key: 'adjacentToObject', params: { object: names.objectType(constraint.objectType) } }
     case 'withPerson':

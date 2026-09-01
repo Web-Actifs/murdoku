@@ -1,6 +1,7 @@
 {
   "title": "The Valmorin Wine Store",
   "flavorText": "They celebrated the end of the harvest until two. By six, the owner lay on the catwalk.",
+  "tagline": "The first-press vintage came out well. That's about the only thing everyone agrees on.",
   "intro": "Last night of the harvest at the Valmorin estate, Côtes de Blaye. Edmond Valmorin is found on the vat-room catwalk, above a vat still warm. Three people had keys to the building.",
   "zones": {
     "cuverie": "the vat room",
@@ -24,5 +25,16 @@
     "blanche": "Blanche Valmorin",
     "raymond": "Raymond Pech",
     "lucie": "Lucie Andrieu"
+  },
+  "roles": {
+    "edmond": "the owner",
+    "blanche": "his daughter-in-law, runs the estate's books",
+    "raymond": "cellar master for thirty years",
+    "lucie": "winemaker, in from Bordeaux"
+  },
+  "voices": {
+    "blanche": "We finished tasting together, like always. I don't like walking back alone on harvest night.",
+    "raymond": "I saw him climb up onto the catwalk. I didn't see him come back down.",
+    "lucie": "I don't know the place yet. I stay where there's light and something green — it settles me."
   }
 }

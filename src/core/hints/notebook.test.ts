@@ -10,6 +10,7 @@ import {
   isStepReflectedInNotebook,
   notebookFrom,
   notebookFrontier,
+  personStatus,
   toAssignment,
   withExclusion,
   withPlacement,
@@ -55,98 +56,121 @@ describe('notebookFrontier — how far the player has honestly got', () => {
   })
 })
 
-describe('annotate — telling a deduction from a lucky guess', () => {
-  it('calls a mark justified when the journal already proves it at that point', () => {
+describe('annotate — never revealing more than the player has earned (Claude/claude.md §30-32)', () => {
+  it('calls a mark established when the journal already proves it within the frontier', () => {
     const book = withPlacement(emptyNotebook(), 'brycen', '0:1')
     const report = annotate(journal, book)
     const mark = markFor(report.marks, 'brycen', '0:1')
 
-    expect(mark.verdict).toBe('justified')
-    expect(mark.leap).toBe(0)
+    expect(mark.verdict).toBe('established')
     expect(mark.decisiveStepId).toBe('d0')
-    expect(report.disciplined).toBe(true)
-    expect(report.counts).toMatchObject({ justified: 1, premature: 0, contradicted: 0 })
   })
 
-  it('calls a correct-but-unearned placement premature, and says how far ahead it is', () => {
+  /**
+   * The property the whole redesign hinges on: a placement that happens to be
+   * *correct* but sits ahead of the proof must read exactly like an unproven
+   * guess, not like a quiet "yes". Anything else turns the notebook into a
+   * free, unlimited "check my answer" button.
+   */
+  it('does not tell a correct-but-unearned placement apart from an open guess', () => {
     // Diane really is on 2:2, but nothing in the journal narrows her down before step 5.
     const book = withPlacement(emptyNotebook(), 'diane', '2:2')
     const report = annotate(journal, book)
     const mark = markFor(report.marks, 'diane', '2:2')
 
-    expect(mark.verdict).toBe('premature')
     expect(mark.cell).toBe(placements.diane)
-    expect(mark.decisiveStep).toBe(5)
-    expect(mark.decisiveStepId).toBe('d4')
-    expect(mark.leap).toBe(5)
-    expect(report.disciplined).toBe(false)
+    expect(mark.verdict).toBe('open')
+    expect(mark.decisiveStep).toBeUndefined()
+    expect(mark.decisiveStepId).toBeUndefined()
   })
 
-  it('reports the jump as a gap between the player chain depth and the depth of what they wrote down', () => {
-    const { progress } = annotate(journal, withPlacement(emptyNotebook(), 'diane', '2:2'))
-    expect(progress.frontierStep).toBe(0)
-    expect(progress.frontierStepId).toBe('d0')
-    expect(progress.playerDepth).toBe(0)
-    expect(progress.reachedDepth).toBe(5)
-    expect(progress.solverDepth).toBe(6)
-    expect(progress.maxLeap).toBe(5)
-  })
-
-  it('calls an exclusion false when the journal proves the person is on that very cell', () => {
+  it('calls an exclusion refuted once the journal proves, within reach, that the person is on that very cell', () => {
     // 2:2 is still a live candidate for Diane at this stage — and it is her cell.
     expect(candidatesAfter(journal, 0).get('diane')).toContain('2:2')
     const book = withExclusion(emptyNotebook(), 'diane', '2:2')
     const mark = markFor(annotate(journal, book).marks, 'diane', '2:2', 'exclusion')
 
-    expect(mark.verdict).toBe('contradicted')
+    expect(mark.verdict).toBe('open')
     expect(mark.kind).toBe('exclusion')
-    expect(mark.decisiveStep).toBe(5)
-    expect(mark.leap).toBe(5)
   })
 
-  it('separates a refutation the player could already see from one they could not', () => {
-    // Crossing out the cell the journal has *already* pinned her to: leap 0, evidence ignored.
+  it('separates a refutation the player could already see from one still out of reach', () => {
+    // Crossing out the very cell the journal has *already* pinned her to, within
+    // the frontier this notebook itself reaches: a refutation the player ignored.
     const contradictsItself = withExclusion(withPlacement(emptyNotebook(), 'brycen', '0:1'), 'brycen', '0:1')
     const ignored = markFor(annotate(journal, contradictsItself).marks, 'brycen', '0:1', 'exclusion')
-    expect(ignored.verdict).toBe('contradicted')
-    expect(ignored.leap).toBe(0)
+    expect(ignored.verdict).toBe('refuted')
+    expect(ignored.decisiveStep).toBeDefined()
 
-    // A wrong placement no step has refuted yet: same verdict, but it was a guess.
+    // A wrong placement no step has refuted *within this notebook's own frontier*
+    // yet: it stays open, exactly like the correct-but-early guess above — a
+    // player cannot tell the two apart until their own reasoning catches up.
     const guessed = markFor(annotate(journal, withPlacement(emptyNotebook(), 'austin', '0:0')).marks, 'austin', '0:0')
-    expect(guessed.verdict).toBe('contradicted')
-    expect(guessed.leap).toBeGreaterThan(0)
+    expect(guessed.verdict).toBe('open')
+    expect(guessed.decisiveStep).toBeUndefined()
   })
 
-  it('calls a premature exclusion premature rather than justified', () => {
-    expect(verdictOf(withExclusion(emptyNotebook(), 'diane', '1:2'), 'diane', '1:2', 'exclusion')).toBe('premature')
+  it('calls a premature exclusion open rather than established', () => {
+    expect(verdictOf(withExclusion(emptyNotebook(), 'diane', '1:2'), 'diane', '1:2', 'exclusion')).toBe('open')
   })
 
-  it('treats crossing out a cell that was never possible as trivially justified', () => {
+  it('treats crossing out a cell that was never possible as trivially established', () => {
     const mark = markFor(annotate(journal, withExclusion(emptyNotebook(), 'diane', '0:0')).marks, 'diane', '0:0', 'exclusion')
-    expect(mark.verdict).toBe('justified')
+    expect(mark.verdict).toBe('established')
     expect(mark.decisiveStep).toBe(0)
     expect(mark.decisiveStepId).toBeUndefined()
   })
 
-  it('says unproven when the journal settles the mark neither way', () => {
-    expect(verdictOf(withPlacement(emptyNotebook(), 'ghost', '0:0'), 'ghost', '0:0')).toBe('unproven')
+  it('leaves a mark open when the journal never touches that person at all', () => {
+    expect(verdictOf(withPlacement(emptyNotebook(), 'ghost', '0:0'), 'ghost', '0:0')).toBe('open')
   })
 
-  it('reports a fully deduced solution as disciplined, with no leap at all', () => {
+  it('calls a fully self-deduced solution established across the board', () => {
     const solved = Object.entries(placements).reduce((book, [personId, cell]) => withPlacement(book, personId, cell), emptyNotebook())
     const report = annotate(journal, solved)
 
-    expect(report.counts.justified).toBe(3)
-    expect(report.disciplined).toBe(true)
-    expect(report.progress.maxLeap).toBe(0)
-    expect(report.progress.playerDepth).toBe(report.progress.solverDepth)
+    expect(report.marks.length).toBeGreaterThan(0)
+    expect(report.marks.every((mark) => mark.verdict === 'established')).toBe(true)
   })
 
-  it('leaves an empty notebook with no marks and no verdict', () => {
+  it('leaves an empty notebook with no marks at all', () => {
     const report = annotate(journal, emptyNotebook())
     expect(report.marks).toEqual([])
-    expect(report.disciplined).toBe(false)
-    expect(report.progress.reachedDepth).toBe(0)
+    expect(report.progress.frontierStep).toBe(0)
+  })
+})
+
+describe('personStatus — the roster card, one suspect at a time', () => {
+  it('mirrors candidatesAfter for someone not yet placed', () => {
+    expect(personStatus(journal, emptyNotebook(), 0, 'diane').candidatesNow).toEqual(candidatesAfter(journal, 0).get('diane'))
+    expect(personStatus(journal, emptyNotebook(), journal.length, 'diane').candidatesNow).toEqual([placements.diane])
+  })
+
+  it('reports an established placement', () => {
+    const book = withPlacement(emptyNotebook(), 'brycen', '0:1')
+    const status = personStatus(journal, book, notebookFrontier(journal, book), 'brycen')
+    expect(status.placement?.verdict).toBe('established')
+  })
+
+  it('reports a correct-but-early placement as open, not established', () => {
+    const book = withPlacement(emptyNotebook(), 'diane', '2:2')
+    const status = personStatus(journal, book, notebookFrontier(journal, book), 'diane')
+    expect(status.placement?.verdict).toBe('open')
+    expect(status.placement?.decisiveStep).toBeUndefined()
+  })
+
+  it('reports a refuted pencil mark among a person’s exclusions', () => {
+    const book = withExclusion(withPlacement(emptyNotebook(), 'brycen', '0:1'), 'brycen', '0:1')
+    const status = personStatus(journal, book, notebookFrontier(journal, book), 'brycen')
+    expect(status.exclusions.map((m) => m.cell)).toContain('0:1')
+    expect(status.exclusions.find((m) => m.cell === '0:1')?.verdict).toBe('refuted')
+  })
+
+  it('leaves everything empty for someone the journal never touches', () => {
+    const status = personStatus(journal, emptyNotebook(), 0, 'ghost')
+    expect(status.placement).toBeUndefined()
+    expect(status.exclusions).toEqual([])
+    expect(status.candidatesNow).toEqual([])
   })
 })
 
@@ -160,7 +184,7 @@ describe('the notebook layers on top of PlayerAssignment instead of replacing it
   it('lifts an existing player grid without inventing negative marks', () => {
     const lifted = notebookFrom({ brycen: '0:1' })
     expect(lifted.exclusions).toEqual({})
-    expect(annotate(journal, lifted).counts.justified).toBe(1)
+    expect(annotate(journal, lifted).marks.every((mark) => mark.verdict === 'established')).toBe(true)
   })
 
   it('never mutates the notebook it is given', () => {

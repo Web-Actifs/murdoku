@@ -179,7 +179,8 @@ export const phareDef: PuzzleDef = {
     },
     {
       // Soizic Le Bihan, gardienne adjointe, restée au banc de quart.
-      // « Seule dans ma pièce, deux rangées au nord du chef. »
+      // « Seule dans ma pièce, deux rangées au sud du chef. » — `exact` se lit
+      // « l'autre moins moi », donc -2 la place deux rangées *sous* Gaspard.
       id: 'soizic',
       nameKey: 'soizic',
       constraints: [
@@ -189,7 +190,8 @@ export const phareDef: PuzzleDef = {
     },
     {
       // Armel Kerrien, le mécanicien, sur le caillebotis de la machinerie.
-      // « Deux travées à l'est du chef, sur la passerelle. »
+      // « Deux travées à l'ouest du chef, sur la passerelle. » — +2 signifie que
+      // Gaspard est deux travées plus loin à l'est, donc Armel est à sa gauche.
       id: 'armel',
       nameKey: 'armel',
       constraints: [
@@ -199,7 +201,8 @@ export const phareDef: PuzzleDef = {
     },
     {
       // Noémie Vasseur, inspectrice des Phares et Balises, bloquée par le coup de vent.
-      // « Travée 4, une rangée au sud du marin. »
+      // « Travée 4, une rangée au nord du marin. » — +1 met Tanguy une rangée
+      // plus bas qu'elle, pas l'inverse.
       id: 'noemie',
       nameKey: 'noemie',
       constraints: [

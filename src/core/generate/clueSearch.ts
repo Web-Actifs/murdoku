@@ -37,6 +37,7 @@ export type ClueSearchResult =
 const KIND_WEIGHT: Record<Constraint['type'], number> = {
   inZone: 2.5,
   onObjectType: 2.5,
+  inFrontOfObjectType: 2.5,
   adjacentToObjectType: 2.5,
   inRow: 1.5,
   inColumn: 1.5,

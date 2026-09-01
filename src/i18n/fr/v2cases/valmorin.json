@@ -1,6 +1,7 @@
 {
   "title": "Le chai de Valmorin",
   "flavorText": "On a fêté la fin des vendanges jusqu’à deux heures. À six heures, le propriétaire gisait sur la passerelle.",
+  "tagline": "La cuvée de tête était réussie. C’est bien la seule chose sur laquelle tout le monde est d’accord.",
   "intro": "Dernière nuit des vendanges au domaine de Valmorin, côtes de Blaye. Edmond Valmorin est retrouvé sur la passerelle de la cuverie, au-dessus d’une cuve encore tiède. Trois personnes avaient les clés du bâtiment.",
   "zones": {
     "cuverie": "la cuverie",
@@ -24,5 +25,16 @@
     "blanche": "Blanche Valmorin",
     "raymond": "Raymond Pech",
     "lucie": "Lucie Andrieu"
+  },
+  "roles": {
+    "edmond": "le propriétaire",
+    "blanche": "sa belle-fille, gestionnaire du domaine",
+    "raymond": "maître de chai depuis trente ans",
+    "lucie": "œnologue, venue de Bordeaux"
+  },
+  "voices": {
+    "blanche": "On a fini la dégustation ensemble, comme toujours. Je n’aime pas rentrer seule le soir des vendanges.",
+    "raymond": "Je l’ai vu monter sur la passerelle. Je ne l’ai pas vu redescendre.",
+    "lucie": "Je ne connais pas encore la maison. Je reste où il y a de la lumière et du vert, ça me repose."
   }
 }

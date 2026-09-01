@@ -1,3 +1,4 @@
+import { findMirroredTestimony } from '../constraints/relations'
 import type { Assignment, Puzzle } from '../model/types'
 import type { DeductionStep } from '../possibility/journal'
 import { propagate } from '../possibility/propagate'
@@ -17,6 +18,8 @@ export type RejectionReason =
   | 'victim-not-last'
   /** The victim's zone holds zero or several other people, so no one is named (§15). */
   | 'no-murderer'
+  /** Two witnesses state the same relation about each other — one fact, read twice. */
+  | 'mirrored-testimony'
 
 export type VerificationResult =
   | { ok: true; difficulty: PuzzleDifficulty; murdererId: string }
@@ -37,8 +40,20 @@ export type VerificationResult =
  * anything once the body's zone is the last thing learned, so a candidate where
  * propagation pins the victim mid-proof is rejected outright, however sound it
  * otherwise is.
+ *
+ * `findMirroredTestimony` is the one criterion here that is about *reading*
+ * rather than about logic, and it has to live in the gate precisely because the
+ * logic cannot catch it: propagation only narrows the domain of the person a
+ * clue is written on, so a relation stated from both sides is load-bearing on
+ * both sides and survives pruning intact. Measured over 200 seeds per shell
+ * before this check existed, 13% to 35% of accepted candidates carried such a
+ * pair — a player reading two cards to learn one fact, which is exactly the
+ * "pile of clues" §4 exists to prevent.
  */
 export function verifyGenerated(puzzle: Puzzle, expected: Assignment): VerificationResult {
+  const mirrored = findMirroredTestimony(puzzle)
+  if (mirrored) return { ok: false, reason: 'mirrored-testimony' }
+
   const propagation = propagate(puzzle)
   if (propagation.status !== 'solved') return { ok: false, reason: 'not-solvable-by-propagation' }
 

@@ -1,5 +1,4 @@
 import type { DeductionStep } from '../possibility/journal'
-import { chainDepths } from '../proof/difficulty'
 import type { PlayerAssignment } from './types'
 
 /**
@@ -23,32 +22,28 @@ export interface PlayerNotebook {
 export type MarkKind = 'placement' | 'exclusion'
 
 /**
- * How a single player mark stands against the proof *at the point the player has
- * actually reached*, not against the finished solution:
+ * How a single player mark stands against the proof, judged only up to the
+ * `frontier` the caller hands in — never against the finished solution, and
+ * never against reasoning the player has not reached yet. That second rule is
+ * what keeps this from being a free "check my answer" oracle: a correct guess
+ * placed ahead of the proof reads as `open`, exactly like a wrong one — the
+ * player only learns which once their own frontier catches up to it.
  *
- * - `justified` — the journal already establishes it; the player deduced it.
- * - `premature` — the journal does establish it, but only further down the
- *   chain than the player has got: right answer, guessed. This is the case V1
- *   could not see at all, and the one the whole V2 investigation feel hinges on.
- * - `contradicted` — the journal refutes it. When `leap` is above zero the
- *   refutation was not yet available either, so it was a wrong guess rather than
- *   evidence ignored.
- * - `unproven` — propagation never settles this mark either way (a stuck puzzle,
- *   or a mark about someone the journal never touches).
+ * - `established` — the proof already closes on this, within reach.
+ * - `refuted` — the proof already rules this out, within reach.
+ * - `open` — neither is true yet at this frontier, whatever happens later.
  */
-export type MarkVerdict = 'justified' | 'premature' | 'contradicted' | 'unproven'
+export type MarkVerdict = 'established' | 'refuted' | 'open'
 
 export interface MarkAnnotation {
   personId: string
   cell: string
   kind: MarkKind
   verdict: MarkVerdict
-  /** Steps consumed before the journal settles this mark; undefined when it never does. */
+  /** Steps consumed before the journal settles this mark; unset while it's still `open`. */
   decisiveStep?: number
   /** The step that settles it — undefined when the seed alone already did. */
   decisiveStepId?: string
-  /** How far past the player's own frontier that decisive step sits; 0 means "reachable now". */
-  leap: number
 }
 
 export interface NotebookProgress {
@@ -56,22 +51,26 @@ export interface NotebookProgress {
   frontierStep: number
   /** First step the notebook does not account for; undefined when the proof is fully mirrored. */
   frontierStepId?: string
-  /** Chain depth the player has genuinely worked through. */
-  playerDepth: number
-  /** Chain depth of the deepest conclusion the player has written down, leaps included. */
-  reachedDepth: number
-  /** Chain depth of the whole proof, for the "5 of 6" reading. */
-  solverDepth: number
-  /** Largest gap between a written-down conclusion and the reasoning that supports it. */
-  maxLeap: number
 }
 
 export interface NotebookAnnotation {
   marks: MarkAnnotation[]
-  counts: Record<MarkVerdict, number>
   progress: NotebookProgress
-  /** Every mark is earned: the player is deducing, not probing. */
-  disciplined: boolean
+}
+
+/**
+ * One suspect's status against the proof, for the roster's "faire le point"
+ * line — the unit the UI actually renders, one card at a time, rather than the
+ * whole-board `marks` list `annotate` produces.
+ */
+export interface PersonStatus {
+  personId: string
+  /** The player's own placement, annotated — undefined while unplaced. */
+  placement?: MarkAnnotation
+  /** The player's own pencil exclusions, annotated. */
+  exclusions: MarkAnnotation[]
+  /** Candidate cells the proof has narrowed them to as of the frontier — never further. */
+  candidatesNow: string[]
 }
 
 export function emptyNotebook(): PlayerNotebook {
@@ -199,6 +198,13 @@ function settlementOf(timeline: Timeline, personId: string, cell: string): { sin
   return { singletonAt, absentAt }
 }
 
+/**
+ * A mark only reads as `established`/`refuted` when the step that settles it
+ * sits at or before `frontier` — a refutation the proof reaches *later* stays
+ * `open` here, on purpose: revealing it early would make this a solver, not a
+ * notebook. `decisiveStep`/`decisiveStepId` follow the same rule, so nothing
+ * downstream can accidentally narrate a step the player hasn't earned yet.
+ */
 function annotateMark(
   timeline: Timeline,
   journal: DeductionStep[],
@@ -213,9 +219,14 @@ function annotateMark(
   const provenAt = kind === 'placement' ? singletonAt : absentAt
   const refutedAt = kind === 'placement' ? absentAt : singletonAt
 
-  const decisiveStep = refutedAt ?? provenAt
   const verdict: MarkVerdict =
-    refutedAt !== undefined ? 'contradicted' : provenAt === undefined ? 'unproven' : provenAt <= frontier ? 'justified' : 'premature'
+    refutedAt !== undefined && refutedAt <= frontier
+      ? 'refuted'
+      : provenAt !== undefined && provenAt <= frontier
+        ? 'established'
+        : 'open'
+
+  const decisiveStep = verdict === 'open' ? undefined : (refutedAt ?? provenAt)
 
   return {
     personId,
@@ -224,20 +235,17 @@ function annotateMark(
     verdict,
     decisiveStep,
     decisiveStepId: decisiveStep !== undefined && decisiveStep > 0 ? journal[decisiveStep - 1].id : undefined,
-    leap: decisiveStep === undefined ? 0 : Math.max(0, decisiveStep - frontier),
   }
 }
 
 /**
  * Confronts the player's notebook with the solver's proof, mark by mark
  * (Claude/claude.md §30-32). Nothing here re-derives the puzzle: the journal is
- * the only authority, which is why a mark can be *right* and still be reported
- * as premature.
+ * the only authority.
  */
 export function annotate(journal: DeductionStep[], notebook: PlayerNotebook): NotebookAnnotation {
   const timeline = buildTimeline(journal)
   const frontier = notebookFrontier(journal, notebook)
-  const depths = chainDepths(journal)
   const marks: MarkAnnotation[] = []
 
   for (const [personId, cell] of Object.entries(notebook.placements)) {
@@ -247,26 +255,25 @@ export function annotate(journal: DeductionStep[], notebook: PlayerNotebook): No
     for (const cell of cells) marks.push(annotateMark(timeline, journal, frontier, personId, cell, 'exclusion'))
   }
 
-  const counts: Record<MarkVerdict, number> = { justified: 0, premature: 0, contradicted: 0, unproven: 0 }
-  for (const mark of marks) counts[mark.verdict] += 1
-
-  const depthOf = (steps: number): number => (steps > 0 ? (depths.get(journal[steps - 1].id) ?? 0) : 0)
-  const playerDepth = depthOf(frontier)
-  const reachedDepth = marks
-    .filter((mark) => mark.verdict === 'justified' || mark.verdict === 'premature')
-    .reduce((deepest, mark) => Math.max(deepest, depthOf(mark.decisiveStep ?? 0)), playerDepth)
-
   return {
     marks,
-    counts,
-    progress: {
-      frontierStep: frontier,
-      frontierStepId: journal[frontier]?.id,
-      playerDepth,
-      reachedDepth,
-      solverDepth: journal.length === 0 ? 0 : Math.max(...depths.values()),
-      maxLeap: marks.reduce((widest, mark) => Math.max(widest, mark.leap), 0),
-    },
-    disciplined: marks.length > 0 && counts.justified === marks.length,
+    progress: { frontierStep: frontier, frontierStepId: journal[frontier]?.id },
   }
+}
+
+/**
+ * One suspect's line for the roster's "faire le point" view. Takes `frontier`
+ * explicitly rather than deriving it, because the honest reading combines
+ * `notebookFrontier` with the story's own identification frontier (see
+ * `useV2Progress.deriveProgress`) — a caller-supplied frontier keeps this
+ * function from silently disagreeing with what the player sees elsewhere.
+ */
+export function personStatus(journal: DeductionStep[], notebook: PlayerNotebook, frontier: number, personId: string): PersonStatus {
+  const timeline = buildTimeline(journal)
+  const placedCell = notebook.placements[personId]
+  const placement = placedCell !== undefined ? annotateMark(timeline, journal, frontier, personId, placedCell, 'placement') : undefined
+  const exclusions = (notebook.exclusions[personId] ?? []).map((cell) => annotateMark(timeline, journal, frontier, personId, cell, 'exclusion'))
+  const candidatesNow = domainAt(timeline, personId, frontier) ?? []
+
+  return { personId, placement, exclusions, candidatesNow }
 }

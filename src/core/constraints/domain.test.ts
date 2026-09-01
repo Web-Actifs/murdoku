@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { cellKey } from '../model/geometry'
 import type { Board, Cell, PersonDef, Puzzle, SceneObject } from '../model/types'
-import { isCompleteAssignmentValid, pairwiseOk, staticDomain } from './domain'
+import { isCompleteAssignmentValid, pairwiseOk, rowColClash, staticDomain, violatedConstraints } from './domain'
 
 // 2 zones, 2x2 each, side by side: salon = cols 0-1, cuisine = cols 2-3, all row 0-1.
 function buildBoard(): Board {
@@ -61,6 +61,60 @@ describe('withPerson and direction', () => {
     expect(pairwiseOk([{ type: 'not', of: { type: 'withPerson', other: 'b' } }], 'a', assignment, board)).toBe(false)
     const assignment2 = { a: '0:1', b: '0:2' }
     expect(pairwiseOk([{ type: 'not', of: { type: 'withPerson', other: 'b' } }], 'a', assignment2, board)).toBe(true)
+  })
+})
+
+describe('violatedConstraints', () => {
+  /**
+   * Regression for a real playtest report: the player's placement matched the
+   * raw clue text ("next to a window") but was still wrong, because that clue
+   * alone doesn't pin the cell down — and the game gave no reason why. This is
+   * what a wrong-verdict screen now reads to say which of the person's *own*
+   * clues their guess actually breaks.
+   */
+  const board = buildBoard()
+
+  it('is empty once every one of the person’s constraints holds', () => {
+    const assignment = { a: '0:0' }
+    const onChair = [{ type: 'onObjectType', objectType: 'chair' } as const]
+    expect(violatedConstraints(onChair, board.cellsByKey.get('0:0')!, assignment, board, [])).toEqual([])
+  })
+
+  it('names each broken constraint, not just that the cell is wrong', () => {
+    const onChair = { type: 'onObjectType', objectType: 'chair' } as const
+    const notInCuisine = { type: 'not', of: { type: 'inZone', zoneId: 'cuisine' } } as const
+    const cell = board.cellsByKey.get('0:2')! // cuisine, no chair here — breaks both
+    expect(violatedConstraints([onChair, notInCuisine], cell, {}, board, [])).toEqual([onChair, notInCuisine])
+  })
+
+  it('checks a relational constraint against what the player actually placed, not the solution', () => {
+    const assignment = { a: '0:0', b: '1:0' } // b sits one row below a
+    const sameRow = { type: 'distance', other: 'b', axis: 'row', exact: 0 } as const
+    expect(violatedConstraints([sameRow], board.cellsByKey.get('0:0')!, assignment, board, [])).toEqual([sameRow])
+  })
+})
+
+describe('rowColClash', () => {
+  const board = buildBoard()
+
+  it('finds nothing when nobody else shares the row or column', () => {
+    const assignment = { a: '0:0', b: '1:2' }
+    expect(rowColClash('a', board.cellsByKey.get('0:0')!, assignment, board)).toBeUndefined()
+  })
+
+  it('flags whoever already holds the row', () => {
+    const assignment = { a: '0:0', b: '0:3' }
+    expect(rowColClash('a', board.cellsByKey.get('0:0')!, assignment, board)).toEqual({ axis: 'row', with: 'b' })
+  })
+
+  it('flags whoever already holds the column when the rows differ', () => {
+    const assignment = { a: '0:0', b: '1:0' }
+    expect(rowColClash('a', board.cellsByKey.get('0:0')!, assignment, board)).toEqual({ axis: 'col', with: 'b' })
+  })
+
+  it('ignores its own entry and anyone not yet placed', () => {
+    const assignment: Record<string, string | undefined> = { a: '0:0', b: undefined }
+    expect(rowColClash('a', board.cellsByKey.get('0:0')!, assignment as Record<string, string>, board)).toBeUndefined()
   })
 })
 

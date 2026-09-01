@@ -1,7 +1,7 @@
 import { isCompleteAssignmentValid, staticDomain } from '../constraints/domain'
-import type { Constraint } from '../constraints/types'
-import { cellAt, cellKey, isDirection, parseCellKey } from '../model/geometry'
-import type { Assignment, Board, Cell, Puzzle } from '../model/types'
+import { asRelation, relationHolds, type Relation } from '../constraints/relations'
+import { cellAt, cellKey, parseCellKey } from '../model/geometry'
+import type { Assignment, Board, Puzzle } from '../model/types'
 import type { DeductionStep, Reason } from './journal'
 
 export interface PropagationResult {
@@ -13,8 +13,6 @@ export interface PropagationResult {
   /** Set only when status is 'contradiction'. */
   contradictionPersonId?: string
 }
-
-const RELATIONAL_TYPES = new Set(['withPerson', 'direction', 'distance'])
 
 /**
  * Reduces every person's candidates to a fixed point using only techniques a
@@ -384,39 +382,6 @@ function canJoin(board: Board, keys: ReadonlySet<string>, zoneId: string, subjec
     if (cell.zoneId === zoneId && cell.row !== subject.row && cell.col !== subject.col) return true
   }
   return false
-}
-
-/** A person-to-person clue with its `not` wrapper, if any, already peeled off. */
-interface Relation {
-  inner: Extract<Constraint, { other: string }>
-  negated: boolean
-}
-
-/**
- * Reads a constraint as a relation between two people, whether it is stated
- * plainly or denied. Null for everything else: static-domain clues (handled by
- * the seed, complement included), alone/notAlone and their denials (about a
- * whole zone's occupancy, see the zone passes above), and any nesting the
- * vocabulary never produces, such as a doubled `not`.
- */
-function asRelation(constraint: Constraint): Relation | null {
-  const negated = constraint.type === 'not'
-  const inner = negated ? constraint.of : constraint
-  if (!RELATIONAL_TYPES.has(inner.type)) return null
-  return { inner: inner as Relation['inner'], negated }
-}
-
-function relationHolds(relation: Relation['inner'], myCell: Cell, otherCell: Cell): boolean {
-  switch (relation.type) {
-    case 'withPerson':
-      return myCell.zoneId === otherCell.zoneId
-    case 'direction':
-      return isDirection(myCell, otherCell, relation.dir)
-    case 'distance': {
-      const diff = relation.axis === 'row' ? otherCell.row - myCell.row : otherCell.col - myCell.col
-      return diff === relation.exact
-    }
-  }
 }
 
 /**

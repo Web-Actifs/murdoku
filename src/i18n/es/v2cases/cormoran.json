@@ -1,6 +1,7 @@
 {
   "title": "El caso del Cormorán",
   "flavorText": "El yate no soltó amarras y, aun así, el armador no vio amanecer.",
+  "tagline": "Cerrado por dentro, el camarote. Eso es lo que siempre se dice cuando la puerta no tiene cerradura.",
   "intro": "Noche del 3 de septiembre, pantalán 7 de Port-Vendres. Al amanecer, Armand Delcourt aparece muerto en su litera, con la puerta del camarote cerrada por dentro; o eso dicen todos. Cuatro personas dormían a bordo.",
   "zones": {
     "salon": "el salón",
@@ -23,5 +24,18 @@
     "victoire": "Victoire Marsan",
     "pascal": "Pascal Ferrer",
     "oscar": "Oscar Nunes"
+  },
+  "roles": {
+    "armand": "el armador",
+    "helene": "su hermana",
+    "victoire": "marchante de arte",
+    "pascal": "el patrón",
+    "oscar": "el mayordomo"
+  },
+  "voices": {
+    "helene": "No me separé de él en toda la noche. Siempre soy yo quien lo vela, siempre he sido yo.",
+    "victoire": "Tenía mis carpetas esparcidas por todas partes, trabajo mejor de noche. Oía a Oscar trajinando más abajo — me tranquilizaba no ser la única despierta.",
+    "pascal": "De guardia, como todas las noches amarrados. No se deja el timón solo porque el barco no se mueva.",
+    "oscar": "Salí a tomar el aire. No era el único que no dormía, se lo aseguro."
   }
 }

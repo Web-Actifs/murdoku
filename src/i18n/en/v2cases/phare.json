@@ -1,6 +1,7 @@
 {
   "title": "The Aiguilles Lighthouse",
   "flavorText": "Force 9 gale: five people stuck in the tower, and the head keeper no longer writing up his watch log.",
+  "tagline": "Five people in a tower, force 9 outside. The exit wasn't an option for the killer either.",
   "intro": "The supply launch could not leave, and neither could the lighthouse inspection: there were five of them in the tower that night. At the six o’clock reading the lantern was still turning, but Gaspard Quéré was no longer keeping his watch log.",
   "zones": {
     "veille": "the watch room",
@@ -27,5 +28,18 @@
     "armel": "Armel Cariou",
     "noemie": "Noémie Terrec",
     "tanguy": "Tanguy Prigent"
+  },
+  "roles": {
+    "gaspard": "the head keeper",
+    "soizic": "assistant keeper",
+    "armel": "the mechanic",
+    "noemie": "lighthouse inspector",
+    "tanguy": "captain of the supply launch"
+  },
+  "voices": {
+    "soizic": "I kept the watch. Nobody came up to relieve me, nobody came up at all. And in a wind like that, you can't even hear the next door over.",
+    "armel": "The generator doesn't like a hard blow. I don't take my eyes off it that night.",
+    "noemie": "I came to inspect the lantern, not to play castaway. The wind pinned me here with the rest, so I took my notebooks and settled in.",
+    "tanguy": "I don't go up to the watch room. That's their place, up there. I'm just the ferryman."
   }
 }

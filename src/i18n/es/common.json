@@ -140,6 +140,7 @@
     "is": {
       "inZone": "estaba en {{zone}}.",
       "onObject": "estaba sobre {{object}}.",
+      "inFrontOfObject": "estaba justo delante de {{object}}.",
       "adjacentToObject": "estaba justo al lado de {{object}}.",
       "withPerson": "estaba en la misma sala que {{name}}.",
       "directionN": "estaba más al norte que {{name}} en el plano.",
@@ -166,6 +167,7 @@
     "no": {
       "inZone": "no estaba en {{zone}}.",
       "onObject": "no estaba sobre {{object}}.",
+      "inFrontOfObject": "no estaba justo delante de {{object}}.",
       "adjacentToObject": "no estaba justo al lado de {{object}}.",
       "withPerson": "no estaba en la misma sala que {{name}}.",
       "directionN": "no estaba más al norte que {{name}} en el plano.",
@@ -283,8 +285,8 @@
             "help": "Cinco niveles, desde una simple orientación («busca a la persona a la que solo le queda una casilla») hasta revelar una posición."
           },
           "notebook": {
-            "label": "Cuaderno de investigación",
-            "help": "Confronta tus marcas con la demostración del motor: lo que habías probado, lo que acertaste por intuición y lo que ya estaba desmentido."
+            "label": "Hacer balance",
+            "help": "Para cada sospechoso, dice qué puedes probar ya con lo que has colocado y tachado tú mismo — nunca más allá de tu propio razonamiento."
           }
         },
         "verdict": {
@@ -321,6 +323,7 @@
       "testimoniesHeading": "Testimonios",
       "testimoniesNote": "Nadie miente: todo lo que se declara aquí es cierto.",
       "noClue": "No declaró nada.",
+      "victimLine": "La víctima. Estaba sola con su asesino.",
       "objectOccupiable": "Se puede estar encima.",
       "objectBlocked": "Infranqueable: nadie puede estar ahí.",
       "blockedTag": "prohibido",
@@ -339,40 +342,21 @@
       "closed": "La cadena se ha seguido hasta el final. Solo falta dictar el veredicto."
     },
     "notebook": {
-      "heading": "Cuaderno de investigación",
-      "pitch": "Contrasta tus marcas con la demostración del motor: lo que has probado, lo que has acertado por intuición y lo que ya está desmentido.",
       "open": "Hacer balance",
-      "empty": "Nada que contrastar todavía: coloca a alguien o tacha una casilla.",
-      "depth": "Razonamiento seguido hasta el eslabón {{reached}} de {{total}}.",
-      "verdict": {
-        "justified": {
-          "label_one": "{{count}} marca probada",
-          "label_other": "{{count}} marcas probadas",
-          "help_one": "deducida de lo que ya habías establecido.",
-          "help_other": "deducidas de lo que ya habías establecido."
-        },
-        "premature": {
-          "label_one": "{{count}} marca adivinada",
-          "label_other": "{{count}} marcas adivinadas",
-          "help_one": "correcta, pero anotada antes de que la demostración llegara.",
-          "help_other": "correctas, pero anotadas antes de que la demostración llegara."
-        },
-        "contradicted": {
-          "label_one": "{{count}} marca desmentida",
-          "label_other": "{{count}} marcas desmentidas",
-          "help_one": "lo que el plano ya permite establecer la contradice.",
-          "help_other": "lo que el plano ya permite establecer las contradice."
-        },
-        "unproven": {
-          "label_one": "{{count}} marca indecidible",
-          "label_other": "{{count}} marcas indecidibles",
-          "help_one": "la propagación no la resuelve en ningún sentido.",
-          "help_other": "la propagación no las resuelve en ningún sentido."
-        }
+      "placement": {
+        "established": "Su casilla se sostiene.",
+        "open": "Nada la obliga todavía a estar ahí: por ahora es una apuesta.",
+        "refuted": "Lo que ya has establecido le cierra esta casilla."
       },
-      "disciplined": "Sin suposiciones: todo lo que has anotado era deducible.",
-      "undisciplined_one": "Tu conclusión más avanzada va una deducción por delante de tu razonamiento.",
-      "undisciplined_other": "Tu conclusión más avanzada va {{count}} deducciones por delante de tu razonamiento."
+      "exclusion": {
+        "refuted_one": "Una de tus marcas de lápiz está desmentida:",
+        "refuted_other": "{{count}} de tus marcas de lápiz están desmentidas:"
+      },
+      "candidates": {
+        "left_one": "Queda {{count}} casilla posible.",
+        "left_other": "Quedan {{count}} casillas posibles.",
+        "forced": "Solo le queda una casilla posible: se deduce ya mismo."
+      }
     },
     "result": {
       "solvedTitle": "¡Caso resuelto!",
@@ -384,7 +368,11 @@
       "verdictHeading": "El culpable",
       "murdererIs": "Fue {{name}}.",
       "murdererWhy": "{{name}} es la única persona que estuvo en {{zone}} con {{victim}}.",
-      "noMurderer": "Nadie queda señalado: la víctima no pasó la noche a solas con un único sospechoso."
+      "noMurderer": "Nadie queda señalado: la víctima no pasó la noche a solas con un único sospechoso.",
+      "whyHeading": "Lo que no encaja",
+      "whyRowClash": "esta casilla comparte fila con {{name}}, que ya la ocupa.",
+      "whyColClash": "esta casilla comparte columna con {{name}}, que ya la ocupa.",
+      "whyFallback": "cada indicio se cumple aquí por separado: es la combinación con el resto del plano lo que no encaja."
     },
     "difficulty": {
       "score": "puntuación {{score}}",

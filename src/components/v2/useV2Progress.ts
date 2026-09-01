@@ -22,6 +22,8 @@ export interface V2Progress {
   latest: { step: DeductionStep; hint: Hint } | undefined
   /** Identifications still to come, the body's included. */
   revealsLeft: number
+  /** The combined frontier itself — honest marks plus outright identifications — for anything that needs to judge a mark against it directly (the roster's "faire le point", `personStatus`). */
+  frontier: number
 }
 
 /**
@@ -76,6 +78,7 @@ export function deriveProgress(
     current: chapters[progress.current - 1],
     latest: step ? { step, hint: hintForStep(step, 4) } : undefined,
     revealsLeft: chapterStates.filter((s) => !s.done).reduce((left, s) => left + s.chapter.resolves.length, 0),
+    frontier,
   }
 }
 

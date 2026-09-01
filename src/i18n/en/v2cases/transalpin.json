@@ -1,6 +1,7 @@
 {
   "title": "The Night of the Transalpine",
   "flavorText": "Twenty minutes stopped inside the Simplon tunnel, and the conductor stopped answering.",
+  "tagline": "Twenty minutes stopped in the Simplon. Long enough to read the paper — or for something else entirely.",
   "intro": "Sleeping car 12 of the Transalpine, between Vallorbe and Domodossola. When the train came out of the tunnel, Bertrand Aubier was no longer answering. Four passengers occupied the car, and the service door was bolted.",
   "zones": {
     "onze": "compartment 11",
@@ -27,5 +28,18 @@
     "hugo": "Hugo Renner",
     "margot": "Margot Sauvin",
     "stefan": "Stefan Baur"
+  },
+  "roles": {
+    "bertrand": "the sleeping-car conductor",
+    "irina": "opera singer, a contract in Milan waiting for her",
+    "hugo": "silk merchant",
+    "margot": "journalist",
+    "stefan": "watchmaker, from Biel"
+  },
+  "voices": {
+    "irina": "I never sleep while travelling. Milan is two days off, I'm running my part until dawn.",
+    "hugo": "Silk doesn't take well to the damp of the corridor. I'd rather stay close to my trunks.",
+    "margot": "I'm always chasing a story. Tonight I finally found one — just not the way I hoped.",
+    "stefan": "I mend watches, I never look at them while travelling. It gives me motion sickness."
   }
 }

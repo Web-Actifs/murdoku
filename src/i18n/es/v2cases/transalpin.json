@@ -1,6 +1,7 @@
 {
   "title": "La noche del Transalpino",
   "flavorText": "Veinte minutos parados en el túnel del Simplón, y el revisor dejó de contestar.",
+  "tagline": "Veinte minutos parados en el Simplón. De sobra para leer el periódico, o para cualquier otra cosa.",
   "intro": "Coche cama 12 del Transalpino, entre Vallorbe y Domodossola. Cuando el tren salió del túnel, Bertrand Aubier ya no contestaba. Cuatro viajeros ocupaban el coche y la puerta de servicio estaba cerrada.",
   "zones": {
     "onze": "el compartimento 11",
@@ -27,5 +28,18 @@
     "hugo": "Hugo Renner",
     "margot": "Margot Sauvin",
     "stefan": "Stefan Baur"
+  },
+  "roles": {
+    "bertrand": "el revisor del coche cama",
+    "irina": "cantante de ópera, la espera un contrato en Milán",
+    "hugo": "comerciante de sedas",
+    "margot": "periodista",
+    "stefan": "relojero, de Bienne"
+  },
+  "voices": {
+    "irina": "Nunca duermo de viaje. Milán me espera en dos días, repaso mi papel hasta el amanecer.",
+    "hugo": "La seda no aguanta la humedad del pasillo. Prefiero quedarme cerca de mis baúles.",
+    "margot": "Siempre ando buscando una historia. Esta noche por fin encontré una, aunque no como esperaba.",
+    "stefan": "Reparo relojes, pero nunca los miro de viaje. Me marea."
   }
 }

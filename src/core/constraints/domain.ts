@@ -29,6 +29,12 @@ export function staticDomainForConstraint(constraint: Constraint, board: Board):
       return board.cells.filter((c) => c.zoneId === constraint.zoneId)
     case 'onObjectType':
       return unionCells(objectsOfType(board, constraint.objectType).map((o) => onObjectCells(board, o)))
+    // Same cells as `onObjectType` today (the window's own occupiable floor
+    // is exactly "in front of" it) — kept as a separate case, not a fallthrough,
+    // so the day a window's facing cells diverge from its own this is the one
+    // line that has to change, not every call site.
+    case 'inFrontOfObjectType':
+      return unionCells(objectsOfType(board, constraint.objectType).map((o) => onObjectCells(board, o)))
     case 'adjacentToObjectType':
       return unionCells(objectsOfType(board, constraint.objectType).map((o) => adjacentToObjectCells(board, o)))
     case 'inRow':
@@ -123,7 +129,7 @@ export function pairwiseOk(constraints: Constraint[], personId: string, assignme
   return constraints.every((c) => pairwiseOkForConstraint(c, personId, assignment, board))
 }
 
-const STATIC_TYPES = new Set(['inZone', 'onObjectType', 'adjacentToObjectType', 'inRow', 'inColumn'])
+const STATIC_TYPES = new Set(['inZone', 'onObjectType', 'inFrontOfObjectType', 'adjacentToObjectType', 'inRow', 'inColumn'])
 
 /**
  * Full validity of one constraint against a complete assignment. Every person is
@@ -170,6 +176,44 @@ export function isSingleConstraintValid(
     default:
       return false
   }
+}
+
+/**
+ * Which of a person's own constraints their current cell fails to satisfy —
+ * the raw material for telling a player *why* a wrong guess is wrong, instead
+ * of just that it is. Evaluated against whatever the player has placed
+ * everyone else on, same as `isCompleteAssignmentValid`.
+ */
+export function violatedConstraints(
+  constraints: Constraint[],
+  cell: Cell,
+  assignment: Assignment,
+  board: Board,
+  people: PersonDef[],
+): Constraint[] {
+  return constraints.filter((c) => !isSingleConstraintValid(c, cell, assignment, board, people))
+}
+
+/**
+ * The other reason a placement can be wrong despite satisfying every one of
+ * the person's own clues: the fundamental row/column rule (Claude/claude.md
+ * §2) isn't authored as a constraint on anyone, so `violatedConstraints`
+ * alone can't see it.
+ */
+export function rowColClash(
+  personId: string,
+  cell: Cell,
+  assignment: Assignment,
+  board: Board,
+): { axis: 'row' | 'col'; with: string } | undefined {
+  for (const [otherId, otherKey] of Object.entries(assignment)) {
+    if (otherId === personId || otherKey === undefined) continue
+    const other = board.cellsByKey.get(otherKey)
+    if (!other) continue
+    if (other.row === cell.row) return { axis: 'row', with: otherId }
+    if (other.col === cell.col) return { axis: 'col', with: otherId }
+  }
+  return undefined
 }
 
 /**

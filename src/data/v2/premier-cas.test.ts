@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { rowColClash, violatedConstraints } from '../../core/constraints/domain'
 import type { Constraint } from '../../core/constraints/types'
 import { isPeripheral, unoccupiableCells } from '../../core/model/geometry'
 import { loadPuzzle } from '../../core/model/loadPuzzle'
@@ -12,9 +13,9 @@ import { cormoranDef } from './premier-cas'
 const SOLUTION: Assignment = {
   armand: '0:5',
   helene: '1:4',
-  victoire: '2:2',
+  victoire: '2:1',
   pascal: '5:3',
-  oscar: '4:1',
+  oscar: '4:0',
 }
 
 const puzzle = loadPuzzle(cormoranDef)
@@ -113,10 +114,13 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     const armandSteps = journal.filter((s) => s.personId === 'armand')
     expect(armandSteps.map((s) => s.after.length)).toEqual([6, 3, 2, 1, 1])
 
-    const pascalPlaced = journal.find((s) => s.personId === 'pascal' && s.placed)!
+    // Since the 2026-08-31 de-mirroring (see the file docstring), Pascal's
+    // second-to-last cell isn't taken by his *placed* column but by his domain
+    // already being confined to one column (locked candidates) — he isn't
+    // individually placed until later still, once Oscar's row also lands.
+    const pascalColLock = journal.find((s) => s.personId === 'pascal' && s.technique === 'relationalFilter')!
     const helenePlaced = journal.find((s) => s.personId === 'helene' && s.placed)!
-    // The last two cells fall to Pascal's column, then Hélène's — in that order.
-    expect(armandSteps[2].premises).toContain(pascalPlaced.id)
+    expect(armandSteps[2].premises).toContain(pascalColLock.id)
     expect(armandSteps[3].premises).toContain(helenePlaced.id)
   })
 
@@ -124,25 +128,40 @@ describe('Le Cormoran — the proof is a chain, not a flat pile of clues (§4)',
     const placed = propagate(puzzle)
       .journal.filter((s) => s.placed)
       .map((s) => s.personId)
-    expect(placed).toEqual(['oscar', 'victoire', 'pascal', 'helene', 'armand'])
+    expect(placed).toEqual(['victoire', 'oscar', 'helene', 'pascal', 'armand'])
   })
 
-  it('runs the chain Oscar -> Victoire -> Pascal -> Hélène -> Armand, each unlocked by the previous', () => {
+  it('runs the chain — Victoire and Oscar each resolve off an unplaced partner’s domain, Pascal needs both placed', () => {
     const journal = propagate(puzzle).journal
-    const oscarPlaced = journal.find((s) => s.personId === 'oscar' && s.placed)!
-    const victoireCut = journal.find((s) => s.personId === 'victoire' && s.technique === 'rowColElimination')!
+    // Victoire's own cut needs nobody placed yet: Oscar's window-only domain
+    // (two cells, wherever they end up) already rules out every column but one.
+    const victoireCut = journal.find((s) => s.personId === 'victoire' && s.technique === 'relationalFilter')!
+    expect(victoireCut.premises).toEqual([])
     const victoirePlaced = journal.find((s) => s.personId === 'victoire' && s.placed)!
-    const pascalCut = journal.find((s) => s.personId === 'pascal' && s.technique === 'rowColElimination')!
-    const pascalPlaced = journal.find((s) => s.personId === 'pascal' && s.placed)!
-    const heleneCut = journal.find((s) => s.personId === 'helene' && s.technique === 'rowColElimination')!
 
-    expect(victoireCut.premises).toContain(oscarPlaced.id)
-    expect(pascalCut.premises).toContain(victoirePlaced.id)
-    expect(heleneCut.premises).toContain(pascalPlaced.id)
+    // Oscar's cut is symmetric: it needs Hélène's row locked, not Hélène placed.
+    const heleneRowLock = journal.find((s) => s.personId === 'helene' && s.technique === 'relationalFilter' && s.reason.type === 'relational' && s.reason.constraintType === 'direction')!
+    const oscarCut = journal.find((s) => s.personId === 'oscar' && s.technique === 'lockedCandidates')!
+    expect(oscarCut.premises).toContain(heleneRowLock.id)
+    const oscarPlaced = journal.find((s) => s.personId === 'oscar' && s.placed)!
 
-    // Strike Oscar's placement and every other person loses their proof with him.
-    const oscarKeystone = report.keystones.find((k) => k.stepId === oscarPlaced.id)!
-    expect(oscarKeystone.unprovenPeople.sort()).toEqual(['armand', 'helene', 'oscar', 'pascal', 'victoire'])
+    // Pascal is the one who genuinely needs two *placements*: Victoire's, to
+    // confine his column; Oscar's, to rule out the row that column still spans.
+    const pascalColLock = journal.find((s) => s.personId === 'pascal' && s.technique === 'relationalFilter')!
+    const pascalFinalCut = journal.find((s) => s.personId === 'pascal' && s.technique === 'rowColElimination')!
+    expect(pascalColLock.premises).toContain(victoirePlaced.id)
+    expect(pascalFinalCut.premises).toContain(oscarPlaced.id)
+
+    // Hélène has an earlier `lockedCandidates` step too (the opening row-2
+    // reservation, shared with everyone) — her *own* final cut is the later one,
+    // confined to Pascal's column specifically.
+    const heleneCut = journal.find((s) => s.personId === 'helene' && s.technique === 'lockedCandidates' && s.reason.type === 'confinedToCol')!
+    expect(heleneCut.premises).toContain(pascalColLock.id)
+
+    // Strike Victoire's own resolving step and Pascal, Hélène and Armand all
+    // lose their proof with her — but not Oscar, who never needed her at all.
+    const victoireKeystone = report.keystones.find((k) => k.stepId === victoireCut.id)!
+    expect(victoireKeystone.unprovenPeople.sort()).toEqual(['armand', 'helene', 'victoire'])
   })
 
   it('needs more than one technique, including an intermediate one', () => {
@@ -178,8 +197,8 @@ describe('Le Cormoran — every clue is load-bearing', () => {
     },
   )
 
-  it('carries ten clues in all, and the victim only one of them', () => {
-    expect(cormoranDef.people.reduce((n, p) => n + p.constraints.length, 0)).toBe(10)
+  it('carries nine clues in all, and the victim only one of them', () => {
+    expect(cormoranDef.people.reduce((n, p) => n + p.constraints.length, 0)).toBe(9)
     expect(cormoranDef.people.find((p) => p.id === 'armand')!.constraints).toHaveLength(1)
   })
 })
@@ -220,6 +239,47 @@ describe('Le Cormoran — the murderer is derived, never stored (§5)', () => {
   })
 })
 
+describe('Le Cormoran — explaining a wrong guess (playtest report, 2026-08-31)', () => {
+  /**
+   * The original report: a player placed Oscar next to a window and was told
+   * "wrong" with no explanation — confusing, since "adjacentToObjectType:
+   * window" was grid-wide (any window's neighbour) and *did* look satisfied.
+   * The follow-up report showed the deeper issue: the player's own reading of
+   * "at the window" (Oscar's own cell, not a neighbouring one) was the more
+   * natural one, and matched what claude.md actually specifies as a distinct
+   * relation (§10/§52, `inFrontOfObjectType`) — Oscar now carries that instead,
+   * and it alone. Its own gotcha survives the fix: it is still grid-wide across
+   * *both* windows (constraints/types.ts), so the other one is still a
+   * plausible-looking wrong guess — one his single clue never rules out at all,
+   * which is exactly why the row/column fallback exists.
+   */
+  it('does not blame the window clue for a guess that still satisfies it — the clash is a row/column collision instead', () => {
+    const guess = { ...SOLUTION, oscar: '1:5' } // in front of hublotTribord, the other window — shares Armand's column and Hélène's row
+    const oscar = puzzle.people.find((p) => p.id === 'oscar')!
+    const cell = puzzle.board.cellsByKey.get('1:5')!
+    expect(violatedConstraints(oscar.constraints, cell, guess, puzzle.board, puzzle.people)).toEqual([])
+    expect(rowColClash('oscar', cell, guess, puzzle.board)).toEqual({ axis: 'col', with: 'armand' })
+  })
+
+  it('blames the table-basse clue directly when Victoire is off the table entirely', () => {
+    const guess = { ...SOLUTION, victoire: '0:1' } // salon, but not on tableBasse
+    const victoire = puzzle.people.find((p) => p.id === 'victoire')!
+    const cell = puzzle.board.cellsByKey.get('0:1')!
+    const broken = violatedConstraints(victoire.constraints, cell, guess, puzzle.board, puzzle.people)
+    expect(broken.map((c) => c.type)).toEqual(['onObjectType'])
+  })
+
+  it('falls back to a row/column clash when a guess satisfies its own clues but collides with someone else', () => {
+    // Hélène's own clues (with Armand, south of him, not rightmost) still hold
+    // at 2:3 — the only thing wrong is that Victoire's real cell already owns row 2.
+    const guess = { ...SOLUTION, helene: '2:3' }
+    const cell = puzzle.board.cellsByKey.get('2:3')!
+    const helene = puzzle.people.find((p) => p.id === 'helene')!
+    expect(violatedConstraints(helene.constraints, cell, guess, puzzle.board, puzzle.people)).toEqual([])
+    expect(rowColClash('helene', cell, guess, puzzle.board)).toEqual({ axis: 'row', with: 'victoire' })
+  })
+})
+
 describe('Le Cormoran — the clue vocabulary is varied (§7)', () => {
   it('uses far more than onObjectType', () => {
     const seen = new Set<string>()
@@ -229,17 +289,7 @@ describe('Le Cormoran — the clue vocabulary is varied (§7)', () => {
     }
     for (const person of cormoranDef.people) for (const c of person.constraints) walk(c)
 
-    expect([...seen].sort()).toEqual([
-      'adjacentToObjectType',
-      'direction',
-      'distance',
-      'inColumn',
-      'inRow',
-      'inZone',
-      'not',
-      'onObjectType',
-      'withPerson',
-    ])
+    expect([...seen].sort()).toEqual(['direction', 'distance', 'inColumn', 'inFrontOfObjectType', 'inZone', 'not', 'onObjectType', 'withPerson'])
   })
 
   it('never repeats a clue kind inside one dossier', () => {

@@ -2,10 +2,10 @@ import { useEffect, useState, type CSSProperties, type DragEvent } from 'react'
 import { cellKey, unoccupiableCells } from '../../core/model/geometry'
 import type { Cell, SceneObject } from '../../core/model/types'
 import { useV2Session } from '../../store/v2Session'
-import { DecorIcon } from '../icons/DecorIcon'
 import { PersonAvatar } from '../game/PersonAvatar'
 import { HAIRLINE, INK, LABEL_TILT, WALL, paperTilt, patternStyle, personColor, roomPalette, windowPaneStyle } from '../game/planStyle'
-import { iconForObjectType } from './objectIcon'
+import { footprintOf } from './footprint'
+import { V2ObjectArt } from './V2ObjectArt'
 import { useV2Text } from './useV2Text'
 import {
   CULPRIT_GAP_MS,
@@ -27,10 +27,11 @@ const VACATE_MS = 500
 const GIVE_UP_STEP_MS = 45
 const GIVE_UP_MAX_STEPS = 8
 
-/** Top-left cell of an object: where its name tag hangs. */
-function anchorKeyOf(object: SceneObject): string {
-  return cellKey(object.cells.reduce((best, c) => (c.row < best.row || (c.row === best.row && c.col < best.col) ? c : best)))
-}
+/** Layers of the plan, from the paper up. Furniture passes under the tiles so
+ *  that a piece spanning two cells is not cut in half by their shared edge. */
+const Z_FURNITURE = 1
+const Z_TILE = 2
+const Z_ZONE_LABEL = 20
 
 export function V2FloorPlanGrid() {
   const { puzzle, state, displayed, solution, outcome, murdererId, clickCell, placeAtCell } = useV2Session()
@@ -48,15 +49,13 @@ export function V2FloorPlanGrid() {
   const zoneTilt = new Map(puzzle.zones.map((zone, i) => [zone.id, LABEL_TILT[i % LABEL_TILT.length]]))
 
   // Windows are drawn on the wall rather than in the tile (§10), so they are kept
-  // out of the furniture layer entirely: no dashed footprint, no centred icon and
-  // no name tag would be true of a tile that is just floor in front of an opening.
+  // out of the furniture layer entirely: no footprint and no name tag would be
+  // true of a tile that is just floor in front of an opening.
   const panes = windowSegments(board)
+  const furniture = board.objects.filter((object) => object.type !== 'window')
   const objectByCell = new Map<string, SceneObject>()
-  const objectAnchors = new Map<string, SceneObject>()
-  for (const object of board.objects) {
-    if (object.type === 'window') continue
+  for (const object of furniture) {
     for (const ref of object.cells) objectByCell.set(cellKey(ref), object)
-    objectAnchors.set(anchorKeyOf(object), object)
   }
 
   /** The zone tag straddles the wall at the zone's bottom-left cell, as in V1. */
@@ -67,6 +66,14 @@ export function V2FloorPlanGrid() {
     const anchor = cells.reduce((best, c) => (c.row > best.row || (c.row === best.row && c.col < best.col) ? c : best))
     zoneLabelCell.set(cellKey(anchor), zone.id)
   }
+
+  // A zone tag hangs off the bottom of its cell and so covers the top strip of
+  // the cell underneath: an object caught there wears its name at the foot of
+  // its footprint instead, rather than under a room name.
+  const underAZoneTag = new Set([...zoneLabelCell.keys()].map((key) => {
+    const [row, col] = key.split(':').map(Number)
+    return `${row + 1}:${col}`
+  }))
 
   const occupantAt = (key: string) => puzzle.people.find((p) => displayed[p.id] === key)
   const crossedAt = (key: string) =>
@@ -95,6 +102,18 @@ export function V2FloorPlanGrid() {
   const isWall = (cell: Cell, dr: number, dc: number) => {
     const n = neighborOf(cell, dr, dc)
     return !n || n.zoneId !== cell.zoneId
+  }
+
+  /**
+   * Inside a room the tiles are ruled with a hairline — except across the middle
+   * of a piece of furniture. Two cells of the same table are one table, so the
+   * line between them is simply not there (a wall still is: it is a wall).
+   */
+  const edgeStyle = (cell: Cell, dr: number, dc: number) => {
+    if (isWall(cell, dr, dc)) return WALL
+    const mine = objectByCell.get(cellKey(cell))
+    if (mine && objectByCell.get(`${cell.row + dr}:${cell.col + dc}`) === mine) return 'none'
+    return HAIRLINE
   }
 
   useEffect(() => {
@@ -128,14 +147,72 @@ export function V2FloorPlanGrid() {
           backgroundColor: INK,
         }}
       >
+        {/* Outside the building. A plan whose outline steps in and out reads as a
+            shape cut from the page, not as a black hole punched in the floor. */}
+        {Array.from({ length: board.rows * board.cols }, (_, i) => ({ row: Math.floor(i / board.cols), col: i % board.cols }))
+          .filter((c) => !board.cellsByKey.has(cellKey(c)))
+          .map((c) => (
+            <span
+              key={`void:${cellKey(c)}`}
+              aria-hidden
+              className="pointer-events-none bg-[var(--color-surface)]"
+              style={{ gridColumn: c.col + 1, gridRow: c.row + 1 }}
+            />
+          ))}
+
+        {/* The floor itself. It is its own layer so that the furniture above can
+            straddle two tiles without their fills painting over it. */}
+        {board.cells.map((cell) => {
+          const style = zoneStyle.get(cell.zoneId) ?? roomPalette[0]
+          return (
+            <span
+              key={`floor:${cellKey(cell)}`}
+              aria-hidden
+              className="pointer-events-none"
+              style={{
+                gridColumn: cell.col + 1,
+                gridRow: cell.row + 1,
+                backgroundColor: style.bg,
+                ...patternStyle(style),
+              }}
+            />
+          )
+        })}
+
+        {/* One drawing per object, over every cell it covers. */}
+        {furniture.map((object) => {
+          const footprint = footprintOf(object.cells)
+          const head = object.cells.filter((c) => c.row === footprint.minRow)
+          const foot = object.cells.filter((c) => c.row === footprint.minRow + footprint.rows - 1)
+          const captionAtFoot =
+            head.some((c) => underAZoneTag.has(cellKey(c))) && !foot.some((c) => zoneLabelCell.has(cellKey(c)))
+
+          return (
+            <span
+              key={`art:${object.id}`}
+              className={`pointer-events-none relative flex justify-center ${captionAtFoot ? 'items-end' : 'items-start'}`}
+              style={{
+                gridColumn: `${footprint.minCol + 1} / span ${footprint.cols}`,
+                gridRow: `${footprint.minRow + 1} / span ${footprint.rows}`,
+                zIndex: Z_FURNITURE,
+              }}
+            >
+              <V2ObjectArt object={object} className="absolute inset-0 h-full w-full" />
+              <span
+                className={`relative max-w-[160%] shrink-0 overflow-hidden text-ellipsis whitespace-nowrap rounded-full bg-[rgb(255_243_226/0.85)] px-1 text-[0.5rem] font-bold uppercase leading-[1.5] tracking-wide text-[#241f1d]/80 ${
+                  captionAtFoot ? 'mb-[3px]' : 'mt-[3px]'
+                }`}
+              >
+                {text.object(object.id)}
+              </span>
+            </span>
+          )
+        })}
+
         {board.cells.map((cell) => {
           const key = cellKey(cell)
-          const style = zoneStyle.get(cell.zoneId) ?? roomPalette[0]
           const occupant = occupantAt(key)
-          const object = objectByCell.get(key)
           const pane = panes.get(key)
-          const anchored = objectAnchors.get(key)
-          const icon = object && iconForObjectType(object.type)
           const isBlocked = blocked.has(key)
           const zoneIdForLabel = zoneLabelCell.get(key)
           const crossed = crossedAt(key)
@@ -169,28 +246,18 @@ export function V2FloorPlanGrid() {
               style={{
                 gridColumn: cell.col + 1,
                 gridRow: cell.row + 1,
-                backgroundColor: style.bg,
-                ...patternStyle(style),
-                borderTop: isWall(cell, -1, 0) ? WALL : HAIRLINE,
-                borderLeft: isWall(cell, 0, -1) ? WALL : HAIRLINE,
+                borderTop: edgeStyle(cell, -1, 0),
+                borderLeft: edgeStyle(cell, 0, -1),
                 borderRight: neighborOf(cell, 0, 1) ? 'none' : WALL,
                 borderBottom: neighborOf(cell, 1, 0) ? 'none' : WALL,
-                zIndex: zoneIdForLabel ? 20 : undefined,
+                zIndex: zoneIdForLabel ? Z_ZONE_LABEL : Z_TILE,
               }}
-              className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow duration-150 enabled:hover:z-30 disabled:cursor-default ${
+              className={`relative flex aspect-square min-h-14 items-center justify-center p-1 transition-shadow duration-150 disabled:cursor-default ${
                 canDropHere || dragOverCell === key
                   ? 'shadow-[inset_0_0_0_3px_var(--color-accent)]'
                   : 'enabled:hover:shadow-[inset_0_0_0_3px_rgb(36_31_29/0.35)]'
               }`}
             >
-              {isBlocked && (
-                <span
-                  aria-hidden
-                  className="pointer-events-none absolute inset-0"
-                  style={{ backgroundImage: `repeating-linear-gradient(45deg, rgb(36 31 29 / 0.16) 0 2px, transparent 2px 7px)` }}
-                />
-              )}
-
               {isBlocked && state.selectedPersonId !== null && !frozen && (
                 <span aria-hidden className="pointer-events-none absolute inset-0 bg-[rgb(200_50_31/0.12)]" />
               )}
@@ -212,17 +279,7 @@ export function V2FloorPlanGrid() {
 
               {pane && <span aria-hidden className="pointer-events-none" style={windowPaneStyle(pane.side, pane.startsRun, pane.endsRun)} />}
 
-              {object && !occupant && (
-                <span aria-hidden className="pointer-events-none absolute inset-[3px] rounded-[2px] border border-dashed border-[#241f1d]/35" />
-              )}
-
-              {anchored && !occupant && (
-                <span className="pointer-events-none absolute top-0.5 max-w-full overflow-hidden text-ellipsis whitespace-nowrap px-0.5 text-[0.5rem] font-bold uppercase leading-none tracking-wide text-[#241f1d]/70">
-                  {text.object(anchored.id)}
-                </span>
-              )}
-
-              {occupant ? (
+              {occupant && (
                 <span
                   key={occupant.id}
                   draggable={!frozen}
@@ -252,8 +309,6 @@ export function V2FloorPlanGrid() {
                     </span>
                   )}
                 </span>
-              ) : (
-                icon && <DecorIcon type={icon} className="h-[62%] w-[62%] max-w-full opacity-80" />
               )}
 
               {occupant && !frozen && (

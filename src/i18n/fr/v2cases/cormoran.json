@@ -1,6 +1,7 @@
 {
   "title": "L’affaire du Cormoran",
   "flavorText": "Le yacht n’a pas quitté son amarre, et pourtant l’armateur n’a pas vu le jour se lever.",
+  "tagline": "Fermée de l’intérieur, la cabine. C’est ce qu’on dit toujours quand la porte n’a pas de serrure.",
   "intro": "Nuit du 3 septembre, ponton 7 de Port-Vendres. Au petit matin, Armand Delcourt est retrouvé mort sur sa couchette, la porte de la cabine fermée de l’intérieur — enfin, c’est ce que tout le monde raconte. Quatre personnes dormaient à bord.",
   "zones": {
     "salon": "le salon",
@@ -23,5 +24,18 @@
     "victoire": "Victoire Marsan",
     "pascal": "Pascal Ferrer",
     "oscar": "Oscar Nunes"
+  },
+  "roles": {
+    "armand": "l’armateur",
+    "helene": "sa sœur",
+    "victoire": "marchande d’art",
+    "pascal": "le skipper",
+    "oscar": "maître d’hôtel"
+  },
+  "voices": {
+    "helene": "Je ne l’ai pas quitté de la nuit. C’est moi qui le veillais — c’est toujours moi qui le veillais.",
+    "victoire": "Mes dossiers étaient étalés partout, je travaille mieux la nuit. J’entendais Oscar s’affairer plus bas — ça me rassurait de ne pas être la seule éveillée.",
+    "pascal": "De quart, comme toutes les nuits d’amarrage. On ne quitte pas la barre parce que le bateau ne bouge pas.",
+    "oscar": "J’ai pris l’air. Je n’étais pas seul à ne pas dormir, croyez-moi."
   }
 }

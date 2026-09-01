@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { cormoranDef } from '../../data/v2/premier-cas'
+import { findMirroredTestimony } from '../constraints/relations'
 import type { Constraint } from '../constraints/types'
 import type { Assignment } from '../model/types'
 import { propagate } from '../possibility/propagate'
@@ -48,13 +49,32 @@ describe('searchClues — grow until solved, then prune to a minimal set', () =>
     expect(solved.length).toBeGreaterThanOrEqual(runs.length / 20)
     for (const { found } of runs) {
       if (found.ok) continue
-      expect(['clue-budget-exhausted', 'too-many-self-pinned', 'flat', 'not-unique', 'victim-not-last']).toContain(found.reason)
+      expect(['clue-budget-exhausted', 'too-many-self-pinned', 'flat', 'not-unique', 'victim-not-last', 'mirrored-testimony']).toContain(
+        found.reason,
+      )
     }
   })
 
   it('rejects a puzzle whose body falls out mid-proof, and says so (§14)', () => {
     const rejected = runs.filter((r) => !r.found.ok && r.found.reason === 'victim-not-last')
     expect(rejected.length).toBeGreaterThan(0)
+  })
+
+  it('rejects a clue set where two witnesses repeat each other, and says so', () => {
+    // Pruning cannot catch this one: propagation only narrows the domain of the
+    // person a clue is written on, so "A was 2 columns left of B" and "B was 2
+    // columns right of A" are both genuinely load-bearing, and a minimal set can
+    // still hold the pair. Only the gate can refuse it — and it has to fire here,
+    // or the check is dead code that would let the pair through unnoticed.
+    const rejected = runs.filter((r) => !r.found.ok && r.found.reason === 'mirrored-testimony')
+    expect(rejected.length).toBeGreaterThan(0)
+  })
+
+  it('never accepts one: no surviving clue set makes two witnesses state the same relation', () => {
+    for (const { found } of solved) {
+      if (!found.ok) continue
+      expect(findMirroredTestimony(puzzleWithClues(base, found.clues))).toBeNull()
+    }
   })
 
   it('never accepts one: every surviving clue set closes on the victim (§14)', () => {

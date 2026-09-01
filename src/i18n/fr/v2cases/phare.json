@@ -1,6 +1,7 @@
 {
   "title": "Le phare des Aiguilles",
   "flavorText": "Coup de vent force 9 : cinq personnes bloquées dans la tour, et le gardien-chef qui ne tient plus son cahier de quart.",
+  "tagline": "Cinq personnes dans une tour, force 9 dehors. La sortie n’était pas une option pour l’assassin non plus.",
   "intro": "La vedette de ravitaillement n’a pas pu repartir, l’inspection des Phares et Balises non plus : ils étaient cinq dans la tour cette nuit-là. Au relevé de six heures, la lanterne tournait toujours, mais Gaspard Quéré ne tenait plus son cahier de quart.",
   "zones": {
     "veille": "la salle de veille",
@@ -27,5 +28,18 @@
     "armel": "Armel Cariou",
     "noemie": "Noémie Terrec",
     "tanguy": "Tanguy Prigent"
+  },
+  "roles": {
+    "gaspard": "le gardien-chef",
+    "soizic": "gardienne adjointe",
+    "armel": "le mécanicien",
+    "noemie": "inspectrice des Phares et Balises",
+    "tanguy": "patron de la vedette de ravitaillement"
+  },
+  "voices": {
+    "soizic": "J’ai tenu le quart. Personne n’est monté me relever, personne n’est monté du tout. Et avec ce vent-là, on n’entend même pas la porte d’à côté.",
+    "armel": "La génératrice n’aime pas les grands vents. Je ne la quitte pas des yeux cette nuit-là.",
+    "noemie": "Je suis venue inspecter la lanterne, pas jouer les naufragées. Le vent m’a clouée avec les autres, alors j’ai pris mes carnets et je me suis installée.",
+    "tanguy": "Je ne monte pas dans la salle de veille. C’est chez eux, là-haut. Moi je suis le taxi."
   }
 }

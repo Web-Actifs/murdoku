@@ -5,7 +5,6 @@ import { V2DifficultyBadge } from '../components/v2/V2DifficultyBadge'
 import { V2FloorPlanGrid } from '../components/v2/V2FloorPlanGrid'
 import { V2HowToPlay } from '../components/v2/V2HowToPlay'
 import { V2InvestigationTrail } from '../components/v2/V2InvestigationTrail'
-import { V2NotebookPanel } from '../components/v2/V2NotebookPanel'
 import { V2PlanLegend } from '../components/v2/V2PlanLegend'
 import { V2ResultPanel } from '../components/v2/V2ResultPanel'
 import { V2SuspectRoster } from '../components/v2/V2SuspectRoster'
@@ -55,6 +54,9 @@ function V2PlayScreen() {
           </span>
         </summary>
         <div className="mt-2 flex flex-col gap-1.5">
+          {text.tagline && (
+            <p className="max-w-[80ch] font-serif text-base italic text-[var(--color-accent)]">« {text.tagline} »</p>
+          )}
           <V2DifficultyBadge category={difficulty.category} score={difficulty.score} showDescription />
           <p className="max-w-[80ch] italic text-[var(--color-text-muted)]">{text.intro}</p>
         </div>
@@ -80,7 +82,6 @@ function V2PlayScreen() {
         </div>
         <div className="flex flex-col gap-6">
           <V2SuspectRoster />
-          <V2NotebookPanel />
         </div>
       </div>
     </div>

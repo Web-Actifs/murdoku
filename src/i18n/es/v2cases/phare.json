@@ -1,6 +1,7 @@
 {
   "title": "El faro de las Agujas",
   "flavorText": "Temporal de fuerza 9: cinco personas atrapadas en la torre y el torrero jefe sin escribir su cuaderno de guardia.",
+  "tagline": "Cinco personas en una torre, fuerza 9 fuera. La salida tampoco era una opción para el asesino.",
   "intro": "La lancha de suministro no pudo zarpar, ni tampoco la inspección de Faros y Balizas: aquella noche eran cinco en la torre. En la lectura de las seis la linterna seguía girando, pero Gaspard Quéré ya no llevaba su cuaderno de guardia.",
   "zones": {
     "veille": "la sala de vigilancia",
@@ -27,5 +28,18 @@
     "armel": "Armel Cariou",
     "noemie": "Noémie Terrec",
     "tanguy": "Tanguy Prigent"
+  },
+  "roles": {
+    "gaspard": "el torrero jefe",
+    "soizic": "torrera adjunta",
+    "armel": "el mecánico",
+    "noemie": "inspectora de Faros y Balizas",
+    "tanguy": "patrón de la lancha de suministro"
+  },
+  "voices": {
+    "soizic": "Hice la guardia. Nadie subió a relevarme, nadie subió siquiera. Y con este viento no se oye ni la puerta de al lado.",
+    "armel": "Al generador no le gustan los vientos fuertes. No le quito el ojo de encima esta noche.",
+    "noemie": "Vine a inspeccionar la linterna, no a hacer de náufraga. El viento me dejó aquí con los demás, así que cogí mis cuadernos y me instalé.",
+    "tanguy": "No subo a la sala de vigilancia. Eso es cosa suya, ahí arriba. Yo solo soy el barquero."
   }
 }

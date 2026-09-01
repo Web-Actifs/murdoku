@@ -25,6 +25,19 @@ export type Constraint =
    * design, not a bug to fix here.
    */
   | { type: 'adjacentToObjectType'; objectType: string }
+  /**
+   * Claude/claude.md §10/§52's dedicated window relation ("devant une
+   * fenêtre"), distinct from `adjacentToObjectType` ("à côté de", a
+   * *different*, neighbouring cell — §5/§19/§20 apply that rule uniformly to
+   * every object type, windows included, and it is not a special case). This
+   * one designates the window's *own* occupiable cell(s) — the floor a person
+   * stands on to look out — same domain shape as `onObjectType`, but kept as
+   * its own type rather than reused, because "on a window" narrates nothing
+   * a player would ever say, and because §10 leaves room for a window's
+   * facing cells to one day differ from its own (a wide sill facing two
+   * tiles, say) even though today they coincide.
+   */
+  | { type: 'inFrontOfObjectType'; objectType: string }
   | { type: 'withPerson'; other: string }
   | { type: 'direction'; other: string; dir: Direction }
   | { type: 'distance'; other: string; axis: 'row' | 'col'; exact: number }

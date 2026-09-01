@@ -24,6 +24,11 @@ function candidateConstraints(board: Board, people: PersonDef[], personId: strin
     candidates.push({ type: 'inZone', zoneId })
   }
 
+  // Deliberately no `inFrontOfObjectType` candidate here: for a window it is
+  // domain-identical to `onObjectType` (see staticDomainForConstraint), so
+  // offering both would just double-propose the same cells under two labels
+  // and reshuffle every seed-pinned generator test for no logical gain. It
+  // stays hand-authorable (Claude/claude.md §10/§52) without being drawn.
   for (const objectType of new Set(board.objects.map((o) => o.type))) {
     candidates.push({ type: 'onObjectType', objectType })
     candidates.push({ type: 'adjacentToObjectType', objectType })

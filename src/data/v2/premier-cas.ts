@@ -21,30 +21,59 @@ import type { PuzzleDef } from '../../core/model/types'
  *   row 4  [ cuis. ][ pont ..................]
  *   row 5  [ cuis. ][ pont ..................]
  *
- * Dix indices, pas un de plus : le jeu a été repris à zéro le 2026-08-30 avec la
- * discipline du générateur (croissance depuis les faits vrais de la solution,
- * puis élagage), parce que la version écrite à la main en portait quinze dont six
- * que la démonstration n'utilisait jamais — le joueur les relisait en boucle sans
- * qu'aucune ne fasse avancer quoi que ce soit. Chacun de ces dix est désormais
- * porteur : en retirer un seul, et la grille cesse de se résoudre ou cesse
- * d'avoir une réponse unique.
+ * Neuf indices, pas un de plus : le jeu a été repris à zéro le 2026-08-30 avec
+ * la discipline du générateur (croissance depuis les faits vrais de la
+ * solution, puis élagage), parce que la version écrite à la main en portait
+ * quinze dont six que la démonstration n'utilisait jamais — le joueur les
+ * relisait en boucle sans qu'aucune ne fasse avancer quoi que ce soit. Chacun
+ * de ces neuf est désormais porteur : en retirer un seul, et la grille cesse
+ * de se résoudre ou cesse d'avoir une réponse unique.
+ *
+ * Revu le 2026-08-31 suite à trois retours de playtest coup sur coup sur le
+ * même dossier :
+ *   - le dossier d'Oscar disait « à côté d'une fenêtre » (adjacentToObjectType
+ *     — §5/§19/§20, une case *voisine* de la fenêtre, jamais la sienne, la
+ *     même règle que pour une plante ou une chaise) alors que l'intention
+ *     affichée était « au hublot », soit « devant » lui (§10/§52 :
+ *     inFrontOfObjectType, la case de la fenêtre elle-même, désormais une
+ *     relation distincte dans le moteur) ;
+ *   - une fois Oscar posé sur la bonne case (colonne 0 au lieu de 1), son
+ *     ancien duo de clues (fenêtre + écart de rangée envers Pascal) s'est
+ *     révélé redondant avec le reste de la chaîne, et pareil pour le
+ *     « jamais bâbord » de Victoire et le « tout à l'arrière » de Pascal :
+ *     trois clues creuses dehors, un unique écart Victoire/Pascal dedans ;
+ *   - sauf que cet écart-là était réciproque — Victoire *et* Pascal
+ *     déclaraient chacun le même chiffre l'un sur l'autre (une distance exacte
+ *     ne réduit que le domaine de qui la porte, §29 : il en fallait un
+ *     exemplaire de chaque côté pour que la propagation tienne sans deviner).
+ *     Deux témoignages qui redisent le même fait sous deux angles, ça se lit
+ *     comme du remplissage, à raison. Victoire porte maintenant un écart vers
+ *     Oscar à la place — Oscar est déjà résolu par son propre dossier, donc
+ *     rien n'a besoin de lui répondre en retour, et Pascal garde son seul
+ *     écart vers Victoire, jamais renvoyé. Toujours neuf indices, tous
+ *     porteurs (re-vérifié : aucun des neuf n'est retirable), plus aucune
+ *     paire ne dit la même chose deux fois. Zones et coupable n'ont pas bougé.
  *
  * L'enchaînement voulu (aucun personnage ne se déduit seul) :
- *   1. Amorce sans personne de posé : deux rangées se réservent d'elles-mêmes.
- *      La table basse tient tout entière sur la rangée 2, donc cette rangée
- *      appartient à Victoire ; le poste de barre croisé avec « tout à l'arrière »
- *      ne laisse à Pascal que la rangée du bas. Ces deux rangées réservées vident
- *      d'autant Hélène, Oscar et Armand.
- *   2. L'écart qu'Oscar déclare par rapport au skipper (« une rangée devant
- *      lui ») achève de le clouer au hublot bâbord : il tombe le premier.
- *   3. Oscar posé, sa colonne tranche entre les deux bouts encore libres de la
- *      table basse pour Victoire ; la colonne de Victoire tranche à son tour
- *      entre les deux postes de barre pour Pascal.
- *   4. Hélène n'est décrite *que* par rapport au mort : avec lui, en arrière de
- *      lui, jamais contre le bordé tribord. Rien ne la referme donc avant que la
- *      colonne de Pascal ne lui retire sa case de trop — la coupable tombe
- *      l'avant-dernière, juste avant le corps.
- *   5. Armand n'a qu'une ligne au dossier (« on l'a trouvé dans sa cabine »,
+ *   1. Amorce sans personne de posée. La table basse tient tout entière sur la
+ *      rangée 2, donc cette rangée appartient à Victoire, qui en vide d'autant
+ *      Hélène, Oscar et Armand. En parallèle, Hélène se referme sur la cabine
+ *      puis sur sa moitié sud rien qu'en croisant « avec » et « au sud » contre
+ *      le seul indice du mort (§14) — sa rangée du haut se referme la première
+ *      de tout le plateau, avant même qu'elle soit posée.
+ *   2. L'écart de Victoire envers Oscar se referme lui aussi sans qu'Oscar
+ *      soit posé : sur les deux hublots du plateau (§19/§20), un seul répond
+ *      à l'écart exact qu'elle déclare. Elle tombe la première.
+ *   3. Cette rangée verrouillée pour Hélène retire à elle seule sa dernière
+ *      case à Oscar, dont le dossier ne parle que d'une fenêtre — jamais
+ *      tranché tant que ce verrou n'est pas tombé (candidats verrouillés,
+ *      §33/§34). Il se referme en second, au hublot bâbord, colonne 0.
+ *   4. L'écart de Pascal envers Victoire referme son propre domaine à deux
+ *      cases dès qu'elle est posée ; la rangée d'Oscar, une fois lui aussi
+ *      posé, retire la dernière — Pascal ferme la marche des trois du pont.
+ *   5. La colonne de Pascal retire à Hélène sa case de trop — la coupable
+ *      tombe l'avant-dernière, juste avant le corps.
+ *   6. Armand n'a qu'une ligne au dossier (« on l'a trouvé dans sa cabine »,
  *      §14 : la victime porte le dossier le plus léger). Ce sont les lignes et
  *      les colonnes des quatre autres qui finissent par ne lui laisser qu'une
  *      case — et c'est seulement là qu'on découvre qu'Hélène était seule avec
@@ -163,8 +192,8 @@ export const cormoranDef: PuzzleDef = {
       nameKey: 'victoire',
       constraints: [
         { type: 'onObjectType', objectType: 'tableBasse' },
-        // « Jamais du côté bâbord, j'ai le mal de mer de ce bord-là. »
-        { type: 'not', of: { type: 'inColumn', column: 'left' } },
+        // « Oscar était juste à ma gauche, une colonne plus loin sur le plan. »
+        { type: 'distance', other: 'oscar', axis: 'col', exact: -1 },
       ],
     },
     {
@@ -173,18 +202,18 @@ export const cormoranDef: PuzzleDef = {
       nameKey: 'pascal',
       constraints: [
         { type: 'onObjectType', objectType: 'barre' },
-        { type: 'inRow', row: 'bottom' },
+        // « Victoire ? Loin de moi, presque à l'autre bout du bateau. »
+        { type: 'distance', other: 'victoire', axis: 'col', exact: -2 },
       ],
     },
     {
-      // Oscar Nunes, le maître d'hôtel. Au hublot bâbord, une rangée devant le skipper.
+      // Oscar Nunes, le maître d'hôtel. Au hublot bâbord — le dossier le plus
+      // léger après celui de la victime (§14), et volontairement ambigu tant
+      // que la ligne d'Hélène ne s'est pas refermée sur elle (§50 : deux
+      // hublots, aucun tranché tant que le reste ne l'a pas fait).
       id: 'oscar',
       nameKey: 'oscar',
-      constraints: [
-        { type: 'adjacentToObjectType', objectType: 'window' },
-        // « Le skipper était juste une rangée derrière moi. »
-        { type: 'distance', other: 'pascal', axis: 'row', exact: 1 },
-      ],
+      constraints: [{ type: 'inFrontOfObjectType', objectType: 'window' }],
     },
   ],
   victimId: 'armand',

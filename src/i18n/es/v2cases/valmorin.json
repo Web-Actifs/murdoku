@@ -1,6 +1,7 @@
 {
   "title": "La bodega de Valmorin",
   "flavorText": "Celebraron el fin de la vendimia hasta las dos. A las seis, el propietario yacía en la pasarela.",
+  "tagline": "La cuvée de cabeza salió redonda. Es lo único en lo que todos están de acuerdo.",
   "intro": "Última noche de la vendimia en la finca de Valmorin, Côtes de Blaye. Edmond Valmorin aparece en la pasarela de la sala de cubas, sobre una cuba todavía tibia. Tres personas tenían las llaves del edificio.",
   "zones": {
     "cuverie": "la sala de cubas",
@@ -24,5 +25,16 @@
     "blanche": "Blanche Valmorin",
     "raymond": "Raymond Pech",
     "lucie": "Lucie Andrieu"
+  },
+  "roles": {
+    "edmond": "el propietario",
+    "blanche": "su nuera, lleva las cuentas de la finca",
+    "raymond": "maestro bodeguero desde hace treinta años",
+    "lucie": "enóloga, venida de Burdeos"
+  },
+  "voices": {
+    "blanche": "Terminamos la cata juntas, como siempre. No me gusta volver sola la noche de la vendimia.",
+    "raymond": "Lo vi subir a la pasarela. No lo vi bajar.",
+    "lucie": "Todavía no conozco la casa. Me quedo donde hay luz y algo verde, me tranquiliza."
   }
 }

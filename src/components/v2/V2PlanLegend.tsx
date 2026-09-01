@@ -1,8 +1,7 @@
 import { unoccupiableCells } from '../../core/model/geometry'
 import { useV2Session } from '../../store/v2Session'
-import { DecorIcon } from '../icons/DecorIcon'
 import { roomPalette } from '../game/planStyle'
-import { iconForObjectType } from './objectIcon'
+import { V2ObjectArt } from './V2ObjectArt'
 import { useV2Text } from './useV2Text'
 
 export function V2PlanLegend() {
@@ -38,7 +37,6 @@ export function V2PlanLegend() {
 
         <div className="flex flex-wrap gap-x-3 gap-y-2 border-t border-[var(--color-border)] pt-2">
           {puzzle.board.objects.map((object) => {
-            const icon = iconForObjectType(object.type)
             const standable = object.occupiable
             return (
               <span
@@ -46,8 +44,9 @@ export function V2PlanLegend() {
                 className="flex items-center gap-1.5 rounded-full border-[1.5px] border-[#241f1d] bg-[var(--color-surface-alt)] py-0.5 pl-1 pr-2.5"
                 title={text.t(standable ? 'v2.play.objectOccupiable' : 'v2.play.objectBlocked')}
               >
+                {/* The same drawing as on the plan, shrunk to a single tile. */}
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-                  {icon ? <DecorIcon type={icon} className="h-4 w-4" /> : <span aria-hidden>{standable ? '▫' : '▨'}</span>}
+                  <V2ObjectArt object={{ ...object, cells: [{ row: 0, col: 0 }] }} className="h-5 w-5" />
                 </span>
                 <span className="text-xs font-semibold">{text.object(object.id)}</span>
                 {!standable && <span className="text-[0.6rem] uppercase tracking-wide text-[var(--color-text-muted)]">{text.t('v2.play.blockedTag')}</span>}

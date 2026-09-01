@@ -140,6 +140,7 @@
     "is": {
       "inZone": "was in {{zone}}.",
       "onObject": "was standing on {{object}}.",
+      "inFrontOfObject": "was standing right in front of {{object}}.",
       "adjacentToObject": "was right next to {{object}}.",
       "withPerson": "was in the same room as {{name}}.",
       "directionN": "was further north than {{name}} on the plan.",
@@ -166,6 +167,7 @@
     "no": {
       "inZone": "was not in {{zone}}.",
       "onObject": "was not standing on {{object}}.",
+      "inFrontOfObject": "was not standing in front of {{object}}.",
       "adjacentToObject": "was not right next to {{object}}.",
       "withPerson": "was not in the same room as {{name}}.",
       "directionN": "was not further north than {{name}} on the plan.",
@@ -283,8 +285,8 @@
             "help": "Five levels, from a nudge (\"look for the person with only one cell left\") all the way to revealing a position."
           },
           "notebook": {
-            "label": "Case notebook",
-            "help": "Holds your marks up against the engine's own proof: what you had proved, what you had guessed right, what was already contradicted."
+            "label": "Take stock",
+            "help": "For each suspect, says what you can already prove from what you've placed and crossed out yourself — never further than your own reasoning."
           }
         },
         "verdict": {
@@ -321,6 +323,7 @@
       "testimoniesHeading": "Testimonies",
       "testimoniesNote": "Nobody lies: everything stated here is true.",
       "noClue": "Said nothing.",
+      "victimLine": "The victim. They were alone with their killer.",
       "objectOccupiable": "You can stand on it.",
       "objectBlocked": "Impassable: nobody can stand there.",
       "blockedTag": "off-limits",
@@ -339,40 +342,21 @@
       "closed": "The chain has been followed all the way to its end. All that is left is the verdict."
     },
     "notebook": {
-      "heading": "Investigator’s notebook",
-      "pitch": "Check your marks against the engine’s proof: what you proved, what you guessed right, what is already refuted.",
       "open": "Take stock",
-      "empty": "Nothing to check yet: place someone, or cross out a cell.",
-      "depth": "Reasoning followed up to link {{reached}} of {{total}}.",
-      "verdict": {
-        "justified": {
-          "label_one": "{{count}} proven mark",
-          "label_other": "{{count}} proven marks",
-          "help_one": "deduced from what you had already established.",
-          "help_other": "deduced from what you had already established."
-        },
-        "premature": {
-          "label_one": "{{count}} guessed mark",
-          "label_other": "{{count}} guessed marks",
-          "help_one": "right, but written down before the proof reached it.",
-          "help_other": "right, but written down before the proof reached them."
-        },
-        "contradicted": {
-          "label_one": "{{count}} refuted mark",
-          "label_other": "{{count}} refuted marks",
-          "help_one": "what the plan already establishes contradicts it.",
-          "help_other": "what the plan already establishes contradicts them."
-        },
-        "unproven": {
-          "label_one": "{{count}} undecidable mark",
-          "label_other": "{{count}} undecidable marks",
-          "help_one": "propagation settles it neither way.",
-          "help_other": "propagation settles them neither way."
-        }
+      "placement": {
+        "established": "Their cell holds up.",
+        "open": "Nothing forces them there yet — for now it's a guess.",
+        "refuted": "What you've already established rules out this cell."
       },
-      "disciplined": "No guessing: everything you wrote down was deducible.",
-      "undisciplined_one": "Your furthest conclusion runs one deduction ahead of your reasoning.",
-      "undisciplined_other": "Your furthest conclusion runs {{count}} deductions ahead of your reasoning."
+      "exclusion": {
+        "refuted_one": "One of your crossed-out cells is refuted:",
+        "refuted_other": "{{count}} of your crossed-out cells are refuted:"
+      },
+      "candidates": {
+        "left_one": "{{count}} possible cell remains.",
+        "left_other": "{{count}} possible cells remain.",
+        "forced": "Only one cell is still possible: it can be deduced right now."
+      }
     },
     "result": {
       "solvedTitle": "Case solved!",
@@ -384,7 +368,11 @@
       "verdictHeading": "The murderer",
       "murdererIs": "It was {{name}}.",
       "murdererWhy": "{{name}} is the only person who was in {{zone}} with {{victim}}.",
-      "noMurderer": "Nobody is convicted: the victim did not spend the night alone with a single suspect."
+      "noMurderer": "Nobody is convicted: the victim did not spend the night alone with a single suspect.",
+      "whyHeading": "What doesn’t fit",
+      "whyRowClash": "this cell shares a row with {{name}}, who already has it.",
+      "whyColClash": "this cell shares a column with {{name}}, who already has it.",
+      "whyFallback": "every clue holds here on its own — it’s the combination with the rest of the plan that doesn’t work."
     },
     "difficulty": {
       "score": "score {{score}}",

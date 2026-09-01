@@ -1,6 +1,7 @@
 {
   "title": "La nuit du Transalpin",
   "flavorText": "Vingt minutes d’arrêt dans le tunnel du Simplon, et le contrôleur ne répondait plus.",
+  "tagline": "Vingt minutes d’arrêt dans le Simplon. Assez pour lire le journal, ou pour tout autre chose.",
   "intro": "Voiture-lits 12 du Transalpin, entre Vallorbe et Domodossola. Quand le train est ressorti du tunnel, Bertrand Aubier ne répondait plus. Quatre voyageurs occupaient la voiture, et la porte de service était bouclée.",
   "zones": {
     "onze": "le compartiment 11",
@@ -27,5 +28,18 @@
     "hugo": "Hugo Renner",
     "margot": "Margot Sauvin",
     "stefan": "Stefan Baur"
+  },
+  "roles": {
+    "bertrand": "contrôleur des wagons-lits",
+    "irina": "cantatrice, un contrat à Milan qui l’attend",
+    "hugo": "négociant en soieries",
+    "margot": "journaliste",
+    "stefan": "horloger, de Bienne"
+  },
+  "voices": {
+    "irina": "Je ne dors jamais en voyage. Milan m’attend dans deux jours, je révise mon rôle jusqu’à l’aube.",
+    "hugo": "Les soies ne supportent pas l’humidité du couloir. Je préfère rester près de mes malles.",
+    "margot": "Je cherche toujours une histoire. Cette nuit, j’ai fini par la trouver — pas comme je l’espérais.",
+    "stefan": "Je répare les montres, je ne les regarde jamais en voyage. Ça me donne le mal des transports."
   }
 }

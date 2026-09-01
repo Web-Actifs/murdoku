@@ -7,8 +7,8 @@ import { cormoranDef } from '../../data/v2/premier-cas'
 import { deriveProgress } from './useV2Progress'
 
 const SOLUTION: Record<string, string> = {
-  oscar: '4:1',
-  victoire: '2:2',
+  oscar: '4:0',
+  victoire: '2:1',
   pascal: '5:3',
   helene: '1:4',
   armand: '0:5',
@@ -46,21 +46,23 @@ describe('the investigation trail follows the player, not a replay cursor', () =
     }
   })
 
-  it('closes the opening chapter once the player has genuinely placed Oscar', () => {
-    const state = progressFor(notebookWith('oscar'))
+  it('closes the opening chapter once the player has genuinely placed Victoire', () => {
+    // Since the 2026-08-31 de-mirroring (premier-cas.ts), Victoire resolves
+    // first — her own distance clue reads off Oscar's *domain*, not his
+    // placement, so she closes the opening chapter without needing him at all.
+    const state = progressFor(notebookWith('victoire'))
 
     expect(state.chapters[0].done).toBe(true)
-    expect(state.chapters[0].revealed).toEqual(['oscar'])
+    expect(state.chapters[0].revealed).toEqual(['victoire'])
     expect(state.progress.stepsDone).toBeGreaterThan(0)
-    expect(state.latest?.step.personId).toBe('oscar')
+    expect(state.latest?.step.personId).toBe('victoire')
     expect(state.latest?.hint.i18nKey).toBe('hint.l4.nakedSingle')
     expect(state.revealsLeft).toBe(4)
   })
 
   it('advances chapter by chapter as the chain is followed in the order the proof forces', () => {
-    const closed = ['oscar', 'victoire', 'pascal', 'helene', 'armand'].map((_, i) =>
-      progressFor(notebookWith(...['oscar', 'victoire', 'pascal', 'helene', 'armand'].slice(0, i + 1))),
-    )
+    const order = ['victoire', 'oscar', 'helene', 'pascal', 'armand']
+    const closed = order.map((_, i) => progressFor(notebookWith(...order.slice(0, i + 1))))
     expect(closed.map((s) => s.progress.completed)).toEqual([1, 2, 3, 4, 5])
     expect(closed.map((s) => s.revealsLeft)).toEqual([4, 3, 2, 1, 0])
     expect(closed.at(-1)!.progress.done).toBe(true)
@@ -73,7 +75,7 @@ describe('the investigation trail follows the player, not a replay cursor', () =
     const guessed = progressFor(notebookWith('armand'))
     expect(guessed.chapters.every((c) => !c.done)).toBe(true)
     expect(guessed.revealsLeft).toBe(puzzle.people.length)
-    expect(guessed.progress.stepsDone).toBeLessThan(progressFor(notebookWith('oscar')).progress.stepsDone)
+    expect(guessed.progress.stepsDone).toBeLessThan(progressFor(notebookWith('victoire')).progress.stepsDone)
   })
 
   it('advances on crossings-out alone, before anyone at all is placed', () => {
@@ -86,7 +88,9 @@ describe('the investigation trail follows the player, not a replay cursor', () =
   })
 
   it('stalls at the step that refutes a wrong placement rather than skipping past it', () => {
-    const wrong = progressFor({ placements: { oscar: '3:0' }, exclusions: {} })
+    // Oscar's domain is only ever the two windows (1:5, 4:0) — 1:5 is the wrong
+    // one, and it survives until Hélène's row locks it out.
+    const wrong = progressFor({ placements: { oscar: '1:5' }, exclusions: {} })
     expect(wrong.progress.done).toBe(false)
     expect(wrong.progress.stepsDone).toBeLessThan(journal.length)
   })

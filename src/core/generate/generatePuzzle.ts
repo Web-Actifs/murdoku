@@ -31,6 +31,7 @@ export type GenerationFailureReason =
   | 'not-solvable-by-propagation'
   | 'wrong-solution'
   | 'victim-not-last'
+  | 'mirrored-testimony'
 
 export interface GenerationSuccess {
   ok: true
