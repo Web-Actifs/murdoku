@@ -2,7 +2,7 @@ import { useEffect, useState, type CSSProperties, type DragEvent } from 'react'
 import { cellKey, unoccupiableCells } from '../../core/model/geometry'
 import type { Cell, SceneObject } from '../../core/model/types'
 import { useV2Session } from '../../store/v2Session'
-import { PersonAvatar } from '../game/PersonAvatar'
+import { PersonAvatar, caseRotationFor } from '../game/PersonAvatar'
 import { HAIRLINE, INK, LABEL_TILT, WALL, paperTilt, patternStyle, personColor, roomPalette, windowPaneStyle } from '../game/planStyle'
 import { footprintOf } from './footprint'
 import { V2ObjectArt } from './V2ObjectArt'
@@ -33,16 +33,6 @@ const Z_FURNITURE = 1
 const Z_TILE = 2
 const Z_ZONE_LABEL = 20
 
-/** FNV-1a 32-bit hash for case-level rotation offset. */
-function hashString(value: string): number {
-  let h = 0x811c9dc5
-  for (let i = 0; i < value.length; i += 1) {
-    h ^= value.charCodeAt(i)
-    h = Math.imul(h, 0x01000193)
-  }
-  return h >>> 0
-}
-
 export function V2FloorPlanGrid() {
   const { puzzle, state, displayed, solution, outcome, murdererId, clickCell, placeAtCell } = useV2Session()
   const text = useV2Text(puzzle.id)
@@ -52,7 +42,7 @@ export function V2FloorPlanGrid() {
   const [placedPersonAxisCell, setPlacedPersonAxisCell] = useState<{ personId: string; cell: string } | null>(null)
 
   const { board } = puzzle
-  const caseRotation = hashString(puzzle.id) % 13  // 13 is STYLE_COUNT
+  const caseRotation = caseRotationFor(puzzle.id)
   const frozen = state.phase !== 'investigating'
   const gaveUp = state.phase === 'gaveUp'
   const blocked = unoccupiableCells(board)
@@ -121,6 +111,13 @@ export function V2FloorPlanGrid() {
     const [row, col] = key.split(':').map(Number)
     return { row, col }
   }
+
+  // Clear axis when not in place mode
+  useEffect(() => {
+    if (state.phase !== 'investigating') {
+      setPlacedPersonAxisCell(null)
+    }
+  }, [state.phase])
 
   const axisCell = hoveredCell || placedPersonAxisCell?.cell
   const axisRowCol = axisCell ? cellKeyToRowCol(axisCell) : null
