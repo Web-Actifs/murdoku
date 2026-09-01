@@ -39,7 +39,7 @@ export function V2FloorPlanGrid() {
   const [dragOverCell, setDragOverCell] = useState<string | null>(null)
   const [lifted, setLifted] = useState<{ cell: string; token: number } | null>(null)
   const [hoveredCell, setHoveredCell] = useState<string | null>(null)
-  const [placedPersonAxisCell, setPlacedPersonAxisCell] = useState<{ personId: string; cell: string } | null>(null)
+  const [lastPlacedPersonId, setLastPlacedPersonId] = useState<string | null>(null)
 
   const { board } = puzzle
   const caseRotation = caseRotationFor(puzzle.id)
@@ -115,11 +115,13 @@ export function V2FloorPlanGrid() {
   // Clear axis when not in place mode
   useEffect(() => {
     if (state.phase !== 'investigating') {
-      setPlacedPersonAxisCell(null)
+      setLastPlacedPersonId(null)
     }
   }, [state.phase])
 
-  const axisCell = hoveredCell || placedPersonAxisCell?.cell
+  // Get the cell of the last placed person from displayed
+  const lastPlacedCell = lastPlacedPersonId ? displayed[lastPlacedPersonId] : null
+  const axisCell = hoveredCell || lastPlacedCell
   const axisRowCol = axisCell ? cellKeyToRowCol(axisCell) : null
 
   /**
@@ -146,7 +148,7 @@ export function V2FloorPlanGrid() {
     const personId = e.dataTransfer.getData(V2_PERSON_DRAG_TYPE)
     if (personId && !blocked.has(key)) {
       placeAtCell(personId, key)
-      setPlacedPersonAxisCell({ personId, cell: key })
+      setLastPlacedPersonId(personId)
       setHoveredCell(null)
     }
   }
@@ -156,10 +158,10 @@ export function V2FloorPlanGrid() {
     if (state.mode === 'place' && !state.selectedPersonId && occupantAt(key))
       setLifted((prev) => ({ cell: key, token: (prev?.token ?? 0) + 1 }))
     clickCell(key)
-    // Track the placed person's cell for axis display
+    // Track the placed person for axis display
     const occupant = occupantAt(key)
     if (occupant && state.mode === 'place') {
-      setPlacedPersonAxisCell({ personId: occupant.id, cell: key })
+      setLastPlacedPersonId(occupant.id)
     }
   }
 
