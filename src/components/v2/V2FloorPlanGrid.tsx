@@ -147,7 +147,11 @@ export function V2FloorPlanGrid() {
     e.preventDefault()
     setDragOverCell(null)
     const personId = e.dataTransfer.getData(V2_PERSON_DRAG_TYPE)
-    if (personId && !blocked.has(key)) placeAtCell(personId, key)
+    if (personId && !blocked.has(key)) {
+      placeAtCell(personId, key)
+      setPlacedPersonAxisCell({ personId, cell: key })
+      setHoveredCell(null)
+    }
   }
 
   function handleClick(key: string) {
