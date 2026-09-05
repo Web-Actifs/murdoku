@@ -6,13 +6,12 @@
     "heading": "Elige un caso",
     "subheading": "Escenas del crimen que resolver por pura deducción.",
     "play": "Jugar",
-    "betaBadge": "Beta",
-    "betaTooltip": "Versión actual del juego — una nueva versión con reglas más completas está en preparación.",
-    "v2Preview": {
-      "title": "El nuevo motor ya se puede jugar",
-      "description": "Cuatro casos escritos para el motor V2: propagación de restricciones, pistas de cinco niveles, cuaderno de investigación y un culpable deducido del plano en lugar de escrito de antemano.",
-      "cta": "Jugar a los casos V2",
-      "devLink": "Adelanto técnico del motor (herramienta de desarrollo)"
+    "legacyBadge": "Clásica",
+    "legacyTooltip": "La versión original del juego. El nuevo motor, con reglas más completas, es ahora la versión por defecto.",
+    "v1Notice": {
+      "title": "Estás viendo la versión clásica",
+      "description": "Estos son los casos originales. El nuevo motor razona como un jugador, nunca adivina, e incluye pistas de cinco niveles y un cuaderno de investigación.",
+      "cta": "Ir al nuevo motor"
     }
   },
   "case": {
@@ -305,7 +304,12 @@
       "subheading": "El motor V2 razona como un jugador: nunca adivina. Cada caso se resuelve por pura deducción, y el culpable no está escrito en ninguna parte: lo señala el plano correcto.",
       "stats": "{{people}} personas · plano {{rows}}×{{cols}} · {{steps}} deducciones",
       "devNote": "¿Buscas las tripas del motor?",
-      "devLink": "Abrir el adelanto técnico"
+      "devLink": "Abrir el adelanto técnico",
+      "v1Notice": {
+        "title": "¿Buscas la versión original?",
+        "description": "Los casos clásicos, con las reglas originales, se pueden seguir jugando.",
+        "cta": "Jugar a la versión clásica"
+      }
     },
     "play": {
       "backToCases": "Volver a los casos V2",

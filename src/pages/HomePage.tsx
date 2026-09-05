@@ -13,26 +13,23 @@ export function HomePage() {
         <h1 className="text-3xl font-extrabold tracking-tight">{t('home.heading')}</h1>
         <span
           className="inline-flex items-center rounded-full bg-[var(--color-accent)] px-2.5 py-1 text-xs font-bold text-white"
-          title={t('home.betaTooltip')}
+          title={t('home.legacyTooltip')}
         >
-          {t('home.betaBadge')}
+          {t('home.legacyBadge')}
         </span>
       </div>
       <p className="mt-2 text-[var(--color-text-muted)]">{t('home.subheading')}</p>
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-accent)] bg-[var(--color-surface)] p-4">
         <div>
-          <span className="block text-sm font-extrabold uppercase tracking-wide text-[var(--color-accent)]">{t('home.v2Preview.title')}</span>
-          <p className="mt-1 max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('home.v2Preview.description')}</p>
-          <Link to="/v2/cormoran" className="mt-1 inline-block text-xs text-[var(--color-text-muted)] underline decoration-dotted">
-            {t('home.v2Preview.devLink')}
-          </Link>
+          <span className="block text-sm font-extrabold uppercase tracking-wide text-[var(--color-accent)]">{t('home.v1Notice.title')}</span>
+          <p className="mt-1 max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('home.v1Notice.description')}</p>
         </div>
         <Link
-          to="/v2"
+          to="/"
           className="inline-block shrink-0 rounded-[var(--radius-sm)] bg-[var(--color-accent)] px-4 py-2 text-sm font-semibold text-white transition-transform hover:scale-105"
         >
-          {t('home.v2Preview.cta')}
+          {t('home.v1Notice.cta')}
         </Link>
       </div>
 
@@ -40,7 +37,7 @@ export function HomePage() {
         {sortedCases.map((c) => (
           <Link
             key={c.id}
-            to={`/affaires/${c.id}`}
+            to={`/v1/affaires/${c.id}`}
             className="group rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-card)] transition-transform hover:-translate-y-1"
           >
             <DifficultyBadge difficulty={c.difficulty} />

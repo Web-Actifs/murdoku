@@ -6,13 +6,12 @@
     "heading": "Choose a case",
     "subheading": "Crime scenes to solve through pure deduction.",
     "play": "Play",
-    "betaBadge": "Beta",
-    "betaTooltip": "Current version of the game — a new version with richer rules is in the works.",
-    "v2Preview": {
-      "title": "The new engine is playable",
-      "description": "Four cases written for the V2 engine: constraint propagation, five-level hints, an investigator’s notebook, and a murderer derived from the plan instead of written in advance.",
-      "cta": "Play the V2 cases",
-      "devLink": "Engine preview (developer tool)"
+    "legacyBadge": "Legacy",
+    "legacyTooltip": "The original version of the game. The new engine, with richer rules, is now the default.",
+    "v1Notice": {
+      "title": "You're viewing the legacy version",
+      "description": "These are the original cases. The new engine reasons like a player, never guesses, and comes with five-level hints and an investigator's notebook.",
+      "cta": "Go to the new engine"
     }
   },
   "case": {
@@ -305,7 +304,12 @@
       "subheading": "The V2 engine reasons like a player: it never guesses. Every case below is solvable by deduction alone, and the murderer is written nowhere — a correct plan is what names them.",
       "stats": "{{people}} people · {{rows}}×{{cols}} plan · {{steps}} deductions",
       "devNote": "Looking for the engine internals?",
-      "devLink": "Open the technical preview"
+      "devLink": "Open the technical preview",
+      "v1Notice": {
+        "title": "Looking for the original version?",
+        "description": "The legacy cases, with the classic rule set, are still playable.",
+        "cta": "Play the legacy version"
+      }
     },
     "play": {
       "backToCases": "Back to the V2 cases",

@@ -21,7 +21,7 @@ export function V2PlayPage() {
     return (
       <div>
         <p>404</p>
-        <Link to="/v2">{t('v2.play.backToCases')}</Link>
+        <Link to="/">{t('v2.play.backToCases')}</Link>
       </div>
     )
   }
@@ -40,7 +40,7 @@ function V2PlayScreen() {
   return (
     <div className="pb-12">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <Link to="/v2" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
+        <Link to="/" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
           ← {text.t('v2.play.backToCases')}
         </Link>
         <V2HowToPlay openOnFirstVisit />

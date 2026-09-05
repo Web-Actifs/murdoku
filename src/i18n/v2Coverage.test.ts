@@ -26,12 +26,7 @@ function resolves(bundle: unknown, key: string): boolean {
 
 /** Every key the V2 screens ask for by hand; the interpolated ones are expanded here. */
 const UI_KEYS = [
-  'home.v2Preview.title',
-  'home.v2Preview.description',
-  'home.v2Preview.cta',
-  'home.v2Preview.devLink',
   'home.play',
-  'case.backToHome',
   'case.legendHeading',
   'case.victimBadge',
   'case.resetButton',
@@ -43,6 +38,9 @@ const UI_KEYS = [
   'v2.picker.stats',
   'v2.picker.devNote',
   'v2.picker.devLink',
+  'v2.picker.v1Notice.title',
+  'v2.picker.v1Notice.description',
+  'v2.picker.v1Notice.cta',
   'v2.play.backToCases',
   'v2.play.barHeading',
   'v2.play.placeHint',

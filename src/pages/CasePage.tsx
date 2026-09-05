@@ -18,14 +18,14 @@ export function CasePage() {
     return (
       <div>
         <p>404</p>
-        <Link to="/">{t('case.backToHome')}</Link>
+        <Link to="/v1">{t('case.backToHome')}</Link>
       </div>
     )
   }
 
   return (
     <CaseSessionProvider key={caseDef.id} caseDef={caseDef}>
-      <Link to="/" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
+      <Link to="/v1" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
         ← {t('case.backToHome')}
       </Link>
 

@@ -6,13 +6,12 @@
     "heading": "Choisissez une affaire",
     "subheading": "Des scènes de crime à élucider par pure déduction.",
     "play": "Jouer",
-    "betaBadge": "Bêta",
-    "betaTooltip": "Version actuelle du jeu — une nouvelle version, avec des règles plus riches, est en préparation.",
-    "v2Preview": {
-      "title": "Le nouveau moteur est jouable",
-      "description": "Quatre affaires écrites pour le moteur V2 : propagation de contraintes, indices à cinq niveaux, carnet d'enquête, et un coupable déduit du plan plutôt qu'écrit à l'avance.",
-      "cta": "Jouer aux affaires V2",
-      "devLink": "Aperçu technique du moteur (outil de développement)"
+    "legacyBadge": "Historique",
+    "legacyTooltip": "La version originale du jeu. Le nouveau moteur, avec des règles plus riches, est désormais la version par défaut.",
+    "v1Notice": {
+      "title": "Vous consultez la version historique",
+      "description": "Voici les affaires originales. Le nouveau moteur raisonne comme un joueur, ne devine jamais, et propose des indices à cinq niveaux ainsi qu'un carnet d'enquête.",
+      "cta": "Aller au nouveau moteur"
     }
   },
   "case": {
@@ -305,7 +304,12 @@
       "subheading": "Le moteur V2 raisonne comme un joueur : il ne devine jamais. Chaque affaire ci-dessous se résout entièrement par déduction, et le coupable n'est écrit nulle part — c'est le plan juste qui le désigne.",
       "stats": "{{people}} personnes · plan {{rows}}×{{cols}} · {{steps}} déductions",
       "devNote": "Vous cherchez les entrailles du moteur ?",
-      "devLink": "Ouvrir l'aperçu technique"
+      "devLink": "Ouvrir l'aperçu technique",
+      "v1Notice": {
+        "title": "Vous cherchez la version originale ?",
+        "description": "Les affaires historiques, avec les règles classiques, restent jouables.",
+        "cta": "Jouer à la version historique"
+      }
     },
     "play": {
       "backToCases": "Retour aux affaires V2",

@@ -25,11 +25,7 @@ export function V2CasesPage() {
 
   return (
     <div>
-      <Link to="/" className="text-sm font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
-        ← {t('case.backToHome')}
-      </Link>
-
-      <div className="mt-2 flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <h1 className="text-3xl font-extrabold tracking-tight">{t('v2.picker.heading')}</h1>
         <span className="inline-flex items-center rounded-full bg-[var(--color-accent)] px-2.5 py-1 text-xs font-bold text-white">{t('v2.picker.badge')}</span>
         <span className="ml-auto">
@@ -37,6 +33,19 @@ export function V2CasesPage() {
         </span>
       </div>
       <p className="mt-2 max-w-[75ch] text-[var(--color-text-muted)]">{t('v2.picker.subheading')}</p>
+
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-4">
+        <div>
+          <span className="block text-sm font-extrabold uppercase tracking-wide text-[var(--color-text-muted)]">{t('v2.picker.v1Notice.title')}</span>
+          <p className="mt-1 max-w-[60ch] text-sm text-[var(--color-text-muted)]">{t('v2.picker.v1Notice.description')}</p>
+        </div>
+        <Link
+          to="/v1"
+          className="inline-block shrink-0 rounded-[var(--radius-sm)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 text-sm font-semibold transition-transform hover:scale-105"
+        >
+          {t('v2.picker.v1Notice.cta')}
+        </Link>
+      </div>
 
       <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {entries.map(({ def, puzzle, difficulty }, i) => (

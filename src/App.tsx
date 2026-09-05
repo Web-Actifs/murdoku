@@ -13,12 +13,12 @@ export default function App() {
       <HashRouter>
         <AppShell>
           <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/affaires/:caseId" element={<CasePage />} />
-            <Route path="/v2" element={<V2CasesPage />} />
+            <Route path="/" element={<V2CasesPage />} />
             <Route path="/v2/jouer/:caseId" element={<V2PlayPage />} />
             {/* Developer harness for the engine internals, deliberately kept off the player's path. */}
             <Route path="/v2/cormoran" element={<V2PreviewPage />} />
+            <Route path="/v1" element={<HomePage />} />
+            <Route path="/v1/affaires/:caseId" element={<CasePage />} />
           </Routes>
         </AppShell>
       </HashRouter>
