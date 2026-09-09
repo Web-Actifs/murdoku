@@ -12,10 +12,13 @@ export default defineConfig({
     include: [
       'src/engine/**/*.test.ts',
       'src/core/**/*.test.ts',
+      'src/core3/**/*.test.ts',
       'src/data/**/*.test.ts',
       'src/game/**/*.test.ts',
       'src/i18n/**/*.test.ts',
       'src/components/**/*.test.ts',
+      // The one place a React tree is exercised: see V3PlayPage.render.test.tsx.
+      'src/pages/**/*.test.tsx',
     ],
   },
 })

@@ -3,6 +3,14 @@ import i18next from 'i18next'
 import { initReactI18next } from 'react-i18next'
 
 import commonFr from './fr/common.json'
+/**
+ * V3 ships French only for now, and deliberately: the case is a prototype whose
+ * wording is still moving, and translating a moving target costs three edits per
+ * change. It is wired in under every locale rather than left out, so an English
+ * or Spanish player gets the French dossier instead of a wall of raw keys — and
+ * so adding `en/v3.json` later is a one-line change here, not a refactor.
+ */
+import v3Fr from './fr/v3.json'
 import cluesFr from './fr/clues.json'
 import decorFr from './fr/decor.json'
 import decorLabelsFr from './fr/decorLabels.json'
@@ -44,7 +52,7 @@ void i18next
     supportedLngs: supportedLanguages,
     fallbackLng: 'fr',
     defaultNS: 'common',
-    ns: ['common', 'clues', 'decor', 'decorLabels', 'cases', 'v2cases'],
+    ns: ['common', 'clues', 'decor', 'decorLabels', 'cases', 'v2cases', 'v3'],
     interpolation: { escapeValue: false },
     detection: {
       order: ['localStorage', 'navigator'],
@@ -52,9 +60,9 @@ void i18next
       caches: ['localStorage'],
     },
     resources: {
-      fr: { common: commonFr, clues: cluesFr, decor: decorFr, decorLabels: decorLabelsFr, cases: casesFr, v2cases: v2CasesFr },
-      en: { common: commonEn, clues: cluesEn, decor: decorEn, decorLabels: decorLabelsEn, cases: casesEn, v2cases: v2CasesEn },
-      es: { common: commonEs, clues: cluesEs, decor: decorEs, decorLabels: decorLabelsEs, cases: casesEs, v2cases: v2CasesEs },
+      fr: { common: commonFr, clues: cluesFr, decor: decorFr, decorLabels: decorLabelsFr, cases: casesFr, v2cases: v2CasesFr, v3: v3Fr },
+      en: { common: commonEn, clues: cluesEn, decor: decorEn, decorLabels: decorLabelsEn, cases: casesEn, v2cases: v2CasesEn, v3: v3Fr },
+      es: { common: commonEs, clues: cluesEs, decor: decorEs, decorLabels: decorLabelsEs, cases: casesEs, v2cases: v2CasesEs, v3: v3Fr },
     },
   })
 

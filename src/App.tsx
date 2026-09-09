@@ -5,6 +5,7 @@ import { HomePage } from './pages/HomePage'
 import { V2CasesPage } from './pages/V2CasesPage'
 import { V2PlayPage } from './pages/V2PlayPage'
 import { V2PreviewPage } from './pages/V2PreviewPage'
+import { V3PlayPage } from './pages/V3PlayPage'
 import { ThemeProvider } from './theme/ThemeProvider'
 
 export default function App() {
@@ -17,6 +18,8 @@ export default function App() {
             <Route path="/v2/jouer/:caseId" element={<V2PlayPage />} />
             {/* Developer harness for the engine internals, deliberately kept off the player's path. */}
             <Route path="/v2/cormoran" element={<V2PreviewPage />} />
+            {/* V3 — Murdoku Élévation: the three-storey prototype. */}
+            <Route path="/v3" element={<V3PlayPage />} />
             <Route path="/v1" element={<HomePage />} />
             <Route path="/v1/affaires/:caseId" element={<CasePage />} />
           </Routes>

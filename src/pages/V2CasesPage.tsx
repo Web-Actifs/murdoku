@@ -73,6 +73,23 @@ export function V2CasesPage() {
         ))}
       </div>
 
+      {/* V3 is a prototype on its own engine, not a sixth case: it gets a card of
+          its own rather than a row in the list, so nobody starts it expecting the
+          rules they just learned. */}
+      <Link
+        to="/v3"
+        className="mt-10 block rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-accent)] bg-[rgb(202_138_4/0.07)] p-5 transition hover:bg-[rgb(202_138_4/0.14)]"
+      >
+        <span className="inline-block rounded-full bg-[#241f1d] px-2 py-[1px] text-[0.6rem] font-extrabold uppercase tracking-wide text-[var(--color-surface)]">
+          Prototype · V3
+        </span>
+        <h2 className="mt-2 text-xl font-extrabold tracking-tight">Murdoku Élévation — Le 12, rue des Ormes</h2>
+        <p className="mt-1 max-w-[70ch] font-serif text-sm italic text-[var(--color-text-muted)]">
+          Une maison sur trois niveaux. La règle des rangées ne vaut que par étage, une pièce peut traverser deux planchers, et les portes
+          ne s’ouvrent que sur une déduction. Trois actes, quatorze témoignages.
+        </p>
+      </Link>
+
       <p className="mt-8 text-xs text-[var(--color-text-muted)]">
         {t('v2.picker.devNote')}{' '}
         <Link to="/v2/cormoran" className="font-semibold underline decoration-dotted">
