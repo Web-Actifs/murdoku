@@ -6,7 +6,7 @@ import type { Assignment } from '../../core/model/types'
 import { useReducedMotion } from '../../hooks/useReducedMotion'
 import { renderV2Clue } from '../../i18n/renderV2Clue'
 import { useV2Session } from '../../store/v2Session'
-import { PersonAvatar } from '../game/PersonAvatar'
+import { PersonAvatar, caseRotationFor } from '../game/PersonAvatar'
 import { personColor } from '../game/planStyle'
 import { useV2Text } from './useV2Text'
 import { GIVE_UP_PANEL_MS, VERDICT_PANEL_GAP_MS, boardRevealMs } from './verdictChoreography'
@@ -122,6 +122,8 @@ export function V2ResultPanel() {
                 name={text.person(murdererId)}
                 color={personColor(`${puzzle.id}:${murdererId}`)}
                 variantKey={`${puzzle.id}:${murdererId}`}
+                personIndex={puzzle.people.findIndex((p) => p.id === murdererId)}
+                caseRotation={caseRotationFor(puzzle.id)}
                 size="lg"
               />
             </span>

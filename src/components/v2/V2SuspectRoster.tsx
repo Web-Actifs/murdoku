@@ -6,7 +6,7 @@ import type { DeductionStep } from '../../core/possibility/journal'
 import { renderV2Clues } from '../../i18n/renderV2Clue'
 import { renderV2Hint } from '../../i18n/renderV2Hint'
 import { useV2Session } from '../../store/v2Session'
-import { PersonAvatar } from '../game/PersonAvatar'
+import { PersonAvatar, caseRotationFor } from '../game/PersonAvatar'
 import { personColor } from '../game/planStyle'
 import { V2_PERSON_DRAG_TYPE } from './V2FloorPlanGrid'
 import { useV2Progress } from './useV2Progress'
@@ -69,6 +69,7 @@ export function V2SuspectRoster() {
   const text = useV2Text(puzzle.id)
   const frozen = state.phase !== 'investigating'
   const gaveUp = state.phase === 'gaveUp'
+  const caseRotation = caseRotationFor(puzzle.id)
   // Giving up asks for the whole proof outright, so the frontier gate that
   // protects an in-progress notebook from turning into an oracle no longer
   // applies: read the full journal against the solution itself, not against
@@ -145,6 +146,10 @@ export function V2SuspectRoster() {
                     color={personColor(`${puzzle.id}:${person.id}`)}
                     isVictim={person.id === puzzle.victimId}
                     variantKey={`${puzzle.id}:${person.id}`}
+                    personIndex={puzzle.people.findIndex((p) => p.id === person.id)}
+                    caseRotation={caseRotation}
+                    showMonogram={true}
+                    size="base"
                   />
                   {cell && (
                     <span
