@@ -25,8 +25,8 @@ export function V3SuspectRoster() {
   }
 
   return (
-    <section className="rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-card)]">
-      <div className="mb-3 flex items-center justify-between gap-2">
+    <section className="rounded-[var(--radius-lg)] border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-[var(--shadow-card)] lg:p-3">
+      <div className="mb-3 flex items-center justify-between gap-2 lg:mb-2">
         <h2 className="text-sm font-extrabold uppercase tracking-wide">{text.t('v3:ui.roster')}</h2>
         <div className="flex overflow-hidden rounded-full border-2 border-[#241f1d]">
           {(['place', 'cross'] as V3Mode[]).map((mode) => (
@@ -45,7 +45,7 @@ export function V3SuspectRoster() {
         </div>
       </div>
 
-      <ul className="flex flex-col gap-1.5">
+      <ul className="flex flex-col gap-1.5 lg:gap-1">
         {def.people.map((person, index) => {
           const placed = whereabouts(person.id)
           const selected = state.selectedPersonId === person.id
@@ -60,7 +60,7 @@ export function V3SuspectRoster() {
                   e.dataTransfer.effectAllowed = 'move'
                 }}
                 onClick={() => selectPerson(person.id)}
-                className={`flex w-full items-center gap-2.5 rounded-[var(--radius-md)] border-2 p-1.5 text-left transition ${
+                className={`flex w-full items-center gap-2.5 rounded-[var(--radius-md)] border-2 p-1.5 text-left transition lg:gap-2 lg:p-1 ${
                   selected ? 'border-[var(--color-accent)] bg-[rgb(202_138_4/0.12)]' : 'border-transparent hover:border-[var(--color-border)]'
                 }`}
               >
@@ -93,11 +93,11 @@ export function V3SuspectRoster() {
         })}
       </ul>
 
-      <p className="mt-3 text-[0.7rem] italic text-[var(--color-text-muted)]">{text.t('v3:ui.placeHint')}</p>
+      <p className="mt-3 text-[0.7rem] italic text-[var(--color-text-muted)] lg:mt-2">{text.t('v3:ui.placeHint')}</p>
       <button
         type="button"
         onClick={reset}
-        className="mt-2 text-[0.7rem] font-semibold text-[var(--color-text-muted)] underline hover:text-[var(--color-danger)]"
+        className="mt-2 text-[0.7rem] font-semibold text-[var(--color-text-muted)] underline hover:text-[var(--color-danger)] lg:mt-1"
       >
         {text.t('v3:ui.reset')}
       </button>

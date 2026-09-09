@@ -65,10 +65,12 @@ function V3Screen() {
         </span>
       </div>
 
-      <header className="mt-2">
-        <h1 className="text-3xl font-extrabold tracking-tight">{text.title}</h1>
-        <p className="mt-1 max-w-[80ch] font-serif text-base italic text-[var(--color-accent)]">« {text.tagline} »</p>
-        <p className="mt-2 max-w-[80ch] italic text-[var(--color-text-muted)]">{text.intro}</p>
+      <header className="mt-2 lg:mt-1">
+        <h1 className="text-3xl font-extrabold tracking-tight lg:text-2xl">{text.title}</h1>
+        <p className="mt-1 max-w-[80ch] font-serif text-base italic text-[var(--color-accent)] lg:mt-0.5 lg:max-w-[120ch] lg:text-sm">
+          « {text.tagline} »
+        </p>
+        <p className="mt-2 max-w-[80ch] italic text-[var(--color-text-muted)] lg:mt-1 lg:max-w-[120ch] lg:text-sm">{text.intro}</p>
       </header>
 
       {announcement && (
@@ -78,8 +80,12 @@ function V3Screen() {
         </div>
       )}
 
-      <div className="mt-6 grid items-start gap-8 lg:grid-cols-[3fr_2fr]">
-        <div className="flex flex-col gap-3">
+      <div className="mt-6 flex flex-col gap-6 lg:mt-3 lg:flex-row lg:items-start">
+        <div className="order-3 lg:order-1 lg:w-[230px] lg:shrink-0">
+          <V3SuspectRoster />
+        </div>
+
+        <div className="order-1 flex flex-col gap-3 lg:order-2 lg:w-[480px] lg:shrink-0">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex overflow-hidden rounded-full border-2 border-[#241f1d]">
               {(['plan', 'exploded', 'section', 'three'] as View[]).map((id) => (
@@ -135,11 +141,10 @@ function V3Screen() {
           <Rules />
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="order-2 flex flex-col gap-6 lg:order-3 lg:min-w-0 lg:flex-1">
           <V3Verdict />
           <V3Doors />
           <V3Dossier />
-          <V3SuspectRoster />
         </div>
       </div>
 
